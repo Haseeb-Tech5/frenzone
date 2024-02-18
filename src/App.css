@@ -1,38 +1,236 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@media screen and (max-width: 600px) {
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 280px; /* Adjust the width as needed */
+  height: 100vh;
+  background-color: #fff;
+  transition: left 0.3s ease-in-out;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999999;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sidebar.open {
+  left: 0;
+}
+
+
+.tableheading{
+  display: flex;
+  justify-content: center;
+
+}
+
+/* <--------------------------------------------WebChat--------------------------------------------> */
+#webchat {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0 20px 0;
+}
+.webchath1 {
+  color: #1f1f1f;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0px 0 20px 0;
+}
+#chatModal {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 24px;
+  width: 95%;
+  max-width: 768px;
+}
+.fa-xmark {
+  font-size: 26px;
+  color: #000;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.chatDiv {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  margin-top: 20px;
+  width: 95%;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.imgSpan {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border: 1px solid #1f1f1f;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.fa-user {
+  color: #000;
+  font-size: 26px;
+}
+.span1 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: 20px;
+}
+.span1 h1 {
+  font-weight: 500;
+  font-size: 16px;
+}
+.span1 p {
+  font-size: 12px;
+  color: #a3a3a3;
+}
+.span2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+.span2 h1 {
+  font-weight: 600;
+}
+.span2child {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #ffe11b;
+}
+.searchInput {
+  width: 95%;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 32px !important;
+  box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.App-link {
-  color: #61dafb;
+#chatModal2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 24px;
+  max-width: 700px;
+  height: 80%;
+  width: 95%;
+}
+.nameDiv {
+  display: flex;
+  align-items: center;
+  margin: 30px 0 20px 0;
+  width: 95%;
+}
+.spanPhone {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #41b9ff5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+.fa-phone {
+  color: #41b9ff;
+  font-size: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.messageLeftDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffe11b;
+  border-radius: 12px 12px 12px 0;
+  height: 40px;
+  padding: 20px;
+  align-self: flex-start;
+  margin-top: 10px;
 }
+.messageLeftDiv p {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+}
+.messageRightDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0000001a;
+  border-radius: 12px 12px 0 12px;
+  height: 40px;
+  padding: 20px;
+  align-self: flex-end;
+  margin-top: 10px;
+}
+.messageRightDiv p {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+}
+.sendMessageDiv {
+  display: flex;
+  align-items: center;
+  width: 95%;
+  margin-top: auto;
+}
+.sendMessageDivSpan1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffe11b;
+  border-radius: 50%;
+  min-width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.fa-plus {
+  color: #fff;
+}
+.messageDiv {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin-top: 30px;
+  /*   height: 550px; */
+  overflow-y: auto;
+}
+.sendIconSpan {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: #00000011;
+  margin-left: auto;
+  cursor: pointer;
+}
+.fa-paper-plane {
+  color: #ffe11b;
+  font-size: 20px;
+}
+.messageInput {
+  margin-left: 20px;
+  height: 40px;
+  border: 0;
+  outline: none;
+  width: 100%;
+  margin-right: 15px;
+}
+
+
