@@ -800,9 +800,6 @@ const ReportsEmployee = () => {
         {isSending && (
           <div className="send-container">
             <textarea placeholder="Write your message..."></textarea>
-            <div className="image-picker">
-              <input type="file" accept="image/*" />
-            </div>
             <div className="button-container">
               <button onClick={handleClose}>Cancel</button>
               <button>Send</button>

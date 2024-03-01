@@ -17,19 +17,24 @@ import Icon2 from "../Icon/Icon2";
 import "../pages/employee/employee.css";
 
 const Employee = ({ children }) => {
-  const [activeItem, setActiveItem] = useState("");
+  const [activeItem, setActiveItem] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let activePage = window.location.href.split("/")[4];
-    if (activePage.includes("-")) {
-      activePage = activePage.replace(/-/g, " ");
+    setActiveItem("dashboard"); // Set "dashboard" as active by default
+    const href = window.location.href;
+    if (href && typeof href === "string") {
+      const urlParts = href.split("/");
+      if (urlParts.length >= 5) {
+        const activePage = urlParts[4];
+        if (activePage && activePage.includes("-")) {
+          setActiveItem(activePage.replace(/-/g, " "));
+        }
+      }
     }
-    console.log("active Page", activePage);
-    setActiveItem(activePage);
-    console.log("activeItem", activeItem);
-  }, [activeItem]);
+  }, []);
+
   return (
     <div className="flex ">
       <aside className="hidden md:block min-w-[280px] w-[280px] py-8 h-[100vh] bg-[black] ">
@@ -52,7 +57,7 @@ const Employee = ({ children }) => {
                 }`}
                 onClick={() => setActiveItem("dashboard")}
               >
-                <MdHome
+                <IoMdPerson
                   className={`text-[24px] ${
                     activeItem == "dashboard"
                       ? "text-[#ff9700]"
@@ -66,7 +71,37 @@ const Employee = ({ children }) => {
                       : "text-[#A3AED0] font-[500]"
                   }`}
                 >
-                  Dashboard
+                  Manage Profile
+                </span>
+              </div>
+            </Link>
+            <Link
+              to="/employee/manage-orders"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "manage orders"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("manage orders")}
+              >
+                <MdHome
+                  className={`text-[24px] ${
+                    activeItem == "manage orders"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "manage orders"
+                      ? "text-[white] font-[700]"
+                      : "text-[#A3AED0] font-[500]"
+                  }`}
+                >
+                  Profit
                 </span>
               </div>
             </Link>
@@ -93,97 +128,7 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            <Link
-              to="/employee/manage-profile"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage profile"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage profile")}
-              >
-                <IoMdPerson
-                  className={`text-[24px] ${
-                    activeItem == "manage profile"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage profile"
-                      ? "text-[white] font-[700]"
-                      : "text-[#A3AED0] font-[500]"
-                  }`}
-                >
-                  Manage Profile
-                </span>
-              </div>
-            </Link>
 
-            <Link
-              to="/employee/manage-orders"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage orders"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage orders")}
-              >
-                <FaFileInvoice
-                  className={`text-[24px] ${
-                    activeItem == "manage orders"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage orders"
-                      ? "text-[white] font-[700]"
-                      : "text-[#A3AED0] font-[500]"
-                  }`}
-                >
-                  Manage Orders
-                </span>
-              </div>
-            </Link>
-            <Link
-              to="/employee/appointment-calendar"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "appointment calendar"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("appointment calendar")}
-              >
-                <MdOutlineCalendarMonth
-                  className={`text-[24px] ${
-                    activeItem == "appointment calendar"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "appointment calendar"
-                      ? "text-[white] font-[700]"
-                      : "text-[#A3AED0] font-[500]"
-                  }`}
-                >
-                  Appointment Calendar
-                </span>
-              </div>
-            </Link>
             <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -266,7 +211,7 @@ const Employee = ({ children }) => {
                 }`}
                 onClick={() => setActiveItem("dashboard")}
               >
-                <MdHome
+                <IoMdPerson
                   className={`text-[24px] ${
                     activeItem == "dashboard"
                       ? "text-[#ff9700]"
@@ -280,7 +225,37 @@ const Employee = ({ children }) => {
                       : "text-[#5b5c5ff8] font-[600]"
                   }`}
                 >
-                  Dashboard
+                  Manage Profile
+                </span>
+              </div>
+            </Link>
+            <Link
+              to="/employee/manage-orders"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "manage orders"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("manage orders")}
+              >
+                <MdHome
+                  className={`text-[24px] ${
+                    activeItem == "manage orders"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "manage orders"
+                      ? "text-[white] font-[700]"
+                      : "text-[#5b5c5ff8] font-[600]"
+                  }`}
+                >
+                  Profit
                 </span>
               </div>
             </Link>
@@ -303,101 +278,11 @@ const Employee = ({ children }) => {
                       : "text-[#5b5c5ff8] font-[600]"
                   }`}
                 >
-                  Reports
-                </span>
-              </div>
-            </Link>
-            <Link
-              to="/employee/manage-profile"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage profile"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage profile")}
-              >
-                <IoMdPerson
-                  className={`text-[24px] ${
-                    activeItem == "manage profile"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage profile"
-                      ? "text-[white] font-[700] text-[17px]"
-                      : "text-[#5b5c5ff8] font-[600]"
-                  }`}
-                >
-                  Manage Profile
+                  BroadCast
                 </span>
               </div>
             </Link>
 
-            <Link
-              to="/employee/manage-orders"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage orders"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage orders")}
-              >
-                <FaFileInvoice
-                  className={`text-[24px] ${
-                    activeItem == "manage orders"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage orders"
-                      ? "text-[white] font-[700] text-[17px]"
-                      : "text-[#5b5c5ff8] font-[600]"
-                  }`}
-                >
-                  Manage Orders
-                </span>
-              </div>
-            </Link>
-            <Link
-              to="/employee/appointment-calendar"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "appointment calendar"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("appointment calendar")}
-              >
-                <MdOutlineCalendarMonth
-                  className={`text-[24px] ${
-                    activeItem == "appointment calendar"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "appointment calendar"
-                      ? "text-[white] font-[700] text-[17px]"
-                      : "text-[#5b5c5ff8] font-[600]"
-                  }`}
-                >
-                  Appointment Calendar
-                </span>
-              </div>
-            </Link>
             <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${

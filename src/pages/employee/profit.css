@@ -1,0 +1,55 @@
+.profit-company {
+  width: 100%;
+  height: 100vh;
+  background-color: #ffe9c865;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.pr0fit-heading {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+.pr0fit-heading h2 {
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 50px;
+  font-family: "Poppins", sans-serif;
+  color: #ff9700;
+}
+.chart-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: lime; */
+  margin-top: 10px;
+}
+.profit-company-setting {
+  width: 95%;
+  /* background-color: yellow; */
+}
+.chart-set-path {
+  background-color: rgba(167, 167, 167, 0.103);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+@media only screen and (max-width: 899px) {
+  .pr0fit-heading {
+    padding-top: 80px;
+  }
+}
+@media only screen and (min-width: 731px) and (max-width: 899px) {
+  .profit-company {
+    height: auto;
+  }
+  .chart-set-path {
+    margin-bottom: 80px;
+  }
+}

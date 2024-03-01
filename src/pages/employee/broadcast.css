@@ -20,6 +20,7 @@
 .broad-container-full {
   width: 95%;
   /* background-color: lime; */
+  max-width: 1440px;
 }
 .send-heading {
   width: 100%;
@@ -45,7 +46,7 @@
 }
 .send-container textarea {
   width: 100%;
-  border: 1px solid rgba(128, 128, 128, 0.568);
+  border: 1px solid rgba(128, 128, 128, 0.267);
   border-radius: 10px;
   height: 300px;
   padding-left: 10px;
@@ -91,4 +92,16 @@
   font-size: 15px;
   line-height: 25px;
   font-family: "Poppins", sans-serif;
+}
+@media only screen and (max-width: 899px) {
+  .broad-container {
+    margin-top: 50px;
+    padding-bottom: 30px;
+    /* height: auto; */
+  }
+}
+@media only screen and (max-width: 400px) {
+  .button-container {
+    justify-content: space-evenly;
+  }
 }

@@ -91,39 +91,28 @@
 // export default LoginEmployee;
 import React, { useState } from "react";
 import "./employee.css";
-import { Modal, Button, Form } from "react-bootstrap";
-import name from "../../Assets-admin/Name.svg";
-import phone from "../../Assets-admin/phone.svg";
-import admin from "../../Assets-admin/admin.svg";
-import message from "../../Assets-admin/message.svg";
+import { Modal, Button } from "react-bootstrap";
+import emailIcon from "../../Assets-admin/message.svg";
 import { Link } from "react-router-dom";
 import mort from "../../Assets-admin/mort-crop.png";
 import logo from "../../Assets-admin/logo-fren.svg";
 import Icon7 from "../../Icon/Icon7";
-import Icon5 from "../../Icon/Icon5";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const LoginEmployee = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [errorMessages, setErrorMessages] = useState({
-    username: "",
     email: "",
     password: "",
   });
 
-  const correctUsername = "admin";
   const correctEmail = "admin@gmail.com";
   const correctPassword = "admin123";
 
   const handleLogin = () => {
     const errors = {};
-
-    if (username !== correctUsername) {
-      errors.username = "Username is incorrect";
-    }
 
     if (email !== correctEmail) {
       errors.email = "Email is incorrect";
@@ -161,21 +150,7 @@ const LoginEmployee = () => {
             </h2>
           </div>
           <div className="para-touch">
-            <p>Enter your Username, Email, and Password to Log In!</p>
-          </div>
-          <div className="input-imgage-flux">
-            <div className="input-controller ">
-              <label htmlFor="message">User Name</label>
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="input-img-controller">
-              <Icon5 />
-            </div>
+            <p>Enter your Email and Password to Log In!</p>
           </div>
           <div className="input-imgage-flux">
             <div className="input-controller ">
@@ -188,7 +163,7 @@ const LoginEmployee = () => {
               />
             </div>
             <div className="input-img-controller">
-              <img src={message} alt="" />
+              <img src={emailIcon} alt="" />
             </div>
           </div>
           <div className="input-imgage-flux">

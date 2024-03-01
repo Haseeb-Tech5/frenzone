@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 // CSS
 import "./App.css";
@@ -36,18 +36,44 @@ import AppointmentCalendarEmployee from "./pages/employee/AppointmentCalendarEmp
 import ProfileEmployee from "./pages/employee/ProfileEmployee";
 import ManageProfile from "./pages/employee/ManageProfile";
 import Detailed from "./pages/Detailed";
+import DetailedPage from "./DetailedPage/DetailedPage";
+import { BounceLoader } from "react-spinners";
 
 const App = () => {
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const delay = 3000;
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <>
-      <div className="app">
-        <Routes>
-          {/* <Route path="/" element={<Navigate to="/login" />} /> */}
-          {/* <Route path="/login" element={<Login />} /> */}
-          {/* <Route path="/webchat" element={<WebChat />} /> */}
+      {isLoading ? (
+        <div className="loader">
+          <span className="load" style={{ "--i": "1px" }}></span>
+          <span className="load" style={{ "--i": "2px" }}></span>
+          <span className="load" style={{ "--i": "3px" }}></span>
+          <span className="load" style={{ "--i": "4px" }}></span>
+          <span className="load" style={{ "--i": "5px" }}></span>
+          <span className="load" style={{ "--i": "6px" }}></span>
+          <span className="load" style={{ "--i": "7px" }}></span>
+          <span className="load" style={{ "--i": "8px" }}></span>
+          <span className="load" style={{ "--i": "9px" }}></span>
+          <span className="load" style={{ "--i": "10px" }}></span>
+        </div>
+      ) : (
+        <div>
+          <Routes>
+            {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+            {/* <Route path="/login" element={<Login />} /> */}
+            {/* <Route path="/webchat" element={<WebChat />} /> */}
 
-          {/* Super Admin */}
-          {/* <Route
+            {/* Super Admin */}
+            {/* <Route
             path="/super-admin/dashboard"
             element={
               <SuperAdmin>
@@ -112,8 +138,8 @@ const App = () => {
             }
           />
           <Route path="/super-admin/login" element={<LoginSuper />} /> */}
-          {/* Store Admin */}
-          {/* <Route path="/store-admin/login" element={<LoginStore />} />
+            {/* Store Admin */}
+            {/* <Route path="/store-admin/login" element={<LoginStore />} />
           <Route
             path="/store-admin/dashboard"
             element={
@@ -162,59 +188,67 @@ const App = () => {
               </StoreAdmin>
             }
           /> */}
-          {/* Employee */}
-          <Route path="/" element={<LoginEmployee />} />
-          <Route
-            path="/employee/dashboard"
-            element={
-              <Employee>
-                <DashboardEmployee />
-              </Employee>
-            }
-          />
-          <Route
-            path="/employee/reports"
-            element={
-              <Employee>
-                <ReportsEmployee />
-              </Employee>
-            }
-          />
-          <Route
-            path="/employee/manage-orders"
-            element={
-              <Employee>
-                <ManageOrdersEmployee />
-              </Employee>
-            }
-          />
-          <Route
-            path="/employee/appointment-calendar"
-            element={
-              <Employee>
-                <AppointmentCalendarEmployee />
-              </Employee>
-            }
-          />
-          <Route
-            path="/employee/profile"
-            element={
-              <Employee>
-                <ProfileEmployee />
-              </Employee>
-            }
-          />
-          <Route
-            path="/employee/manage-profile"
-            element={
-              <Employee>
-                <ManageProfile />
-              </Employee>
-            }
-          />
-          <Route path="/detailed" element={<Detailed />} />
-        </Routes>
-      </div>
+            {/* Employee */}
+            <Route path="/" element={<LoginEmployee />} />
+            <Route
+              path="/employee/dashboard"
+              element={
+                <Employee>
+                  <DashboardEmployee />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/reports"
+              element={
+                <Employee>
+                  <ReportsEmployee />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/manage-orders"
+              element={
+                <Employee>
+                  <ManageOrdersEmployee />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/appointment-calendar"
+              element={
+                <Employee>
+                  <AppointmentCalendarEmployee />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/profile"
+              element={
+                <Employee>
+                  <ProfileEmployee />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/manage-profile"
+              element={
+                <Employee>
+                  <ManageProfile />
+                </Employee>
+              }
+            />
+            <Route
+              path="/detailed"
+              element={
+                <Employee>
+                  <DetailedPage />
+                </Employee>
+              }
+            />
+          </Routes>
+        </div>
+      )}
     </>
   );
 };

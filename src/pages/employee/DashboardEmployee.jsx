@@ -581,14 +581,16 @@ const DashboardEmployee = () => {
   const [data, setData] = useState([]); // Your data state goes here
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-container-contained">
-        <div className="heading-contained">
-          <h2>Main Dashboard</h2>
+    <>
+      <div className="dashboard-container">
+        <div className="dashboard-container-contained">
+          <div className="heading-contained">
+            <h2>Main Dashboard</h2>
+          </div>
+          <Paginated data={data} />
         </div>
-        <Paginated data={data} />
       </div>
-    </div>
+    </>
   );
 };
 
