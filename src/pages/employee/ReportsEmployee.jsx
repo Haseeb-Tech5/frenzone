@@ -777,6 +777,7 @@ import "../employee/broadcast.css";
 
 const ReportsEmployee = () => {
   const [isSending, setIsSending] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const handleSendClick = () => {
     setIsSending(true);
@@ -784,6 +785,28 @@ const ReportsEmployee = () => {
 
   const handleClose = () => {
     setIsSending(false);
+  };
+
+  const handleSend = () => {
+    fetch("https://api.frenzone.live/admin/broadcast", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: notificationMessage }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to send notification");
+        }
+        // Handle success
+        console.log("Notification sent successfully");
+        handleClose(); // Close the send container
+      })
+      .catch((error) => {
+        console.error("Error sending notification:", error);
+        // Handle error
+      });
   };
 
   return (
@@ -799,10 +822,14 @@ const ReportsEmployee = () => {
         </div>
         {isSending && (
           <div className="send-container">
-            <textarea placeholder="Write your message..."></textarea>
+            <textarea
+              placeholder="Write your message..."
+              value={notificationMessage}
+              onChange={(e) => setNotificationMessage(e.target.value)}
+            ></textarea>
             <div className="button-container">
               <button onClick={handleClose}>Cancel</button>
-              <button>Send</button>
+              <button onClick={handleSend}>Send</button>
             </div>
           </div>
         )}

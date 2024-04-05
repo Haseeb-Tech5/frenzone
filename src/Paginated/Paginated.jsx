@@ -9,113 +9,46 @@ import {
   TableCell,
   Paper,
   TablePagination,
-  TextField,
 } from "@mui/material";
 
 function Paginated() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
-  const [banSwitches, setBanSwitches] = useState({});
-  const [liveAccessSwitches, setLiveAccessSwitches] = useState({});
-  const [verifiedSwitches, setVerifiedSwitches] = useState({});
   const [filteredData, setFilteredData] = useState([]);
-  const [fullData, setFullData] = useState([]);
-
-  const dummyData = [
-    {
-      id: 1,
-      data: { firstName: "John", lastName: "Doe" },
-    },
-    {
-      id: 2,
-      data: { firstName: "Jane", lastName: "Smith" },
-    },
-    {
-      id: 3,
-      data: {
-        firstName: "Alice",
-        lastName: "Johnson",
-      },
-    },
-    {
-      id: 4,
-      data: { firstName: "Bob", lastName: "Brown" },
-    },
-    {
-      id: 5,
-      data: {
-        firstName: "Emily",
-        lastName: "Davis",
-      },
-    },
-    {
-      id: 6,
-      data: {
-        firstName: "Michael",
-        lastName: "Wilson",
-      },
-    },
-    {
-      id: 7,
-      data: {
-        firstName: "Emily",
-        lastName: "Davis",
-      },
-    },
-    {
-      id: 8,
-      data: {
-        firstName: "Michael",
-        lastName: "Wilson",
-      },
-    },
-    {
-      id: 9,
-      data: {
-        firstName: "Emily",
-        lastName: "Davis",
-      },
-    },
-    {
-      id: 10,
-      data: {
-        firstName: "Michael",
-        lastName: "Wilson",
-      },
-    },
-    {
-      id: 11,
-      data: {
-        firstName: "Emily",
-        lastName: "Davis",
-      },
-    },
-    {
-      id: 12,
-      data: {
-        firstName: "Michael",
-        lastName: "Wilson",
-      },
-    },
-  ];
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setFullData(dummyData);
-  }, []);
+    fetchData();
+  }, [page, rowsPerPage, searchTerm]);
 
-  useEffect(() => {
-    let filtered = fullData;
+  const fetchData = () => {
+    let url = "https://api.frenzone.live/admin/getAllUsers";
+
+    // If there's a search term, use the search API endpoint
     if (searchTerm) {
-      filtered = fullData.filter((row) =>
-        Object.values(row.data).some((value) =>
-          String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
+      url = `https://api.frenzone.live/admin/searchUsers/${rowsPerPage}/${
+        page + 1
+      }/${searchTerm}`;
     }
-    setFilteredData(filtered);
-    setPage(0);
-  }, [searchTerm, fullData]);
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const usersArray = data.users || [];
+        setFilteredData(usersArray);
+        setError(null);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setError(error);
+      });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -126,12 +59,64 @@ function Paginated() {
     setPage(0);
   };
 
-  const handleSwitchChange = (id, setter) => {
-    setter((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setPage(0);
   };
+
+  const handleBanSwitchChange = (id, newValue) => {
+    updateProperty(id, "ban", newValue);
+  };
+
+  const handleLiveAccessSwitchChange = (id, newValue) => {
+    updateProperty(id, "liveAccess", newValue);
+  };
+
+  const handleVerifiedSwitchChange = (id, newValue) => {
+    updateProperty(id, "setVerified", newValue);
+  };
+
+  const updateProperty = (id, property, newValue) => {
+    const updatedData = filteredData.map((user) => {
+      if (user._id === id) {
+        return {
+          ...user,
+          [property]: newValue,
+        };
+      }
+      return user;
+    });
+
+    setFilteredData(updatedData);
+
+    fetch(`https://api.frenzone.live/admin/${property}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userid: id,
+        [property]: newValue,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update user");
+        }
+        console.log(
+          `User with ID ${id} ${
+            newValue ? "verified" : "unverified"
+          } successfully`
+        );
+      })
+      .catch((error) => {
+        console.error("Error updating user:", error);
+      });
+  };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div>
@@ -142,10 +127,9 @@ function Paginated() {
           className="input"
           required=""
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        ></input>
+          onChange={handleSearch}
+        />
       </div>
-      {/* <div className="scroll-table"> */}
       <TableContainer component={Paper} className="scroll-table">
         <Table>
           <TableHead className="table-heading-set">
@@ -154,66 +138,65 @@ function Paginated() {
               <TableCell className="table-cell">Ban</TableCell>
               <TableCell className="table-cell">Live Access</TableCell>
               <TableCell className="table-cell">Verified</TableCell>
-              <TableCell className="table-cell1">Verified</TableCell>
+              <TableCell className="table-cell1">Details</TableCell>
             </TableRow>
           </TableHead>
           <TableBody className="table-cell-set">
-            {(rowsPerPage > 0
-              ? filteredData.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : filteredData
-            ).map((row) => (
-              <TableRow key={row.id} className="table-cell-set">
-                <TableCell className="table-cell-set">
-                  {row.data.firstName} {row.data.lastName}
-                </TableCell>
-                <TableCell>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={banSwitches[row.id] || false}
-                      onChange={() =>
-                        handleSwitchChange(row.id, setBanSwitches)
-                      }
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </TableCell>
-                <TableCell>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={liveAccessSwitches[row.id] || false}
-                      onChange={() =>
-                        handleSwitchChange(row.id, setLiveAccessSwitches)
-                      }
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </TableCell>
-                <TableCell>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={verifiedSwitches[row.id] || false}
-                      onChange={() =>
-                        handleSwitchChange(row.id, setVerifiedSwitches)
-                      }
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </TableCell>
-                <TableCell>
-                  <Link to="/detailed" style={{ textDecoration: "none" }}>
-                    <div className="btn-controller">
-                      <button>Details</button>
-                    </div>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+            {filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user) => (
+                <TableRow key={user._id} className="table-cell-set">
+                  <TableCell className="table-cell-set">
+                    {user.firstname} {user.lastname}
+                  </TableCell>
+                  <TableCell>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={user.banned || false}
+                        onChange={(e) =>
+                          handleBanSwitchChange(user._id, e.target.checked)
+                        }
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </TableCell>
+                  <TableCell>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={user.liveAccess || false}
+                        onChange={(e) =>
+                          handleLiveAccessSwitchChange(
+                            user._id,
+                            e.target.checked
+                          )
+                        }
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </TableCell>
+                  <TableCell>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={user.isVerified || false}
+                        onChange={(e) =>
+                          handleVerifiedSwitchChange(user._id, e.target.checked)
+                        }
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </TableCell>
+                  <TableCell>
+                    <Link to="/detailed" style={{ textDecoration: "none" }}>
+                      <div className="btn-controller">
+                        <button>Details</button>
+                      </div>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -226,7 +209,6 @@ function Paginated() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {/* </div> */}
     </div>
   );
 }
