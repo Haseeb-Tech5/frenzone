@@ -17,12 +17,14 @@ function Paginated() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage, searchTerm]);
 
   const fetchData = () => {
+    setLoading(true);
     let url = "https://api.frenzone.live/admin/getAllUsers";
 
     // If there's a search term, use the search API endpoint
@@ -43,10 +45,12 @@ function Paginated() {
         const usersArray = data.users || [];
         setFilteredData(usersArray);
         setError(null);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError(error);
+        setLoading(false);
       });
   };
 
@@ -65,23 +69,12 @@ function Paginated() {
   };
 
   const handleBanSwitchChange = (id, newValue) => {
-    updateProperty(id, "ban", newValue);
-  };
-
-  const handleLiveAccessSwitchChange = (id, newValue) => {
-    updateProperty(id, "liveAccess", newValue);
-  };
-
-  const handleVerifiedSwitchChange = (id, newValue) => {
-    updateProperty(id, "setVerified", newValue);
-  };
-
-  const updateProperty = (id, property, newValue) => {
+    // Optimistic UI update
     const updatedData = filteredData.map((user) => {
       if (user._id === id) {
         return {
           ...user,
-          [property]: newValue,
+          banned: newValue,
         };
       }
       return user;
@@ -89,14 +82,65 @@ function Paginated() {
 
     setFilteredData(updatedData);
 
-    fetch(`https://api.frenzone.live/admin/${property}`, {
+    // Make API call
+    fetch(`https://api.frenzone.live/admin/ban`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userid: id,
-        [property]: newValue,
+        ban: newValue,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update user");
+        }
+        console.log(
+          `User with ID ${id} ${newValue ? "banned" : "unbanned"} successfully`
+        );
+      })
+      .catch((error) => {
+        // Revert local state if API call fails
+        setFilteredData(
+          filteredData.map((user) => {
+            if (user._id === id) {
+              return {
+                ...user,
+                banned: !newValue,
+              };
+            }
+            return user;
+          })
+        );
+        console.error("Error updating user:", error);
+      });
+  };
+
+  const handleVerifiedSwitchChange = (id, newValue) => {
+    // Optimistic UI update
+    const updatedData = filteredData.map((user) => {
+      if (user._id === id) {
+        return {
+          ...user,
+          isVerified: newValue,
+        };
+      }
+      return user;
+    });
+
+    setFilteredData(updatedData);
+
+    // Make API call
+    fetch(`https://api.frenzone.live/admin/setVerified`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userid: id,
+        setVerified: newValue,
       }),
     })
       .then((response) => {
@@ -110,6 +154,69 @@ function Paginated() {
         );
       })
       .catch((error) => {
+        // Revert local state if API call fails
+        setFilteredData(
+          filteredData.map((user) => {
+            if (user._id === id) {
+              return {
+                ...user,
+                isVerified: !newValue,
+              };
+            }
+            return user;
+          })
+        );
+        console.error("Error updating user:", error);
+      });
+  };
+  const handleLiveAccessSwitchChange = (id, newValue) => {
+    // Optimistic UI update
+    const updatedData = filteredData.map((user) => {
+      if (user._id === id) {
+        return {
+          ...user,
+          liveAccess: newValue,
+        };
+      }
+      return user;
+    });
+
+    setFilteredData(updatedData);
+
+    // Make API call
+    fetch(`https://api.frenzone.live/admin/liveAccess`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userid: id,
+        liveAccess: newValue,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update user");
+        }
+        console.log(
+          `User with ID ${id} ${
+            newValue ? "granted live access" : "revoked live access"
+          } successfully`
+        );
+      })
+      .catch((error) => {
+        // Revert local state if API call fails
+        setFilteredData(
+          filteredData.map((user) => {
+            if (user._id === id) {
+              return {
+                ...user,
+                liveAccess: !newValue,
+              };
+            }
+            return user;
+          })
+        );
         console.error("Error updating user:", error);
       });
   };
@@ -130,76 +237,85 @@ function Paginated() {
           onChange={handleSearch}
         />
       </div>
-      <TableContainer component={Paper} className="scroll-table">
-        <Table>
-          <TableHead className="table-heading-set">
-            <TableRow className="table-cell">
-              <TableCell className="table-cell">Name</TableCell>
-              <TableCell className="table-cell">Ban</TableCell>
-              <TableCell className="table-cell">Live Access</TableCell>
-              <TableCell className="table-cell">Verified</TableCell>
-              <TableCell className="table-cell1">Details</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className="table-cell-set">
-            {filteredData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((user) => (
-                <TableRow key={user._id} className="table-cell-set">
-                  <TableCell className="table-cell-set">
-                    {user.firstname} {user.lastname}
-                  </TableCell>
-                  <TableCell>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={user.banned || false}
-                        onChange={(e) =>
-                          handleBanSwitchChange(user._id, e.target.checked)
-                        }
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </TableCell>
-                  <TableCell>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={user.liveAccess || false}
-                        onChange={(e) =>
-                          handleLiveAccessSwitchChange(
-                            user._id,
-                            e.target.checked
-                          )
-                        }
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </TableCell>
-                  <TableCell>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={user.isVerified || false}
-                        onChange={(e) =>
-                          handleVerifiedSwitchChange(user._id, e.target.checked)
-                        }
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </TableCell>
-                  <TableCell>
-                    <Link to="/detailed" style={{ textDecoration: "none" }}>
-                      <div className="btn-controller">
-                        <button>Details</button>
-                      </div>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {loading ? (
+        <div class="spinner-set">
+          <div className="spinner"></div>
+        </div>
+      ) : (
+        <TableContainer component={Paper} className="scroll-table">
+          <Table>
+            <TableHead className="table-heading-set">
+              <TableRow className="table-cell">
+                <TableCell className="table-cell">Name</TableCell>
+                <TableCell className="table-cell">Ban</TableCell>
+                <TableCell className="table-cell">Live Access</TableCell>
+                <TableCell className="table-cell">Verified</TableCell>
+                <TableCell className="table-cell1">Details</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className="table-cell-set">
+              {filteredData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user) => (
+                  <TableRow key={user._id} className="table-cell-set">
+                    <TableCell className="table-cell-set">
+                      {user.firstname} {user.lastname}
+                    </TableCell>
+                    <TableCell>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={user.banned || false}
+                          onChange={(e) =>
+                            handleBanSwitchChange(user._id, e.target.checked)
+                          }
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </TableCell>
+                    <TableCell>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={user.liveAccess || false}
+                          onChange={(e) =>
+                            handleLiveAccessSwitchChange(
+                              user._id,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </TableCell>
+                    <TableCell>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={user.isVerified || false}
+                          onChange={(e) =>
+                            handleVerifiedSwitchChange(
+                              user._id,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </TableCell>
+                    <TableCell>
+                      <Link to="/detailed" style={{ textDecoration: "none" }}>
+                        <div className="btn-controller">
+                          <button>Details</button>
+                        </div>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"

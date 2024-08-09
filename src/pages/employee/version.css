@@ -1,0 +1,112 @@
+.versoon-control-container {
+  width: 100%;
+  max-width: 1440px;
+  background-color: #ffe9c865;
+  height: 100vh;
+}
+.versoon-control-container-mmm {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.verson-container-heading {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  /* background-color: red; */
+}
+.verson-container-heading h2 {
+  width: 100%;
+  font-size: 45px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #ff9700;
+}
+.version-display-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.version-display {
+  width: 95%;
+  /* background-color: lime; */
+}
+.version-control-noneditable-ok {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.253);
+  border-radius: 15px;
+  padding-bottom: 30px;
+}
+.version-control-noneditable {
+  width: 100%;
+  border-radius: 15px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+.version-control-noneditable input {
+  height: 70px;
+  padding-left: 15px;
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.current-version {
+  padding-left: 20px;
+  padding-top: 15px;
+}
+.version-lime {
+  font-size: 26px;
+  color: #db9326;
+}
+.center-version {
+  /* background-color: lime; */
+  display: flex;
+  align-items: center;
+}
+.update-version-button {
+  width: 100%;
+  /* background-color: lime; */
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}
+.update-version-button button {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 50px;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  height: 55px;
+  width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #ff9700;
+  border: none;
+}
+@media screen and (max-width: 899px) {
+  .verson-container-heading {
+    margin-top: 50px;
+  }
+}
+@media screen and (max-width: 390px) {
+  .verson-container-heading h2 {
+    font-size: 30px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .version-control-noneditable input {
+    width: 100%;
+  }
+  .version-control-noneditable {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

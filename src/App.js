@@ -38,6 +38,7 @@ import ManageProfile from "./pages/employee/ManageProfile";
 import Detailed from "./pages/Detailed";
 import DetailedPage from "./DetailedPage/DetailedPage";
 import { BounceLoader } from "react-spinners";
+import VersionControl from "./pages/employee/VersionControl";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -243,6 +244,14 @@ const App = () => {
               element={
                 <Employee>
                   <DetailedPage />
+                </Employee>
+              }
+            />
+            <Route
+              path="/employee/version"
+              element={
+                <Employee>
+                  <VersionControl />
                 </Employee>
               }
             />

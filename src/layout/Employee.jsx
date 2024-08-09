@@ -8,6 +8,7 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdPerson } from "react-icons/io";
 import { FaFileInvoice } from "react-icons/fa";
 import { MdOutlineCalendarMonth } from "react-icons/md";
+import { MdOutlineEditCalendar } from "react-icons/md";
 import { BsPersonBadgeFill } from "react-icons/bs";
 import { BiMessageDetail } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -22,7 +23,7 @@ const Employee = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setActiveItem("dashboard"); // Set "dashboard" as active by default
+    setActiveItem("dashboard");
     const href = window.location.href;
     if (href && typeof href === "string") {
       const urlParts = href.split("/");
@@ -128,7 +129,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-
             <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -149,6 +149,29 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Profile
+                </span>
+              </div>
+            </Link>{" "}
+            <Link to="/employee/version" style={{ textDecoration: "none" }}>
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "version" ? "border-r-2 border-r-[#ff9700]" : ""
+                }`}
+                onClick={() => setActiveItem("version")}
+              >
+                <MdOutlineEditCalendar
+                  className={`text-[24px] ${
+                    activeItem == "version" ? "text-[#ff9700]" : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "version"
+                      ? "text-[white] font-[700]"
+                      : "text-[#A3AED0] font-[500]"
+                  }`}
+                >
+                  Version Control
                 </span>
               </div>
             </Link>
@@ -282,7 +305,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-
             <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -303,6 +325,29 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Profile
+                </span>
+              </div>
+            </Link>{" "}
+            <Link to="/employee/version" style={{ textDecoration: "none" }}>
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "version" ? "border-r-2 border-r-[#ff9700]" : ""
+                }`}
+                onClick={() => setActiveItem("version")}
+              >
+                <MdOutlineEditCalendar
+                  className={`text-[24px] ${
+                    activeItem == "version" ? "text-[#ff9700]" : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "version"
+                      ? "text-[white] font-[700] text-[17px]"
+                      : "text-[#5b5c5ff8] font-[600]"
+                  }`}
+                >
+                  Version Control
                 </span>
               </div>
             </Link>
