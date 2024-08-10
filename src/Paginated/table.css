@@ -1,0 +1,88 @@
+.scroll-table {
+  max-height: 440px;
+  overflow-y: auto;
+  background-color: transparent !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  background-image: linear-gradient(to top, #ff990065, #fdbd5e3d) !important;
+  border-radius: 18px !important;
+  padding-top: 23px !important;
+  margin-bottom: 25px !important;
+  margin-top: 15px !important;
+}
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root {
+  box-shadow: 0px 2px 20px -2px #ff99003f !important;
+}
+.css-1ex1afd-MuiTableCell-root {
+  border-bottom: none !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+.css-1ygcj2i-MuiTableCell-root {
+  border-bottom: none !important;
+}
+.css-13xy2my {
+  box-shadow: 0px 2px 20px -2px #ff99003f !important;
+}
+.css-1bigob2 {
+  border-bottom: none !important;
+}
+.css-q34dxg {
+  border-bottom: none !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+.css-15wwp11-MuiTableHead-root {
+  position: relative;
+}
+.css-15wwp11-MuiTableHead-root::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 100%;
+  height: 41px;
+  background-color: #ff9700;
+  z-index: -1;
+  border-radius: 12px;
+}
+
+.css-1wbz3t9 {
+  position: relative;
+}
+.css-1wbz3t9::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 100%;
+  height: 41px;
+  background-color: #ff9700;
+  z-index: -1;
+  border-radius: 12px;
+}
+
+.table-cell {
+  color: white !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.scroll-continue-para {
+  max-height: 460px;
+}
+.scroll-continue-para::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll-continue-para::-webkit-scrollbar-thumb {
+  background-color: #ff9700;
+  border-radius: 4px;
+  height: 25px;
+}
+
+.scroll-continue-para::-webkit-scrollbar-track {
+  background-color: #ff99004b;
+}

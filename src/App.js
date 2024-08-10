@@ -39,6 +39,8 @@ import Detailed from "./pages/Detailed";
 import DetailedPage from "./DetailedPage/DetailedPage";
 import { BounceLoader } from "react-spinners";
 import VersionControl from "./pages/employee/VersionControl";
+import store from "./Redux/store.js";
+import { Provider } from "react-redux";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -68,13 +70,14 @@ const App = () => {
         </div>
       ) : (
         <div>
-          <Routes>
-            {/* <Route path="/" element={<Navigate to="/login" />} /> */}
-            {/* <Route path="/login" element={<Login />} /> */}
-            {/* <Route path="/webchat" element={<WebChat />} /> */}
+          <Provider store={store}>
+            <Routes>
+              {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+              {/* <Route path="/login" element={<Login />} /> */}
+              {/* <Route path="/webchat" element={<WebChat />} /> */}
 
-            {/* Super Admin */}
-            {/* <Route
+              {/* Super Admin */}
+              {/* <Route
             path="/super-admin/dashboard"
             element={
               <SuperAdmin>
@@ -139,8 +142,8 @@ const App = () => {
             }
           />
           <Route path="/super-admin/login" element={<LoginSuper />} /> */}
-            {/* Store Admin */}
-            {/* <Route path="/store-admin/login" element={<LoginStore />} />
+              {/* Store Admin */}
+              {/* <Route path="/store-admin/login" element={<LoginStore />} />
           <Route
             path="/store-admin/dashboard"
             element={
@@ -189,73 +192,74 @@ const App = () => {
               </StoreAdmin>
             }
           /> */}
-            {/* Employee */}
-            <Route path="/" element={<LoginEmployee />} />
-            <Route
-              path="/employee/dashboard"
-              element={
-                <Employee>
-                  <DashboardEmployee />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/reports"
-              element={
-                <Employee>
-                  <ReportsEmployee />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/manage-orders"
-              element={
-                <Employee>
-                  <ManageOrdersEmployee />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/appointment-calendar"
-              element={
-                <Employee>
-                  <AppointmentCalendarEmployee />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/profile"
-              element={
-                <Employee>
-                  <ProfileEmployee />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/manage-profile"
-              element={
-                <Employee>
-                  <ManageProfile />
-                </Employee>
-              }
-            />
-            <Route
-              path="/detailed"
-              element={
-                <Employee>
-                  <DetailedPage />
-                </Employee>
-              }
-            />
-            <Route
-              path="/employee/version"
-              element={
-                <Employee>
-                  <VersionControl />
-                </Employee>
-              }
-            />
-          </Routes>
+              {/* Employee */}
+              <Route path="/" element={<LoginEmployee />} />
+              <Route
+                path="/employee/dashboard"
+                element={
+                  <Employee>
+                    <DashboardEmployee />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/reports"
+                element={
+                  <Employee>
+                    <ReportsEmployee />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/manage-orders"
+                element={
+                  <Employee>
+                    <ManageOrdersEmployee />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/appointment-calendar"
+                element={
+                  <Employee>
+                    <AppointmentCalendarEmployee />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/profile"
+                element={
+                  <Employee>
+                    <ProfileEmployee />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/manage-profile"
+                element={
+                  <Employee>
+                    <ManageProfile />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/detailed"
+                element={
+                  <Employee>
+                    <DetailedPage />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/version"
+                element={
+                  <Employee>
+                    <VersionControl />
+                  </Employee>
+                }
+              />
+            </Routes>
+          </Provider>
         </div>
       )}
     </>

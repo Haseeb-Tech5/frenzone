@@ -76,7 +76,7 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            <Link
+            {/* <Link
               to="/employee/manage-orders"
               style={{ textDecoration: "none" }}
             >
@@ -105,7 +105,7 @@ const Employee = ({ children }) => {
                   Profit
                 </span>
               </div>
-            </Link>
+            </Link> */}
             <Link to="/employee/reports" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -129,7 +129,7 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            <Link to="/employee/profile" style={{ textDecoration: "none" }}>
+            {/* <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
                   activeItem == "profile" ? "border-r-2 border-r-[#ff9700]" : ""
@@ -151,7 +151,7 @@ const Employee = ({ children }) => {
                   Profile
                 </span>
               </div>
-            </Link>{" "}
+            </Link>{" "} */}
             <Link to="/employee/version" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -252,7 +252,7 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            <Link
+            {/* <Link
               to="/employee/manage-orders"
               style={{ textDecoration: "none" }}
             >
@@ -281,7 +281,7 @@ const Employee = ({ children }) => {
                   Profit
                 </span>
               </div>
-            </Link>
+            </Link> */}
             <Link to="/employee/reports" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -305,7 +305,7 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            <Link to="/employee/profile" style={{ textDecoration: "none" }}>
+            {/* <Link to="/employee/profile" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
                   activeItem == "profile" ? "border-r-2 border-r-[#ff9700]" : ""
@@ -327,7 +327,7 @@ const Employee = ({ children }) => {
                   Profile
                 </span>
               </div>
-            </Link>{" "}
+            </Link>{" "} */}
             <Link to="/employee/version" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
