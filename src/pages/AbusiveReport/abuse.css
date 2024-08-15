@@ -1,0 +1,20 @@
+.remove-reported0users {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+}
+.remove-reported0users button {
+  width: 150px;
+  height: 40px;
+  border-radius: 15px;
+  background-color: black;
+  color: #ff9700;
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+.click-oral {
+  justify-content: end;
+}

@@ -113,7 +113,7 @@
   width: fit-content;
   padding-left: 12px;
   padding-right: 12px;
-  padding-top: 6px;
+  /* padding-top: 6px; */
   /* padding-bottom: 10px; */
   height: 50px;
   background-color: #8b89891e;
@@ -231,7 +231,7 @@
   display: flex;
   align-items: center;
   font-family: "Poppins", sans-serif;
-  margin-top: 8px;
+  /* margin-top: 8px; */
   background-color: #ff9700;
   width: fit-content;
   padding-left: 15px;
@@ -241,6 +241,12 @@
   padding-bottom: 10px;
   border-radius: 10px;
   color: white;
+}
+.red-cololr-bloack h1 {
+  background-color: red;
+}
+.green-reportes-data h1 {
+  background-color: rgb(12, 173, 12);
 }
 .block-set-contained {
   width: 35%;

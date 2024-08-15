@@ -3,19 +3,15 @@ import "./detailed.css";
 import Img from "../../src/Assets-admin/pic.svg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import AbusiveReport from "./AbusiveReport/AbusiveReport";
+import BalanceOverview from "./BalanceOverview/BalanceOverview";
 
 const Detailed = () => {
   const selectedUser = useSelector((state) => state.user.selectedUser);
   const [selectedOption, setSelectedOption] = useState("Identity");
-
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
-
-  if (!selectedUser) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <div className="detailed-container">
@@ -53,11 +49,11 @@ const Detailed = () => {
                 </li>
                 <li
                   className={
-                    selectedOption === "Withdrawal" ? "active-option" : ""
+                    selectedOption === "BalanceOverview" ? "active-option" : ""
                   }
-                  onClick={() => handleOptionClick("Withdrawal")}
+                  onClick={() => handleOptionClick("BalanceOverview")}
                 >
-                  Withdrawal
+                  BalanceOverview
                 </li>
                 <li
                   className={
@@ -79,7 +75,7 @@ const Detailed = () => {
                       <h1>Username</h1>
                       <h1>{selectedUser?.username || "N/A"}</h1>
                     </div>
-                  </div>
+                  </div>{" "}
                   <div className="card red">
                     <div className="data-set-max-flex">
                       <h1>Website URL</h1>
@@ -96,6 +92,18 @@ const Detailed = () => {
                     <div className="data-set-max-flex">
                       <h1>Banned</h1>
                       <h1>{selectedUser?.banned ? "Yes" : "No"}</h1>
+                    </div>
+                  </div>{" "}
+                  <div className="card green">
+                    <div className="data-set-max-flex">
+                      <h1>isAdminBlocked</h1>
+                      <h1>{selectedUser?.isAdminBlocked ? "Yes" : "No"}</h1>
+                    </div>
+                  </div>
+                  <div className="card blue">
+                    <div className="data-set-max-flex">
+                      <h1>LoginFrom</h1>
+                      <h1>{selectedUser?.loginFrom || "N/A"}</h1>
                     </div>
                   </div>
                   <div className="card red">
@@ -116,7 +124,6 @@ const Detailed = () => {
                       <h1>{selectedUser?.facebookUrl || "N/A"}</h1>
                     </div>
                   </div>
-
                   <div className="card blue">
                     <div className="data-set-max-flex">
                       <h1>Instagram URL</h1>
@@ -141,7 +148,6 @@ const Detailed = () => {
                       <h1>{selectedUser?.isVerified ? "Yes" : "No"}</h1>
                     </div>
                   </div>
-
                   <div className="card red">
                     <div className="data-set-max-flex">
                       <h1>LinkedIn URL</h1>
@@ -175,64 +181,8 @@ const Detailed = () => {
             </div>
           )}
 
-          {selectedOption === "Withdrawal" && (
-            <div className="container2-sett">
-              <div className="container-set-max-flex">
-                <div className="cards">
-                  <div className="card red">
-                    <div className="data-set-max-flex">
-                      <h1>Total Coins</h1>
-                      <h1 style={{ color: "lime" }}>100</h1>
-                    </div>
-                  </div>
-                  <div className="card blue">
-                    <div className="data-set-max-flex">
-                      <h1>Withdraw</h1>
-                      <h1 style={{ color: "red" }}>50</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {selectedOption === "Abusive Report" && (
-            <div className="container3-sett">
-              <div className="container-set-max-flex">
-                <div className="cards">
-                  <div className="card red">
-                    <div className="data-set-max-flex">
-                      <h1>User</h1>
-                      <h1>Haseeb</h1>
-                    </div>
-                  </div>
-                  <div className="card blue">
-                    <div className="data-set-max-flex">
-                      <h1>Reported by</h1>
-                      <h1>Administrator</h1>
-                    </div>
-                  </div>
-                  <div className="card green">
-                    <div className="data-set-max-flex">
-                      <h1>Joined</h1>
-                      <h1>2 months ago</h1>
-                    </div>
-                  </div>
-                  <div className="card blue">
-                    <div className="data-set-max-flex">
-                      <h1>Reported</h1>
-                      <h1>2 months ago</h1>
-                    </div>
-                  </div>
-                  <div className="card green">
-                    <div className="data-set-max-flex">
-                      <h1>Message</h1>
-                      <h1>User sends spams</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          {selectedOption === "BalanceOverview" && <BalanceOverview />}
+          {selectedOption === "Abusive Report" && <AbusiveReport />}
         </div>
       </div>
     </>

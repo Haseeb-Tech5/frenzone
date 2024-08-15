@@ -282,7 +282,7 @@ function Paginated() {
         </TableContainer>
       )}
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100, 150, 200, 250]}
         component="div"
         count={filteredData.length}
         rowsPerPage={rowsPerPage}
