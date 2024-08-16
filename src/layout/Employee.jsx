@@ -18,6 +18,7 @@ import Icon2 from "../Icon/Icon2";
 import "../pages/employee/employee.css";
 import { useDispatch } from "react-redux";
 import { clearAdminId } from "../Redux/userSlice";
+import { BiMoneyWithdraw } from "react-icons/bi";
 
 const Employee = ({ children }) => {
   const dispatch = useDispatch();
@@ -180,6 +181,33 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Version Control
+                </span>
+              </div>
+            </Link>{" "}
+            <Link to="/employee/withdrawals" style={{ textDecoration: "none" }}>
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "withdrawals"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("withdrawals")}
+              >
+                <BiMoneyWithdraw
+                  className={`text-[24px] ${
+                    activeItem == "withdrawals"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "withdrawals"
+                      ? "text-[white] font-[700]"
+                      : "text-[#A3AED0] font-[500]"
+                  }`}
+                >
+                  Withdrawals
                 </span>
               </div>
             </Link>
@@ -356,6 +384,33 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Version Control
+                </span>
+              </div>
+            </Link>{" "}
+            <Link to="/employee/withdrawals" style={{ textDecoration: "none" }}>
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "withdrawals"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("withdrawals")}
+              >
+                <BiMoneyWithdraw
+                  className={`text-[24px] ${
+                    activeItem == "withdrawals"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "withdrawals"
+                      ? "text-[white] font-[700] text-[17px]"
+                      : "text-[#5b5c5ff8] font-[600]"
+                  }`}
+                >
+                  Withdrawals
                 </span>
               </div>
             </Link>

@@ -1,0 +1,27 @@
+.check-status-button button {
+  width: fit-content;
+  height: 45px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  background-color: #ff9700;
+  color: black;
+  border: none;
+  outline: none;
+}
+.check-status-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.check-status-button button:hover {
+  background-color: #ff9700 !important;
+  color: black !important;
+}
+.slecet-staus-oracle {
+  font-size: 28px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  color: black;
+}

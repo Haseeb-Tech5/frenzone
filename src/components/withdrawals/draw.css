@@ -1,0 +1,31 @@
+.clip-conut {
+  background-color: #0a0a0a6c;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px;
+  border-radius: 10px;
+  color: white;
+}
+.red-red-set {
+  background-color: red;
+  cursor: pointer;
+}
+.overtime {
+  background-color: transparent;
+  color: black;
+}
+.grey-color {
+  background-color: rgba(0, 0, 0, 0.699);
+  width: 115px;
+  height: fit-content;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+}
+.oper-cer {
+  max-height: 500px;
+}

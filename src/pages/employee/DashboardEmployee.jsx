@@ -578,7 +578,7 @@ import ResponsivePaginatedTable from "../../../src/Paginated/Paginated";
 import Paginated from "../../../src/Paginated/Paginated";
 
 const DashboardEmployee = () => {
-  const [data, setData] = useState([]); // Your data state goes here
+  const [data, setData] = useState([]); 
 
   return (
     <>

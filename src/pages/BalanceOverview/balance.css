@@ -45,5 +45,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 15px;
+}
+.error-message {
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.801);
 }

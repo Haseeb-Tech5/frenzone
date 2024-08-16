@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const BalanceOverview = () => {
   const [wallet, setWallet] = useState(null);
+  const [withdrawal, setWithdrawal] = useState(null);
   const [error, setError] = useState(null);
 
   const selectedUser = useSelector((state) => state.user.selectedUser);
@@ -28,8 +29,28 @@ const BalanceOverview = () => {
       }
     };
 
+    const fetchWithdrawalData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.frenzone.live/wallet/getWithdrawById/${selectedUser._id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch withdrawal data");
+        }
+        const data = await response.json();
+        if (data && data.length > 0) {
+          setWithdrawal(data[0]);
+        } else {
+          setError("No withdrawal data found for this user");
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
     if (selectedUser) {
       fetchWalletData();
+      fetchWithdrawalData();
     }
   }, [selectedUser]);
 
@@ -62,14 +83,45 @@ const BalanceOverview = () => {
                   </div>
                 </div>
               ) : (
-                <div className="error-message">{error}</div>
+                <div className="error-message">No Wallet for this user</div>
               )}
             </div>
           </div>
-          <div className="card blue">
-            <div className="data-set-max-flex">
-              <h1>Withdraw</h1>
-              <h1 style={{ color: "red" }}>50</h1>
+          <div className="card red blackket-super">
+            <div className="data-set-max-flex center-aligned-set">
+              <div className="amount-gained">Withdraw Status</div>
+              {withdrawal ? (
+                <div className="current-amiount-currently-full">
+                  <div className="current-amiount-currently">
+                    <div className="current-amount cent">Withdraw Amount</div>
+                    <div className="current-amount-gained cent">
+                      {withdrawal.amount}
+                    </div>
+                  </div>
+                  <div className="current-amiount-currently">
+                    <div className="current-amount cent">Status</div>
+                    <div className="current-amount-gained cent">
+                      {withdrawal.status}
+                    </div>
+                  </div>
+                  <div className="current-amiount-currently">
+                    <div className="current-amount cent">Withdrawal Date</div>
+                    <div className="current-amount-gained cent">
+                      {new Date(withdrawal.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className="current-amiount-currently">
+                    <div className="current-amount cent">Withdrawal Time</div>
+                    <div className="current-amount-gained cent">
+                      {new Date(withdrawal.createdAt).toLocaleTimeString()}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="error-message">
+                  No withdrawal data found for this user
+                </div>
+              )}
             </div>
           </div>
         </div>

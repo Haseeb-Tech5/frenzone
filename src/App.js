@@ -41,6 +41,8 @@ import { BounceLoader } from "react-spinners";
 import VersionControl from "./pages/employee/VersionControl";
 import store from "./Redux/store.js";
 import { Provider } from "react-redux";
+import DrwalTable from "./components/withdrawals/DrwalTable.jsx";
+import Drwal from "./components/withdrawals/Drwal.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -75,7 +77,6 @@ const App = () => {
               {/* <Route path="/" element={<Navigate to="/login" />} /> */}
               {/* <Route path="/login" element={<Login />} /> */}
               {/* <Route path="/webchat" element={<WebChat />} /> */}
-
               {/* Super Admin */}
               {/* <Route
             path="/super-admin/dashboard"
@@ -255,6 +256,14 @@ const App = () => {
                 element={
                   <Employee>
                     <VersionControl />
+                  </Employee>
+                }
+              />{" "}
+              <Route
+                path="/employee/withdrawals"
+                element={
+                  <Employee>
+                    <Drwal />
                   </Employee>
                 }
               />
