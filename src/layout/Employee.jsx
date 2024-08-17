@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-// @mui
+import { Link, useLocation } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-// react icons
-import { MdHome } from "react-icons/md";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdPerson } from "react-icons/io";
-import { FaFileInvoice } from "react-icons/fa";
-import { MdOutlineCalendarMonth } from "react-icons/md";
 import { MdOutlineEditCalendar } from "react-icons/md";
-import { BsPersonBadgeFill } from "react-icons/bs";
-import { BiMessageDetail } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
-import WebChatModal from "../components/WebChatModal";
 import Icon1 from "../Icon/Icon1";
 import Icon2 from "../Icon/Icon2";
 import "../pages/employee/employee.css";
@@ -24,21 +16,17 @@ const Employee = ({ children }) => {
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    setActiveItem("dashboard");
-    const href = window.location.href;
-    if (href && typeof href === "string") {
-      const urlParts = href.split("/");
-      if (urlParts.length >= 5) {
-        const activePage = urlParts[4];
-        if (activePage && activePage.includes("-")) {
-          setActiveItem(activePage.replace(/-/g, " "));
-        }
-      }
+    const pathname = location.pathname.split("/").pop();
+    if (pathname === "detailed") {
+      setActiveItem("dashboard");
+    } else {
+      setActiveItem(pathname);
     }
-  }, []);
+  }, [location]);
+
   const handleLogout = () => {
     localStorage.removeItem("adminId");
     sessionStorage.removeItem("adminId");
@@ -85,36 +73,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            {/* <Link
-              to="/employee/manage-orders"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage orders"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage orders")}
-              >
-                <MdHome
-                  className={`text-[24px] ${
-                    activeItem == "manage orders"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage orders"
-                      ? "text-[white] font-[700]"
-                      : "text-[#A3AED0] font-[500]"
-                  }`}
-                >
-                  Profit
-                </span>
-              </div>
-            </Link> */}
             <Link to="/employee/reports" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -138,29 +96,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            {/* <Link to="/employee/profile" style={{ textDecoration: "none" }}>
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "profile" ? "border-r-2 border-r-[#ff9700]" : ""
-                }`}
-                onClick={() => setActiveItem("profile")}
-              >
-                <BsPersonBadgeFill
-                  className={`text-[24px] ${
-                    activeItem == "profile" ? "text-[#ff9700]" : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "profile"
-                      ? "text-[white] font-[700]"
-                      : "text-[#A3AED0] font-[500]"
-                  }`}
-                >
-                  Profile
-                </span>
-              </div>
-            </Link>{" "} */}
             <Link to="/employee/version" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -212,16 +147,6 @@ const Employee = ({ children }) => {
               </div>
             </Link>
           </div>
-          {/* <div className="text-center mt-16 flex justify-center -ml-8">
-            <div
-              className="rounded-full bg-[#ff9700] p-4 w-16 h-16 cursor-pointer"
-              onClick={() => setOpen(!open)}
-            >
-              <BiMessageDetail className="text-[32px]" />
-            </div>
-            <WebChatModal setOpenModal={setOpen} modalOpen={open} />
-          </div> */}
-          {/* <Link to="/" style={{ textDecoration: "none" }}> */}
           <div className="text-center mt-6 flex justify-center">
             <button className="Btn" onClick={handleLogout}>
               <div className="sign">
@@ -232,15 +157,9 @@ const Employee = ({ children }) => {
               <div class="text">Log out</div>
             </button>
           </div>
-          {/* </Link> */}
         </Grid>
       </aside>
       <header className="flex z-[99999] md:hidden fixed bg-white shadow-md flex items-center w-[100vw] py-3 px-4 justify-between">
-        {/* <img
-          src={require("../assets/WhatsApp_Image_2023-12-01_at_3.58 1.png")}
-          width="120px"
-          alt="logo"
-        /> */}
         <Icon2 />
         <GiHamburgerMenu
           className="text-[25px]"
@@ -288,36 +207,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            {/* <Link
-              to="/employee/manage-orders"
-              style={{ textDecoration: "none" }}
-            >
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "manage orders"
-                    ? "border-r-2 border-r-[#ff9700]"
-                    : ""
-                }`}
-                onClick={() => setActiveItem("manage orders")}
-              >
-                <MdHome
-                  className={`text-[24px] ${
-                    activeItem == "manage orders"
-                      ? "text-[#ff9700]"
-                      : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "manage orders"
-                      ? "text-[white] font-[700]"
-                      : "text-[#5b5c5ff8] font-[600]"
-                  }`}
-                >
-                  Profit
-                </span>
-              </div>
-            </Link> */}
             <Link to="/employee/reports" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -341,29 +230,6 @@ const Employee = ({ children }) => {
                 </span>
               </div>
             </Link>
-            {/* <Link to="/employee/profile" style={{ textDecoration: "none" }}>
-              <div
-                className={`flex items-center w-[100%] my-8 ${
-                  activeItem == "profile" ? "border-r-2 border-r-[#ff9700]" : ""
-                }`}
-                onClick={() => setActiveItem("profile")}
-              >
-                <BsPersonBadgeFill
-                  className={`text-[24px] ${
-                    activeItem == "profile" ? "text-[#ff9700]" : "text-[white]"
-                  }`}
-                />
-                <span
-                  className={`text-[16px] ml-3 ${
-                    activeItem == "profile"
-                      ? "text-[white] font-[700] text-[17px]"
-                      : "text-[#5b5c5ff8] font-[600]"
-                  }`}
-                >
-                  Profile
-                </span>
-              </div>
-            </Link>{" "} */}
             <Link to="/employee/version" style={{ textDecoration: "none" }}>
               <div
                 className={`flex items-center w-[100%] my-8 ${
@@ -415,18 +281,16 @@ const Employee = ({ children }) => {
               </div>
             </Link>
           </div>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <div className="text-center mt-6 flex justify-center">
-              <button className="Btn" onClick={handleLogout}>
-                <div className="sign">
-                  <svg viewBox="0 0 512 512">
-                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                  </svg>
-                </div>
-                <div class="text">Log out</div>
-              </button>
-            </div>
-          </Link>
+          <div className="text-center mt-6 flex justify-center">
+            <button className="Btn" onClick={handleLogout}>
+              <div className="sign">
+                <svg viewBox="0 0 512 512">
+                  <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                </svg>
+              </div>
+              <div class="text">Log out</div>
+            </button>
+          </div>
         </Grid>
       </nav>
       <div className="w-[100%] mt-8 md:mt-0 ">{children}</div>

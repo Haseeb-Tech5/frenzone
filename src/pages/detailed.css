@@ -232,7 +232,8 @@
   align-items: center;
   font-family: "Poppins", sans-serif;
   /* margin-top: 8px; */
-  background-color: #ff9700;
+  /* background-color: #ff9700; */
+  background-color: rgba(17, 17, 17, 0.678);
   width: fit-content;
   padding-left: 15px;
   padding-right: 15px;

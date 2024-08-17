@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import "./status.css";
+
 const StatusOverview = ({ status, withdrawalId, user }) => {
   const [currentStatus, setCurrentStatus] = useState(status);
   const [showModal, setShowModal] = useState(false);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
+  const [showFinalModal, setShowFinalModal] = useState(false);
+  const [showRejectedModal, setShowRejectedModal] = useState(false);
   const [modalOptions, setModalOptions] = useState([]);
   const [withdrawalData, setWithdrawalData] = useState(null);
+
   useEffect(() => {
     const fetchWithdrawalData = async () => {
       try {
@@ -61,24 +65,21 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
   const handleStatusClick = () => {
     if (currentStatus === "Verified") {
       setModalOptions(["Processing"]);
+      setShowModal(true);
     } else if (currentStatus === "Unverified") {
       setModalOptions(["Rejected", "Processing"]);
-    } else {
-      setModalOptions([]);
+      setShowModal(true);
+    } else if (currentStatus === "Processing") {
+      setShowCompletedModal(true);
     }
-    setShowModal(true);
   };
 
   const handleOptionClick = async (option) => {
-    if (option === "Processing") {
-      setShowCompletedModal(true);
-      return;
-    }
-
     const requestBody = {
       withdrawId: withdrawalId,
       status: option,
     };
+
     try {
       const response = await fetch(
         "https://api.frenzone.live/wallet/setWithdrawStatus",
@@ -92,10 +93,22 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
       );
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to update status:", errorData);
+        if (response.status === 502) {
+          alert("Server error: Please try again later.");
+        }
         throw new Error("Failed to update status");
       }
+
       setCurrentStatus(option);
       setShowModal(false);
+
+      if (option === "Rejected") {
+        setShowRejectedModal(true); // Open "Rejected" modal
+      } else if (option === "Completed") {
+        setShowFinalModal(true); // Open "Process Completed" modal
+      }
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -119,11 +132,17 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
       );
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to update status:", errorData);
+        if (response.status === 502) {
+          alert("Server error: Please try again later.");
+        }
         throw new Error("Failed to update status");
       }
+
       setCurrentStatus("Completed");
       setShowCompletedModal(false);
-      setShowModal(false);
+      setShowFinalModal(true);
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -137,7 +156,7 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
       <Modal centered show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            <div className="slecet-staus-oracle"> Select Status</div>
+            <div className="slecet-staus-oracle">Select Status</div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -150,6 +169,7 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
           </div>
         </Modal.Body>
       </Modal>
+
       <Modal
         centered
         show={showCompletedModal}
@@ -163,6 +183,47 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
         <Modal.Body>
           <div className="check-status-button">
             <Button onClick={handleCompletedClick}>Completed</Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        centered
+        show={showRejectedModal}
+        onHide={() => setShowRejectedModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div className="slecet-staus-oracle">Process Rejected</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="process-complete-y-as">
+            Your process has been rejected.
+          </div>
+          <div className="check-status-button">
+            <Button onClick={() => setShowRejectedModal(false)}>Close</Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        centered
+        show={showFinalModal}
+        onHide={() => setShowFinalModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {" "}
+            <div className="slecet-staus-oracle">Process Completed</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="process-complete-y-as">
+            Your process has been completed.
+          </div>
+          <div className="check-status-button">
+            <Button onClick={() => setShowFinalModal(false)}>Close</Button>
           </div>
         </Modal.Body>
       </Modal>

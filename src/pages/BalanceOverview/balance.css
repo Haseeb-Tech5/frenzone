@@ -23,7 +23,7 @@
   align-items: center;
 }
 .cent {
-  background-color: blue;
+  background-color: rgba(17, 17, 17, 0.678);
   width: fit-content;
   height: fit-content;
   padding-top: 10px;
