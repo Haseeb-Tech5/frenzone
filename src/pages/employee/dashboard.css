@@ -14,11 +14,11 @@
   margin-bottom: 10px;
 }
 .heading-contained h2 {
-  font-weight: 500;
-  font-size: 50px;
+  font-weight: 600;
+  font-size: 45px;
   line-height: 50px;
   font-family: "Poppins", sans-serif;
-  color: black;
+  color: #ff9700;
 }
 .dashboard-container-contained {
   width: 95%;

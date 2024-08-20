@@ -11,13 +11,13 @@ import "../pages/employee/employee.css";
 import { useDispatch } from "react-redux";
 import { clearAdminId } from "../Redux/userSlice";
 import { BiMoneyWithdraw } from "react-icons/bi";
-
+import { ImBlocked } from "react-icons/im";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 const Employee = ({ children }) => {
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-
   useEffect(() => {
     const pathname = location.pathname.split("/").pop();
     if (pathname === "detailed") {
@@ -143,6 +143,66 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Withdrawals
+                </span>
+              </div>
+            </Link>{" "}
+            <Link
+              to="/employee/adultcontent"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "adultcontent"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("adultcontent")}
+              >
+                <ImBlocked
+                  className={`text-[24px] ${
+                    activeItem == "adultcontent"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "adultcontent"
+                      ? "text-[white] font-[700]"
+                      : "text-[#A3AED0] font-[500]"
+                  }`}
+                >
+                  Adult content
+                </span>
+              </div>
+            </Link>{" "}
+            <Link
+              to="/employee/companyprofit"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "companyprofit"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("companyprofit")}
+              >
+                <FaHandHoldingDollar
+                  className={`text-[24px] ${
+                    activeItem == "companyprofit"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "companyprofit"
+                      ? "text-[white] font-[700]"
+                      : "text-[#A3AED0] font-[500]"
+                  }`}
+                >
+                  Company Profit
                 </span>
               </div>
             </Link>
@@ -277,6 +337,66 @@ const Employee = ({ children }) => {
                   }`}
                 >
                   Withdrawals
+                </span>
+              </div>
+            </Link>{" "}
+            <Link
+              to="/employee/adultcontent"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "adultcontent"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("adultcontent")}
+              >
+                <ImBlocked
+                  className={`text-[24px] ${
+                    activeItem == "adultcontent"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "adultcontent"
+                      ? "text-[white] font-[700] text-[17px]"
+                      : "text-[#5b5c5ff8] font-[600]"
+                  }`}
+                >
+                  Adult content
+                </span>
+              </div>
+            </Link>{" "}
+            <Link
+              to="/employee/companyprofit"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                className={`flex items-center w-[100%] my-8 ${
+                  activeItem == "companyprofit"
+                    ? "border-r-2 border-r-[#ff9700]"
+                    : ""
+                }`}
+                onClick={() => setActiveItem("companyprofit")}
+              >
+                <FaHandHoldingDollar
+                  className={`text-[24px] ${
+                    activeItem == "companyprofit"
+                      ? "text-[#ff9700]"
+                      : "text-[white]"
+                  }`}
+                />
+                <span
+                  className={`text-[16px] ml-3 ${
+                    activeItem == "companyprofit"
+                      ? "text-[white] font-[700] text-[17px]"
+                      : "text-[#5b5c5ff8] font-[600]"
+                  }`}
+                >
+                  Company Profit
                 </span>
               </div>
             </Link>

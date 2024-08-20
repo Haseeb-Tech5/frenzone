@@ -14,6 +14,8 @@ import VersionControl from "./pages/employee/VersionControl";
 import store from "./Redux/store.js";
 import { Provider } from "react-redux";
 import Drwal from "./components/withdrawals/Drwal.jsx";
+import AdultContent from "./components/AdultContent/AdultContent.jsx";
+import CompanyProfit from "./components/CompanyProfit/CompanyProfit.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -115,6 +117,22 @@ const App = () => {
                 element={
                   <Employee>
                     <Drwal />
+                  </Employee>
+                }
+              />{" "}
+              <Route
+                path="/employee/adultcontent"
+                element={
+                  <Employee>
+                    <AdultContent />
+                  </Employee>
+                }
+              />{" "}
+              <Route
+                path="/employee/companyprofit"
+                element={
+                  <Employee>
+                    <CompanyProfit />
                   </Employee>
                 }
               />
