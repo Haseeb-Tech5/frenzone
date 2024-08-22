@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AbusiveReport from "./AbusiveReport/AbusiveReport";
 import BalanceOverview from "./BalanceOverview/BalanceOverview";
+import EndStream from "./EndStream/EndStream";
 
 const Detailed = () => {
   const selectedUser = useSelector((state) => state.user.selectedUser);
+
   const [selectedOption, setSelectedOption] = useState("Identity");
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -27,6 +29,11 @@ const Detailed = () => {
                 src={selectedUser?.profilePicUrl || Img}
                 alt="User Profile"
               />
+              {selectedUser?.is_online == "1" ? (
+                <div className="green-dot-grren"></div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="user-name-set">
               <div className="user-bk-set">
@@ -62,6 +69,14 @@ const Detailed = () => {
                   onClick={() => handleOptionClick("Abusive Report")}
                 >
                   Abusive Report
+                </li>{" "}
+                <li
+                  className={
+                    selectedOption === "End Live" ? "active-option" : ""
+                  }
+                  onClick={() => handleOptionClick("End Live")}
+                >
+                  End Live
                 </li>
               </ul>
             </div>
@@ -91,13 +106,21 @@ const Detailed = () => {
                   <div className="card green">
                     <div className="data-set-max-flex">
                       <h1>Banned</h1>
-                      <h1>{selectedUser?.banned ? "Yes" : "No"}</h1>
+                      <h1>{selectedUser?.banned ? "true" : "false"}</h1>
+                    </div>
+                  </div>{" "}
+                  <div className="card green">
+                    <div className="data-set-max-flex">
+                      <h1>Is Online</h1>
+                      <h1>
+                        {selectedUser?.is_online == "1" ? "true" : "false"}
+                      </h1>
                     </div>
                   </div>{" "}
                   <div className="card green">
                     <div className="data-set-max-flex">
                       <h1>isAdminBlocked</h1>
-                      <h1>{selectedUser?.isAdminBlocked ? "Yes" : "No"}</h1>
+                      <h1>{selectedUser?.isAdminBlocked ? "true" : "false"}</h1>
                     </div>
                   </div>
                   <div className="card blue">
@@ -133,25 +156,27 @@ const Detailed = () => {
                   <div className="card green">
                     <div className="data-set-max-flex">
                       <h1>Is Live</h1>
-                      <h1>{selectedUser?.islive ? "Yes" : "No"}</h1>
+                      <h1>{selectedUser?.isLive ? "true" : "false"}</h1>
                     </div>
                   </div>
                   <div className="card red">
                     <div className="data-set-max-flex">
                       <h1>Is on Call</h1>
-                      <h1>{selectedUser?.isonCall ? "Yes" : "No"}</h1>
+                      <h1>{selectedUser?.isOnCall ? "true" : "false"}</h1>
                     </div>
                   </div>
                   <div className="card blue">
                     <div className="data-set-max-flex">
                       <h1>Is Verified</h1>
-                      <h1>{selectedUser?.isVerified ? "Yes" : "No"}</h1>
+                      <h1>{selectedUser?.isVerified ? "true" : "false"}</h1>
                     </div>
                   </div>{" "}
                   <div className="card blue">
                     <div className="data-set-max-flex">
                       <h1>Payment Verified</h1>
-                      <h1>{selectedUser?.paymentVerified ? "Yes" : "No"}</h1>
+                      <h1>
+                        {selectedUser?.paymentVerified ? "true" : "false"}
+                      </h1>
                     </div>
                   </div>
                   <div className="card red">
@@ -163,7 +188,7 @@ const Detailed = () => {
                   <div className="card blue">
                     <div className="data-set-max-flex">
                       <h1>Live Access</h1>
-                      <h1>{selectedUser?.liveaccess || "N/A"}</h1>
+                      <h1>{selectedUser?.liveAccess ? "true" : "false"}</h1>
                     </div>
                   </div>
                   <div className="card green">
@@ -189,6 +214,7 @@ const Detailed = () => {
 
           {selectedOption === "BalanceOverview" && <BalanceOverview />}
           {selectedOption === "Abusive Report" && <AbusiveReport />}
+          {selectedOption === "End Live" && <EndStream />}
         </div>
       </div>
     </>
