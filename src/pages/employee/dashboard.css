@@ -170,11 +170,8 @@ input:hover {
 }
 
 @media only screen and (max-width: 700px) {
-  .scroll-table {
-    overflow: scroll !important;
-    /* max-height: 400px !important; */
-    width: 100% !important;
-    max-width: 1800px !important;
+  .scroll-continue-para {
+    max-height: 465px !important;
   }
   .btn-controller {
     width: 100px !important;
@@ -189,5 +186,14 @@ input:hover {
 @media only screen and (max-width: 400px) {
   .input-set-contained input {
     width: 80%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .heading-contained h2 {
+    font-size: 30px;
+  }
+  .heading-contained {
+    margin-top: 70px;
+    margin-bottom: 0;
   }
 }

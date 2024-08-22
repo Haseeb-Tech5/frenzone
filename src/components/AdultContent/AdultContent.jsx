@@ -125,11 +125,11 @@ const AdultContent = () => {
                 </div>
                 <div className="post-user-oracle-setting-com">
                   <div className="post-user-oracle-setting">
-                    <div className="post-usernam-text">Username</div>
+                    <div className="post-usernam-text">Username:</div>
                     <div className="postuser-name-uername">{post.username}</div>
                   </div>
                   <div className="post-user-oracle-setting">
-                    <div className="post-usernam-text">Description</div>
+                    <div className="post-usernam-text">Description:</div>
                     <div className="postuser-name-uername">
                       {post.description ? post.description : "No Description"}
                     </div>

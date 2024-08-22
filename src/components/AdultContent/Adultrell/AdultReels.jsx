@@ -120,11 +120,11 @@ const AdultReels = () => {
                 </div>
                 <div className="post-user-oracle-setting-com">
                   <div className="post-user-oracle-setting">
-                    <div className="post-usernam-text">Username</div>
+                    <div className="post-usernam-text">Username:</div>
                     <div className="postuser-name-uername">{reel.username}</div>
                   </div>
                   <div className="post-user-oracle-setting">
-                    <div className="post-usernam-text">Description</div>
+                    <div className="post-usernam-text">Description:</div>
                     <div className="postuser-name-uername">
                       {reel.description ? reel.description : "No Description"}
                     </div>
@@ -148,7 +148,9 @@ const AdultReels = () => {
               </div>
             ))
           ) : (
-            <div>No reels related to nudity available</div>
+            <div className="no-reel-related">
+              No reels related to nudity available
+            </div>
           )}
         </div>
       </div>

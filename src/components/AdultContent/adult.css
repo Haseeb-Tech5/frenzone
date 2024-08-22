@@ -30,7 +30,7 @@
   font-weight: 500;
   font-family: "Poppins", sans-serif;
   color: black;
-  line-height: 20px;
+  line-height: 30px;
 }
 .postuser-name-uername {
   font-size: 20px;
@@ -42,12 +42,16 @@
   width: fit-content;
   padding: 7px;
   border-radius: 5px;
+  display: block;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 .post-user-oracle-setting {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 .post-user-oracle-setting-com {
   display: flex;
@@ -72,6 +76,13 @@
   background-color: black;
   padding: 0 10px;
 }
+.no-reel-related {
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: black;
+}
+
 .heading-sections-ommm {
   font-size: 15px;
   font-weight: 500;
@@ -88,4 +99,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+@media screen and (max-width: 1100px) {
+  .post-container-oracle-main {
+    width: 100%;
+  }
+  .posts-container {
+    gap: 20px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .media-item video {
+    height: 100%;
+  }
+  .media-item img {
+    height: 100%;
+  }
 }

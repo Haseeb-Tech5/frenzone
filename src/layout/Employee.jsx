@@ -415,7 +415,7 @@ const Employee = ({ children }) => {
           </div>
         </Grid>
       </nav>
-      <div className="w-[100%] mt-8 md:mt-0 ">{children}</div>
+      <div className="w-[100%] mt-8 md:mt-0 overflow-hidden">{children}</div>
     </div>
   );
 };

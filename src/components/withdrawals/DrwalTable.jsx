@@ -172,22 +172,22 @@ const DrwalTable = () => {
           <Table className="table-set">
             <TableHead>
               <TableRow className="table-cell">
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
                   Name
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
                   Amount
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
                   Withdrawal Date
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
                   Withdrawal Time
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
                   Verification
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                <TableCell className="table-cell" style={{ minWidth: "155px" }}>
                   Status
                 </TableCell>
               </TableRow>

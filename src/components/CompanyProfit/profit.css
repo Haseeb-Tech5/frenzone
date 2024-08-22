@@ -36,4 +36,23 @@
   gap: 20px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   margin-top: 40px;
+  min-width: 1000px;
+}
+.profit-details {
+  width: 100%;
+  overflow-x: auto;
+}
+.profit-details::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.profit-details::-webkit-scrollbar-thumb {
+  background-color: #ff9700;
+  border-radius: 4px;
+  height: 25px;
+}
+
+.profit-details::-webkit-scrollbar-track {
+  background-color: #ff99004b;
 }

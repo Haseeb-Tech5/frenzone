@@ -1,13 +1,13 @@
 .versoon-control-container {
   width: 100%;
   max-width: 1440px;
-  background-color: #ffe9c865;
   height: 100vh;
 }
 .versoon-control-container-mmm {
   width: 100%;
   display: flex;
   justify-content: center;
+  background-color: #ffe9c865;
 }
 .verson-container-heading {
   width: 100%;
@@ -137,6 +137,39 @@
   background-color: #ff9700;
   border: none;
 }
+@media screen and (max-width: 1000px) {
+  .os-selection button {
+    width: 250px;
+    height: 250px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .verson-container-heading h2 {
+    font-size: 30px;
+  }
+  .os-selection button {
+    width: 200px;
+    height: 200px;
+    font-size: 18px;
+  }
+  .os-selection {
+    display: flex;
+    justify-content: space-between;
+  }
+  .current-version h2 {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 446px) {
+  .os-selection {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+  }
+  .os-selection button {
+    width: 100%;
+  }
+}
 @media screen and (max-width: 899px) {
   .verson-container-heading {
     margin-top: 50px;
@@ -154,5 +187,16 @@
   .version-control-noneditable {
     padding-left: 15px;
     padding-right: 15px;
+  }
+}
+@media screen and (max-width: 370px) {
+  .additional-buttons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .additional-buttons button {
+    width: 100%;
   }
 }

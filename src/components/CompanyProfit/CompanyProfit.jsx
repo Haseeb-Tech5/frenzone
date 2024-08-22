@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./profit.css";
+import "./responsive.css";
 
 const CompanyProfit = () => {
   const [profitData, setProfitData] = useState(null);
