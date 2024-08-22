@@ -29,3 +29,38 @@
 .oper-cer {
   max-height: 500px;
 }
+.lemid-text-set {
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  color: black;
+  line-height: 25px;
+  font-weight: 500;
+}
+.lemid-text-sett {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.836);
+  line-height: 25px;
+  font-weight: 500;
+  display: block;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+.lemid-container-lemid {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+}
+.lemid-container-lemid-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+.crip-lemid {
+  display: flex;
+  justify-content: end !important;
+  align-items: center;
+}

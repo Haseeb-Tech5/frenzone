@@ -1,87 +1,86 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import "./adult.css";
 import { Link } from "react-router-dom";
 
-const AdultContent = () => {
-  const [posts, setPosts] = useState([]);
+const AdultReels = () => {
+  const [reels, setReels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchReels = async () => {
       try {
         const response = await fetch(
-          "https://api.frenzone.live/post/getTotalPosts"
+          "https://api.frenzone.live/reels/getTotalReels"
         );
         const data = await response.json();
 
-        const filteredPosts = data.posts.filter(
-          (post) =>
-            post.sigthengineResults &&
-            post.sigthengineResults.some((result) =>
+        const filteredReels = data.reels.filter(
+          (reel) =>
+            reel.sightengineResults &&
+            reel.sightengineResults.some((result) =>
               result.toLowerCase().includes("nudity")
             )
         );
 
-        setPosts(filteredPosts);
+        setReels(filteredReels);
       } catch (error) {
-        setError("Failed to fetch posts");
+        setError("Failed to fetch reels");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
+    fetchReels();
   }, []);
 
-  const acceptPost = async (postId) => {
+  const acceptReel = async (reelId) => {
     try {
       const response = await fetch(
-        "https://api.frenzone.live/post/acceptPost",
+        "https://api.frenzone.live/reels/acceptReel",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ postId }),
+          body: JSON.stringify({ reelId }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update post");
+        throw new Error("Failed to update reel");
       }
 
-      const updatedPosts = posts.filter((post) => post._id !== postId);
-      setPosts(updatedPosts);
+      const updatedReels = reels.filter((reel) => reel._id !== reelId);
+      setReels(updatedReels);
 
       Swal.fire({
         icon: "success",
-        title: "Post Accepted",
-        text: "The post has been successfully accepted.",
+        title: "Reel Accepted",
+        text: "The reel has been successfully accepted.",
       });
     } catch (error) {
-      setError("Failed to update post");
+      setError("Failed to update reel");
 
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to accept the post.",
+        text: "Failed to accept the reel.",
       });
     }
   };
 
-  const handleAcceptPost = (postId) => {
+  const handleAcceptReel = (reelId) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Do you really want to accept this post?",
+      text: "Do you really want to accept this reel?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, accept it!",
       cancelButtonText: "No, cancel!",
     }).then((result) => {
       if (result.isConfirmed) {
-        acceptPost(postId);
+        acceptReel(reelId);
       }
     });
   };
@@ -93,9 +92,9 @@ const AdultContent = () => {
           <h2>Adult Content</h2>
         </div>
         <div className="heading-container-headinffff">
-          <div className="heading-sections-ommm">Sensitive Posts</div>
-          <Link to="/sensitivereels" style={{ textDecoration: "none" }}>
-            <div className="heading-sections-ommm">Go to Reels Section</div>
+          <div className="heading-sections-ommm">Sensitive Reels</div>
+          <Link to="/employee/adultcontent" style={{ textDecoration: "none" }}>
+            <div className="heading-sections-ommm">Go to Post Section</div>
           </Link>
         </div>
         <div className="posts-container">
@@ -103,57 +102,53 @@ const AdultContent = () => {
             <div className="spinner-set">
               <div className="spinner"></div>
             </div>
-          ) : posts.length > 0 ? (
-            posts.map((post) => (
-              <div key={post._id} className="post-container-oracle-main">
+          ) : reels.length > 0 ? (
+            reels.map((reel) => (
+              <div key={reel._id} className="post-container-oracle-main">
                 <div className="media-container">
-                  {(post.contentArray || []).map((content, index) => (
-                    <div key={index} className="media-item">
-                      {content.contentType.startsWith("video") ? (
-                        <video controls autoPlay poster={content.thumbnail}>
-                          <source
-                            src={content.objectUrl}
-                            type={content.contentType}
-                          />
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : content.contentType.startsWith("image") ? (
-                        <img src={content.objectUrl} alt={`Content ${index}`} />
-                      ) : null}
-                    </div>
-                  ))}
+                  <div className="media-item">
+                    {reel.videoUrl ? (
+                      <video controls autoPlay poster={reel.thumbnailUrl}>
+                        <source src={reel.videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : null}
+                    {reel.thumbnailUrl && !reel.videoUrl ? (
+                      <img src={reel.thumbnailUrl} alt="Thumbnail" />
+                    ) : null}
+                  </div>
                 </div>
                 <div className="post-user-oracle-setting-com">
                   <div className="post-user-oracle-setting">
                     <div className="post-usernam-text">Username</div>
-                    <div className="postuser-name-uername">{post.username}</div>
+                    <div className="postuser-name-uername">{reel.username}</div>
                   </div>
                   <div className="post-user-oracle-setting">
                     <div className="post-usernam-text">Description</div>
                     <div className="postuser-name-uername">
-                      {post.description ? post.description : "No Description"}
+                      {reel.description ? reel.description : "No Description"}
                     </div>
                   </div>
                   <div className="post-user-oracle-setting">
                     <div className="post-usernam-text">
-                      Sigthengine Results:
+                      Sightengine Results:
                     </div>
                     <ul className="postuser-name-uername">
-                      {(post.sigthengineResults || []).map((result, index) => (
+                      {(reel.sightengineResults || []).map((result, index) => (
                         <li key={index}>{result}</li>
                       ))}
                     </ul>
                   </div>
                 </div>
                 <div className="accept-post-buttonn">
-                  <button onClick={() => handleAcceptPost(post._id)}>
-                    Accept Post
+                  <button onClick={() => handleAcceptReel(reel._id)}>
+                    Accept Reel
                   </button>
                 </div>
               </div>
             ))
           ) : (
-            <div>No posts related to nudity available</div>
+            <div>No reels related to nudity available</div>
           )}
         </div>
       </div>
@@ -161,4 +156,4 @@ const AdultContent = () => {
   );
 };
 
-export default AdultContent;
+export default AdultReels;

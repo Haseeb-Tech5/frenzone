@@ -147,6 +147,12 @@ const Detailed = () => {
                       <h1>Is Verified</h1>
                       <h1>{selectedUser?.isVerified ? "Yes" : "No"}</h1>
                     </div>
+                  </div>{" "}
+                  <div className="card blue">
+                    <div className="data-set-max-flex">
+                      <h1>Payment Verified</h1>
+                      <h1>{selectedUser?.paymentVerified ? "Yes" : "No"}</h1>
+                    </div>
                   </div>
                   <div className="card red">
                     <div className="data-set-max-flex">

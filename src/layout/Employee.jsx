@@ -22,6 +22,8 @@ const Employee = ({ children }) => {
     const pathname = location.pathname.split("/").pop();
     if (pathname === "detailed") {
       setActiveItem("dashboard");
+    } else if (pathname === "sensitivereels") {
+      setActiveItem("adultcontent");
     } else {
       setActiveItem(pathname);
     }

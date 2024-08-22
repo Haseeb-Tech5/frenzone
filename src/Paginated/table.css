@@ -1,5 +1,6 @@
 .scroll-table {
   max-height: 440px;
+  /* width: 100%; */
   overflow-y: auto;
   background-color: transparent !important;
   padding-left: 30px !important;
@@ -85,4 +86,7 @@
 
 .scroll-continue-para::-webkit-scrollbar-track {
   background-color: #ff99004b;
+}
+.complete-table-nice {
+  width: 100%;
 }

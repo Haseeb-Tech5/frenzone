@@ -23,9 +23,10 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
         const data = await response.json();
         console.log("Withdrawal Data:", data);
         setWithdrawalData(data);
+        console.log("user.paymentVerified", user.paymentVerified);
         const newStatus =
           data.status === "Pending"
-            ? user.isVerified
+            ? user.paymentVerified
               ? "Verified"
               : "Unverified"
             : data.status;
@@ -60,7 +61,25 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
     };
 
     fetchWithdrawalData();
-  }, [withdrawalId, user.isVerified]);
+  }, [withdrawalId, user.paymentVerified]);
+  const togglePaymentVerified = async () => {
+    try {
+      const response = await fetch(
+        `https://api.frenzone.live/auth/togglePaymentVerified/${user._id}`,
+        {
+          method: "PATCH",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to toggle paymentVerified");
+      }
+      const data = await response.json();
+      console.log("Payment Verified Toggle Response:", data);
+      user.paymentVerified = !user.paymentVerified;
+    } catch (error) {
+      console.error("Error toggling paymentVerified:", error);
+    }
+  };
 
   const handleStatusClick = () => {
     if (currentStatus === "Verified") {
@@ -75,6 +94,10 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
   };
 
   const handleOptionClick = async (option) => {
+    if (option === "Processing") {
+      await togglePaymentVerified();
+    }
+
     const requestBody = {
       withdrawId: withdrawalId,
       status: option,
@@ -105,9 +128,9 @@ const StatusOverview = ({ status, withdrawalId, user }) => {
       setShowModal(false);
 
       if (option === "Rejected") {
-        setShowRejectedModal(true); // Open "Rejected" modal
+        setShowRejectedModal(true);
       } else if (option === "Completed") {
-        setShowFinalModal(true); // Open "Process Completed" modal
+        setShowFinalModal(true);
       }
     } catch (error) {
       console.error("Error updating status:", error);

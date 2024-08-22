@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import Drwal from "./components/withdrawals/Drwal.jsx";
 import AdultContent from "./components/AdultContent/AdultContent.jsx";
 import CompanyProfit from "./components/CompanyProfit/CompanyProfit.jsx";
+import AdultReels from "./components/AdultContent/Adultrell/AdultReels.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -133,6 +134,14 @@ const App = () => {
                 element={
                   <Employee>
                     <CompanyProfit />
+                  </Employee>
+                }
+              />{" "}
+              <Route
+                path="/sensitivereels"
+                element={
+                  <Employee>
+                    <AdultReels />
                   </Employee>
                 }
               />

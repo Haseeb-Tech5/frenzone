@@ -8,8 +8,8 @@ import {
   TableCell,
   Paper,
   TablePagination,
-  Button,
 } from "@mui/material";
+import { Modal, Button } from "react-bootstrap";
 import "./draw.css";
 import StatusOverview from "./SttausOveriew/StatusOverview";
 
@@ -20,6 +20,8 @@ const DrwalTable = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -44,9 +46,7 @@ const DrwalTable = () => {
       })
       .then((data) => {
         const usersArray = data.users || [];
-
-        // Fetch withdrawal data for each user
-        const usersWithWithdrawals = usersArray.map((user) =>
+        const usersWithWithdrawalsAndVerification = usersArray.map((user) =>
           fetch(`https://api.frenzone.live/wallet/getWithdrawById/${user._id}`)
             .then((response) => {
               if (!response.ok) {
@@ -57,18 +57,44 @@ const DrwalTable = () => {
             .then((withdrawalData) => {
               if (withdrawalData.length > 0) {
                 user.withdrawals = withdrawalData;
+                return fetch(
+                  `https://api.frenzone.live/auth/getLamVerifyDataById/${user._id}`
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Failed to fetch verification data");
+                    }
+                    return response.json();
+                  })
+                  .then((verificationData) => {
+                    if (verificationData.verificationData.length > 0) {
+                      user.lemid = verificationData.verificationData[0].lemid;
+                      user.url = verificationData.verificationData[0].url;
+                    } else {
+                      user.lemid = "N/A";
+                      user.url = "N/A";
+                    }
+                    return user;
+                  });
+              } else {
+                user.lemid = "N/A";
+                user.url = "N/A";
                 return user;
               }
-              return null;
             })
             .catch((error) => {
-              console.error("Error fetching withdrawal data:", error);
-              return null;
+              console.error(
+                "Error fetching withdrawal or verification data:",
+                error
+              );
+              user.lemid = "N/A";
+              user.url = "N/A";
+              return user;
             })
         );
 
-        Promise.all(usersWithWithdrawals).then((users) => {
-          const filteredUsers = users.filter((user) => user !== null);
+        Promise.all(usersWithWithdrawalsAndVerification).then((users) => {
+          const filteredUsers = users.filter((user) => user.withdrawals);
           setFilteredData(filteredUsers);
           setError(null);
           setLoading(false);
@@ -112,9 +138,15 @@ const DrwalTable = () => {
       });
   };
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  const handleModalOpen = (user) => {
+    setModalData(user);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setModalData({});
+  };
 
   return (
     <div>
@@ -152,8 +184,8 @@ const DrwalTable = () => {
                 <TableCell className="table-cell" style={{ minWidth: "150px" }}>
                   Withdrawal Time
                 </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "292px" }}>
-                  lemverifyID
+                <TableCell className="table-cell" style={{ minWidth: "150px" }}>
+                  Verification
                 </TableCell>
                 <TableCell className="table-cell" style={{ minWidth: "150px" }}>
                   Status
@@ -173,7 +205,6 @@ const DrwalTable = () => {
                     withdrawal.createdAt
                   ).toLocaleTimeString();
                   const status = withdrawal.status;
-                  const verifyID = "hSXjBUI4JZd91UbD6gHIs"; // Assuming this is a constant
 
                   return (
                     <TableRow
@@ -201,9 +232,10 @@ const DrwalTable = () => {
                       <TableCell className="table-cell-set">
                         <div
                           className="clip-conut"
-                          onClick={() => copyToClipboard(verifyID)}
+                          onClick={() => handleModalOpen(user)}
+                          style={{ textDecoration: "none", cursor: "pointer" }}
                         >
-                          {verifyID}
+                          View
                         </div>
                       </TableCell>
                       <TableCell className="table-cell-set">
@@ -229,6 +261,52 @@ const DrwalTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {/* Modal for Verification */}
+      <Modal show={showModal} onHide={handleModalClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div className="slecet-staus-oracle">Verification</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="lemid-container-lemid-main">
+            <div className="lemid-container-lemid">
+              <div className="lemid-text-set">lemid:</div>{" "}
+              <div
+                className="lemid-text-sett"
+                onClick={() => copyToClipboard(modalData.lemid)}
+              >
+                {" "}
+                {modalData.lemid}
+              </div>
+            </div>
+            <div className="lemid-container-lemid">
+              <div className="lemid-text-set">URL:</div>{" "}
+              <div className="lemid-text-sett">
+                {" "}
+                {modalData.url === "N/A" ? (
+                  "N/A"
+                ) : (
+                  <a
+                    href={modalData.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {modalData.url}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="check-status-button crip-lemid">
+            <Button variant="secondary" onClick={handleModalClose}>
+              Close
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
