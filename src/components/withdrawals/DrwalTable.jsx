@@ -9,33 +9,30 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { Modal, Button } from "react-bootstrap";
-import "./draw.css";
+import Loader from "../Loader/Loader";
 import StatusOverview from "./SttausOveriew/StatusOverview";
+import "./modal.css";
 
 const DrwalTable = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({});
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
   }, [page, rowsPerPage, searchTerm]);
 
   const fetchData = () => {
-    setLoading(true);
-    let url = "https://api.frenzone.live/admin/getAllUsers";
-
-    if (searchTerm) {
-      url = `https://api.frenzone.live/admin/searchUsers/${rowsPerPage}/${
-        page + 1
-      }/${searchTerm}`;
-    }
+    let url = `https://api.frenzone.live/admin/getAllUsers?page=${
+      page + 1
+    }&limit=${rowsPerPage}${searchTerm ? `&keyword=${searchTerm}` : ""}`;
 
     fetch(url)
       .then((response) => {
@@ -46,6 +43,7 @@ const DrwalTable = () => {
       })
       .then((data) => {
         const usersArray = data.users || [];
+        setTotalUsers(data.count || 0);
         const usersWithWithdrawalsAndVerification = usersArray.map((user) =>
           fetch(`https://api.frenzone.live/wallet/getWithdrawById/${user._id}`)
             .then((response) => {
@@ -102,7 +100,7 @@ const DrwalTable = () => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        setError(error);
+        setError(error.message);
         setLoading(false);
       });
   };
@@ -121,10 +119,17 @@ const DrwalTable = () => {
     setPage(0);
   };
 
+  const handleSearchClick = () => {
+    if (page !== 0) {
+      setPage(0);
+    } else {
+      fetchData();
+    }
+  };
+
   const isLastRowOfPage = (index) => {
-    const startIndex = page * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage - 1;
-    return index === endIndex || index === filteredData.length - 1;
+    const totalRowsOnPage = Math.min(rowsPerPage, filteredData.length);
+    return index === totalRowsOnPage - 1;
   };
 
   const copyToClipboard = (text) => {
@@ -148,165 +153,211 @@ const DrwalTable = () => {
     setModalData({});
   };
 
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
   return (
-    <div>
-      <div className="input-set-contained">
-        <input
-          placeholder="Search"
-          type="text"
-          className="input"
-          required=""
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-      </div>
-      {loading ? (
-        <div className="spinner-set">
-          <div className="spinner"></div>
+    <div className="dashboard-container">
+      {loading && <Loader />}
+      <div className="dashboard-container-contained">
+        <div className="input-set-contained-miller">
+          <div className="input-set-contained-deep">
+            <div className="heading-contained">
+              <h2>Withdrawal Management</h2>
+            </div>
+            <div className="input-set-contained">
+              <input
+                placeholder="Search"
+                type="text"
+                className="input"
+                required=""
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+              <button className="btn-search" onClick={handleSearchClick}>
+                Search
+              </button>
+            </div>
+          </div>
         </div>
-      ) : (
-        <TableContainer
-          component={Paper}
-          className="scroll-table scroll-continue-para oper-cer"
-        >
-          <Table className="table-set">
-            <TableHead>
-              <TableRow className="table-cell">
-                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
-                  Name
-                </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
-                  Amount
-                </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
-                  Withdrawal Date
-                </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
-                  Withdrawal Time
-                </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "175px" }}>
-                  Verification
-                </TableCell>
-                <TableCell className="table-cell" style={{ minWidth: "155px" }}>
-                  Status
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className="table-cell-set">
-              {filteredData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, index) => {
-                  const withdrawal = user.withdrawals[0];
-                  const amount = withdrawal.amount;
-                  const date = new Date(
-                    withdrawal.createdAt
-                  ).toLocaleDateString();
-                  const time = new Date(
-                    withdrawal.createdAt
-                  ).toLocaleTimeString();
-                  const status = withdrawal.status;
-
-                  return (
-                    <TableRow
-                      key={user._id}
-                      className="table-cell-set"
-                      style={{
-                        borderBottom: isLastRowOfPage(index)
-                          ? "none"
-                          : "1px solid #b8d0d0",
-                        width: "100%",
-                      }}
-                    >
-                      <TableCell className="table-cell-set">
-                        {user.firstname} {user.lastname}
-                      </TableCell>
-                      <TableCell className="table-cell-set">
-                        <div className="clip-conut">{amount}</div>
-                      </TableCell>
-                      <TableCell className="table-cell-set">
-                        <div className="clip-conut">{date}</div>
-                      </TableCell>
-                      <TableCell className="table-cell-set">
-                        <div className="clip-conut">{time}</div>
-                      </TableCell>
-                      <TableCell className="table-cell-set">
-                        <div
-                          className="clip-conut"
-                          onClick={() => handleModalOpen(user)}
-                          style={{ textDecoration: "none", cursor: "pointer" }}
-                        >
-                          View
-                        </div>
-                      </TableCell>
-                      <TableCell className="table-cell-set">
-                        <StatusOverview
-                          status={status}
-                          withdrawalId={withdrawal._id}
-                          user={user}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50, 100, 150, 200, 250]}
-        component="div"
-        count={filteredData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-
-      {/* Modal for Verification */}
-      <Modal show={showModal} onHide={handleModalClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <div className="slecet-staus-oracle">Verification</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="lemid-container-lemid-main">
-            <div className="lemid-container-lemid">
-              <div className="lemid-text-set">lemid:</div>{" "}
-              <div
-                className="lemid-text-sett"
-                onClick={() => copyToClipboard(modalData.lemid)}
-              >
-                {" "}
-                {modalData.lemid}
-              </div>
-            </div>
-            <div className="lemid-container-lemid">
-              <div className="lemid-text-set">URL:</div>{" "}
-              <div className="lemid-text-sett">
-                {" "}
-                {modalData.url === "N/A" ? (
-                  "N/A"
-                ) : (
-                  <a
-                    href={modalData.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
+        <div className="complete-table-nice">
+          <TableContainer
+            component={Paper}
+            className="scroll-table scroll-continue-para"
+          >
+            <Table className="table-set">
+              <TableHead>
+                <TableRow className="table-cell">
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
                   >
-                    {modalData.url}
-                  </a>
-                )}
+                    Name
+                  </TableCell>
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
+                  >
+                    Amount
+                  </TableCell>
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
+                  >
+                    Withdrawal Date
+                  </TableCell>
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
+                  >
+                    Withdrawal Time
+                  </TableCell>
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
+                  >
+                    Verification
+                  </TableCell>
+                  <TableCell
+                    className="table-cell"
+                    style={{ minWidth: "22rem" }}
+                  >
+                    Status
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody className="table-cell-set">
+                {filteredData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((user, index) => {
+                    const withdrawal = user.withdrawals[0];
+                    const amount = withdrawal.amount;
+                    const date = new Date(
+                      withdrawal.createdAt
+                    ).toLocaleDateString();
+                    const time = new Date(
+                      withdrawal.createdAt
+                    ).toLocaleTimeString();
+                    const status = withdrawal.status;
+
+                    return (
+                      <TableRow
+                        key={user._id}
+                        className="table-cell-set"
+                        style={{
+                          borderBottom: isLastRowOfPage(index)
+                            ? "none"
+                            : "0.1rem solid #b8d0d0",
+                          width: "100%",
+                        }}
+                      >
+                        <TableCell className="table-cell-set">
+                          {user.firstname} {user.lastname}
+                        </TableCell>
+                        <TableCell className="table-cell-set">
+                          <div className="clip-conut">{amount}</div>
+                        </TableCell>
+                        <TableCell className="table-cell-set">
+                          <div className="clip-conut">{date}</div>
+                        </TableCell>
+                        <TableCell className="table-cell-set">
+                          <div className="clip-conut">{time}</div>
+                        </TableCell>
+                        <TableCell className="table-cell-set">
+                          <div
+                            className="clip-conut"
+                            onClick={() => handleModalOpen(user)}
+                            style={{
+                              textDecoration: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            View
+                          </div>
+                        </TableCell>
+                        <TableCell className="table-cell-set">
+                          <StatusOverview
+                            status={status}
+                            withdrawalId={withdrawal._id}
+                            user={user}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            className="pagination-sett"
+            rowsPerPageOptions={[50, 100, 150]}
+            component="div"
+            count={totalUsers}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </div>
+      </div>
+
+      {/* Custom Modal for Verification */}
+      {showModal && (
+        <div className="modal-verification">
+          <div
+            className="modal-verification-overlay"
+            onClick={handleModalClose}
+          ></div>
+          <div className="modal-verification-content">
+            <div className="modal-verification-header">
+              <div className="modal-verification-title">Verification</div>
+              <button
+                className="modal-verification-close"
+                onClick={handleModalClose}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-verification-body">
+              <div className="modal-verification-field">
+                <span className="modal-verification-label">LemID:</span>
+                <span
+                  className="modal-verification-value"
+                  onClick={() => copyToClipboard(modalData.lemid)}
+                >
+                  {modalData.lemid}
+                </span>
+              </div>
+              <div className="modal-verification-field">
+                <span className="modal-verification-label">URL:</span>
+                <span className="modal-verification-value">
+                  {modalData.url === "N/A" ? (
+                    "N/A"
+                  ) : (
+                    <a
+                      href={modalData.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {modalData.url}
+                    </a>
+                  )}
+                </span>
               </div>
             </div>
+            <div className="modal-verification-footer">
+              <button
+                className="modal-verification-button"
+                onClick={handleModalClose}
+              >
+                Close
+              </button>
+            </div>
           </div>
-          <div className="check-status-button crip-lemid">
-            <Button variant="secondary" onClick={handleModalClose}>
-              Close
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2";
-import "../employee/broadcast.css";
+import "./broadcast.css";
 
 const ReportsEmployee = () => {
   const [isSending, setIsSending] = useState(false);
@@ -12,6 +11,7 @@ const ReportsEmployee = () => {
 
   const handleClose = () => {
     setIsSending(false);
+    setNotificationMessage("");
   };
 
   const handleSend = () => {
@@ -26,22 +26,10 @@ const ReportsEmployee = () => {
         if (!response.ok) {
           throw new Error("Failed to send notification");
         }
-        Swal.fire({
-          title: "Success!",
-          text: "Notification sent successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
         handleClose();
       })
       .catch((error) => {
         console.error("Error sending notification:", error);
-        Swal.fire({
-          title: "Error",
-          text: "Failed to send notification",
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
       });
   };
 
@@ -51,21 +39,21 @@ const ReportsEmployee = () => {
         <div className="broad-heading">
           <h2>BroadCast</h2>
         </div>
-        <div className="send-heading">
-          <div className="btn-head-set">
-            <button onClick={handleSendClick}>Send Notifications</button>
-          </div>
-        </div>
-        <div className="send-container">
+
+        <div className="broad-send-container">
           <textarea
+            className="broad-textarea"
             placeholder="Write your message..."
             value={notificationMessage}
             onChange={(e) => setNotificationMessage(e.target.value)}
           ></textarea>
-          <div className="button-container">
-            <button onClick={handleClose}>Cancel</button>
-            {/* <button onClick={handleSend}>Send</button> */}
-            <button>Send</button>
+          <div className="broad-button-container">
+            <button className="broad-btn-cancel" onClick={handleClose}>
+              Cancel
+            </button>
+            <button className="broad-btn-send" onClick={handleSend}>
+              Send
+            </button>
           </div>
         </div>
       </div>

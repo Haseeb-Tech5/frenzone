@@ -17,6 +17,9 @@ import Drwal from "./components/withdrawals/Drwal.jsx";
 import AdultContent from "./components/AdultContent/AdultContent.jsx";
 import CompanyProfit from "./components/CompanyProfit/CompanyProfit.jsx";
 import AdultReels from "./components/AdultContent/Adultrell/AdultReels.jsx";
+import ReviewContentPage from "./components/ReviewContent/ReviewContentPage.jsx";
+import DashboardOverview from "./components/DashboardOverview/DashboardOverview.jsx";
+import Loader from "./components/Loader/Loader.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -32,18 +35,7 @@ const App = () => {
   return (
     <>
       {isLoading ? (
-        <div className="loader">
-          <span className="load" style={{ "--i": "1px" }}></span>
-          <span className="load" style={{ "--i": "2px" }}></span>
-          <span className="load" style={{ "--i": "3px" }}></span>
-          <span className="load" style={{ "--i": "4px" }}></span>
-          <span className="load" style={{ "--i": "5px" }}></span>
-          <span className="load" style={{ "--i": "6px" }}></span>
-          <span className="load" style={{ "--i": "7px" }}></span>
-          <span className="load" style={{ "--i": "8px" }}></span>
-          <span className="load" style={{ "--i": "9px" }}></span>
-          <span className="load" style={{ "--i": "10px" }}></span>
-        </div>
+        <Loader />
       ) : (
         <div>
           <Provider store={store}>
@@ -51,6 +43,14 @@ const App = () => {
               <Route path="/" element={<LoginEmployee />} />
               <Route
                 path="/employee/dashboard"
+                element={
+                  <Employee>
+                    <DashboardOverview />
+                  </Employee>
+                }
+              />
+              <Route
+                path="/employee/user-management"
                 element={
                   <Employee>
                     <DashboardEmployee />
@@ -110,6 +110,14 @@ const App = () => {
                 element={
                   <Employee>
                     <VersionControl />
+                  </Employee>
+                }
+              />{" "}
+              <Route
+                path="/employee/review"
+                element={
+                  <Employee>
+                    <ReviewContentPage />
                   </Employee>
                 }
               />{" "}

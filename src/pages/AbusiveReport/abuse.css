@@ -1,20 +1,109 @@
-.remove-reported0users {
+.abuse-report-container {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 50px;
+  padding: 3rem;
+
+  border-radius: 1.5rem;
 }
-.remove-reported0users button {
-  width: 150px;
-  height: 40px;
-  border-radius: 15px;
-  background-color: black;
-  color: #ff9700;
-  font-family: "Poppins", sans-serif;
-  font-size: 15px;
+
+/* Content wrapper */
+.abuse-content-wrapper {
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+/* Cards grid */
+.abuse-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  gap: 2.5rem;
+}
+
+/* Glassmorphism card styling */
+.abuse-card {
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
+  box-shadow: 0 0.3rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.abuse-card:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 0.5rem 1.5rem var(--black);
+}
+.abuse-card-red {
+  background: var(--orange);
+}
+.abuse-card-blue {
+  background: var(--grey);
+}
+.abuse-card-green {
+  background: var(--grey);
+}
+.abuse-card-content h1 {
+  font-size: 1.8rem;
+  color: var(--white);
+  margin-bottom: 0.8rem;
   font-weight: 600;
 }
-.click-oral {
-  justify-content: end;
+.abuse-card-content h1:last-child {
+  font-weight: 400;
+  color: var(--grey);
+}
+.abuse-blocked h1:last-child,
+.abuse-no-reports h1:last-child {
+  color: var(--orange);
+}
+
+/* Action buttons with glow */
+.abuse-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+.abuse-remove-btn,
+.abuse-block-btn,
+.abuse-unblock-btn {
+  padding: 1rem 2.5rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.abuse-remove-btn {
+  background-color: var(--orange);
+  color: var(--white);
+}
+.abuse-remove-btn:hover {
+  box-shadow: 0 0 1.5rem var(--orange);
+}
+.abuse-block-btn,
+.abuse-unblock-btn {
+  background-color: var(--grey);
+  color: var(--white);
+}
+.abuse-block-btn:hover,
+.abuse-unblock-btn:hover {
+  box-shadow: 0 0 1.5rem var(--grey);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .abuse-report-container {
+    padding: 1.5rem;
+  }
+  .abuse-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  .abuse-remove-btn,
+  .abuse-block-btn,
+  .abuse-unblock-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .abuse-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }

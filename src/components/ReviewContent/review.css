@@ -1,0 +1,158 @@
+.rc-dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+.rc-dashboard-container-contained {
+  width: 100%;
+  max-width: 120rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  padding: 2rem;
+  animation: rc-fade-in 0.5s ease-out;
+}
+
+.rc-heading-contained h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.rc-reviews-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.rc-error {
+  grid-column: 1 / -1;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  color: var(--orange);
+  text-align: center;
+  margin: 2rem;
+}
+
+.rc-no-content {
+  grid-column: 1 / -1;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-align: center;
+  margin: 2rem;
+}
+
+.rc-review-container-oracle-main {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: rc-slide-up 0.5s ease-out;
+}
+
+.rc-media-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rc-media-item {
+  flex: 1;
+  min-width: 15rem;
+  max-width: 25rem;
+}
+
+.rc-profile-picture {
+  width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.rc-profile-picture:hover {
+  transform: scale(1.03);
+}
+
+.rc-review-user-oracle-setting-com {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rc-review-user-oracle-setting {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.rc-review-username-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.rc-reviewuser-name-username {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.8rem;
+  color: var(--white);
+}
+
+.rc-star {
+  font-size: 1.6rem;
+  color: var(--orange);
+}
+
+@keyframes rc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rc-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .rc-dashboard-container-contained {
+    padding: 1rem;
+  }
+
+  .rc-heading-contained h2 {
+    font-size: 2rem;
+  }
+
+  .rc-reviews-container {
+    grid-template-columns: 1fr;
+  }
+
+  .rc-media-item {
+    min-width: 12rem;
+    max-width: 20rem;
+  }
+}

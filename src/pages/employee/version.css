@@ -1,202 +1,242 @@
-.versoon-control-container {
-  width: 100%;
-  max-width: 1440px;
-  height: 100vh;
-}
-.versoon-control-container-mmm {
-  width: 100%;
+.vers-container {
   display: flex;
   justify-content: center;
-  background-color: #ffe9c865;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  padding: 2rem;
+  position: relative;
 }
-.verson-container-heading {
+
+/* Full content container */
+.vers-container-full {
   width: 100%;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  /* background-color: red; */
+  max-width: 80rem;
+  padding: 3rem;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.3rem 1rem var(--black), inset 0 -0.1rem 0.3rem var(--grey);
+  animation: broad-fade-in 0.3s ease;
 }
-.verson-container-heading h2 {
-  width: 100%;
-  font-size: 45px;
+
+/* Heading */
+.vers-heading h2 {
   font-family: "Poppins", sans-serif;
+  font-size: 4rem;
   font-weight: 600;
-  color: #ff9700;
+  color: var(--orange);
+  margin: 0 0 2rem 0;
+  text-align: center;
 }
-.version-display-container {
-  width: 100%;
+
+/* Display container */
+.vers-display-container {
   display: flex;
-  align-items: center;
   flex-direction: column;
-}
-.version-display {
-  width: 95%;
-  /* background-color: lime; */
-}
-.version-control-noneditable-ok {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.253);
-  border-radius: 15px;
-  padding-bottom: 30px;
-}
-.version-control-noneditable {
-  width: 100%;
-  border-radius: 15px;
-  height: 200px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
 }
-.version-control-noneditable input {
-  height: 70px;
-  padding-left: 15px;
-  border-radius: 18px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-}
-.current-version {
-  padding-left: 20px;
-  padding-top: 15px;
-}
-.current-version h2 {
-  color: #1414149f;
-  font-size: 30px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-}
-.current-current {
-  color: black;
-}
-.version-lime {
-  font-size: 26px;
-  color: #db9326;
-}
-.os-selection {
-  width: 100%;
+
+/* OS selection */
+.vers-os-selection {
   display: flex;
-  justify-content: space-evenly;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  animation: vers-fade-in 0.3s ease;
 }
-.os-selection button {
-  width: 300px;
-  height: 300px;
-  background-color: black;
-  color: #db9326;
+
+/* Additional buttons */
+.vers-additional-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* OS button */
+.vers-btn-os {
+  padding: 1rem 2.5rem;
+  background: var(--grey);
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
   border: none;
-  outline: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
   cursor: pointer;
-  border-radius: 15px;
-  font-size: 35px;
+  transition: all 0.3s ease;
+}
+
+/* .vers-btn-os:hover {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.05);
+} */
+
+/* Back button */
+.vers-btn-back {
+  padding: 1rem 2.5rem;
+  background: var(--grey);
+  color: var(--white);
   font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* .vers-btn-back:hover {
+  background: var(--white);
+  color: var(--black);
+  box-shadow: 0 0.3rem 1rem var(--grey);
+  transform: scale(1.05);
+} */
+
+/* Version control container */
+.vers-version-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 2rem;
+  background: var(--black);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.3rem 1rem var(--black), inset 0 -0.1rem 0.3rem var(--grey);
+  animation: vers-fade-in 0.3s ease;
+}
+
+/* Current version heading */
+.vers-current-version h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--orange);
+  margin: 0 0 1.5rem 0;
+}
+
+.vers-current-os {
+  font-size: 2rem;
+  color: var(--grey);
+}
+
+/* Version display */
+.vers-version-display {
+  margin-bottom: 2rem;
+}
+
+/* Version input */
+.vers-input-version {
+  width: 20rem;
+  padding: 1rem;
+  background: var(--black);
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  border: 0.2rem solid var(--grey);
+  border-radius: 0.8rem;
+  box-shadow: inset 0 0.2rem 0.6rem var(--black);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.vers-input-version:focus,
+.vers-input-version:hover {
+  border-color: var(--orange);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.02);
+}
+
+/* Version text */
+.vers-version-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  color: var(--white);
+}
+
+.vers-version-label {
+  color: var(--orange);
   font-weight: 600;
 }
-.additional-buttons {
-  width: 100%;
+
+/* Update button */
+.vers-update-button {
   display: flex;
-  justify-content: end;
-  gap: 22px;
-  margin-bottom: 22px;
-}
-.additional-buttons button {
-  width: fit-content;
-  padding-left: 28px;
-  padding-right: 28px;
-  height: 50px;
-  border-radius: 12px;
-  background-color: black;
-  color: #db9326;
-  font-size: 15px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 560;
-}
-.center-version {
-  /* background-color: lime; */
-  display: flex;
-  align-items: center;
-}
-.update-version-button {
-  width: 100%;
-  /* background-color: lime; */
-  display: flex;
-  justify-content: end;
-  margin-top: 20px;
-}
-.update-version-button button {
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 50px;
-  font-family: "Poppins", sans-serif;
-  color: white;
-  height: 55px;
-  width: 270px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  background-color: #ff9700;
+  margin-top: 2rem;
+}
+
+.vers-btn-update {
+  padding: 1rem 2.5rem;
+  background: var(--orange);
+  color: var(--black);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
   border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-@media screen and (max-width: 1000px) {
-  .os-selection button {
-    width: 250px;
-    height: 250px;
+
+/* .vers-btn-update:hover {
+  background: var(--white);
+  color: var(--orange);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.05);
+} */
+
+/* Fade-in animation */
+@keyframes vers-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-@media screen and (max-width: 600px) {
-  .verson-container-heading h2 {
-    font-size: 30px;
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .vers-container-full {
+    padding: 2rem;
   }
-  .os-selection button {
-    width: 200px;
-    height: 200px;
-    font-size: 18px;
+
+  .vers-heading h2 {
+    font-size: 3rem;
   }
-  .os-selection {
-    display: flex;
-    justify-content: space-between;
+
+  .vers-os-selection,
+  .vers-additional-buttons {
+    flex-direction: column;
+    gap: 1.5rem;
   }
-  .current-version h2 {
-    font-size: 20px;
-  }
-}
-@media screen and (max-width: 446px) {
-  .os-selection {
-    flex-wrap: wrap;
+
+  .vers-btn-os,
+  .vers-btn-back,
+  .vers-btn-update {
     width: 100%;
-    gap: 10px;
+    padding: 1.2rem;
+    font-size: 1.5rem;
   }
-  .os-selection button {
+
+  .vers-current-version h2 {
+    font-size: 2rem;
+  }
+
+  .vers-current-os {
+    font-size: 1.8rem;
+  }
+
+  .vers-input-version {
     width: 100%;
   }
-}
-@media screen and (max-width: 899px) {
-  .verson-container-heading {
-    margin-top: 50px;
-  }
-}
-@media screen and (max-width: 390px) {
-  .verson-container-heading h2 {
-    font-size: 30px;
-  }
-}
-@media screen and (max-width: 580px) {
-  .version-control-noneditable input {
-    width: 100%;
-  }
-  .version-control-noneditable {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-}
-@media screen and (max-width: 370px) {
-  .additional-buttons {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .additional-buttons button {
-    width: 100%;
+
+  .vers-version-text {
+    font-size: 1.8rem;
   }
 }

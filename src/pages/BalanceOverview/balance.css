@@ -1,57 +1,83 @@
-.amount-gained {
-  font-family: "Poppins", sans-serif;
-  font-size: 25px;
-  font-weight: 600;
-  line-height: 20px;
-  color: black;
-}
-.center-aligned-set {
-  flex-direction: column;
-  align-items: start;
-}
-.cards .blackket-super {
-  height: fit-content;
-  padding-top: 18px;
-  padding-bottom: 18px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.current-amiount-currently {
+.bal-overview-container {
   width: 100%;
+  padding: 3rem;
+  border-radius: 1.5rem;
+}
+
+/* Content wrapper */
+.bal-content-wrapper {
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+/* Cards grid */
+.bal-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  gap: 2.5rem;
+}
+
+/* Glassmorphism card styling */
+.bal-card {
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
+  box-shadow: 0 0.3rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.bal-card:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 0.5rem 1.5rem var(--black);
+}
+
+.bal-card-content .bal-title {
+  font-size: 2.2rem;
+  color: var(--black);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+.bal-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.bal-data-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.cent {
-  background-color: rgba(17, 17, 17, 0.678);
-  width: fit-content;
-  height: fit-content;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  color: white;
-  font-family: "Poppins", sans-serif;
-  font-size: 15px;
+.bal-label {
+  font-size: 1.8rem;
+  color: var(--black);
   font-weight: 500;
-  line-height: 20px;
 }
-.current-amiount-currently-full {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
+.bal-value {
+  font-size: 1.8rem;
+  color: var(--black);
+  font-weight: 400;
 }
-.error-message {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 20px;
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.801);
+.bal-error {
+  font-size: 1.8rem;
+  color: var(--orange);
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .bal-overview-container {
+    padding: 1.5rem;
+  }
+  .bal-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .bal-title {
+    font-size: 2rem;
+  }
+  .bal-label,
+  .bal-value,
+  .bal-error {
+    font-size: 1.6rem;
+  }
 }

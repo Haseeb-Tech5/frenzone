@@ -1,0 +1,134 @@
+/* liveAccessModal.css */
+
+/* Modal overlay */
+.la-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20000000;
+  animation: la-modal-fade-in 0.3s ease-out;
+}
+
+/* Modal container */
+.la-modal-container {
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  border: 0.2rem solid var(--white);
+  animation: la-modal-slide-in 0.3s ease-out;
+}
+
+/* Modal title */
+.la-modal-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--orange);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Modal message */
+.la-modal-message {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Modal buttons container */
+.la-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* Modal buttons */
+.la-modal-btn {
+  padding: 1rem 2.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Confirm button */
+.la-modal-btn-confirm {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+}
+
+.la-modal-btn-confirm:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: scale(1.05);
+}
+
+/* Cancel button */
+.la-modal-btn-cancel {
+  background: var(--grey);
+  color: var(--white);
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+}
+
+.la-modal-btn-cancel:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes la-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes la-modal-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .la-modal-container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .la-modal-title {
+    font-size: 1.8rem;
+  }
+
+  .la-modal-message {
+    font-size: 1.4rem;
+  }
+
+  .la-modal-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+  }
+}

@@ -1,67 +1,210 @@
+
+/* Dashboard container */
 .dashboard-container {
   width: 100%;
-  background-color: #ffe9c865;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
-  padding-bottom: 6%;
-  height: 100%;
+  padding-bottom: 6rem;
+  min-height: 100vh;
+  position: relative;
 }
-.heading-contained {
-  width: 100%;
-  /* background-color: orange; */
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-.heading-contained h2 {
-  font-weight: 600;
-  font-size: 45px;
-  line-height: 50px;
-  font-family: "Poppins", sans-serif;
-  color: #ff9700;
-}
+
+/* Contained section */
 .dashboard-container-contained {
   width: 95%;
-  max-width: 1440px;
+  max-width: 144rem;
 }
+
+/* Heading */
+.heading-contained {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.heading-contained h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 4.5rem;
+  line-height: 5rem;
+  color: var(--orange);
+  text-align: center;
+}
+
+/* Input section */
+.input-set-contained-deep {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-set-contained-miller {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-set-contained {
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  line-height: 2.8rem;
+  border: 0.2rem solid transparent;
+  border-bottom-color: var(--orange);
+  padding: 0.7rem 2rem;
+  background-color: transparent;
+  color: var(--white);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.input:focus,
+.input:hover {
+  padding: 0.7rem 2rem;
+  border-radius: 2rem;
+  border-color: var(--orange);
+  transform: scale(1.02);
+}
+
+.input::placeholder {
+  color: var(--white);
+  opacity: 0.7;
+}
+
+.input:focus::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Search button */
+.btn-search {
+  padding: 1rem 2.5rem;
+  background: var(--grey);
+  color: var(--white);
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.btn-search:hover {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.05);
+}
+
+/* User card section */
+.user-card-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.user-card {
+  width: 30rem;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.2); */
+  border: 0.2rem solid var(--white);
+  /* background-image: linear-gradient(var(--white), var(--white)), linear-gradient(135deg, var(--orange), var(--grey)); */
+  /* background-origin: border-box;
+  background-clip: content-box, border-box; */
+  animation: user-card-fade-in 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+  border: 0.2rem solid var(--orange);
+}
+
+/* Fade-in animation for card */
+@keyframes user-card-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* User card icon */
+.user-card-icon {
+  font-size: 4rem;
+  color: var(--orange);
+  margin-bottom: 1rem;
+}
+
+/* User card title */
+.user-card-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 1rem;
+}
+
+/* User card count */
+.user-card-count {
+  font-family: "Montserrat", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--orange);
+  animation: user-count-pulse 2s infinite ease-in-out;
+}
+
+/* Pulse animation for count */
+@keyframes user-count-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Table styles */
 .table-heading-set {
-  background-color: #ff9700;
-  border-radius: none !important;
+  background-color: var(--orange);
 }
-.table-cell {
-  color: black !important;
-  font-family: "Poppins", sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 17px !important;
-  width: 20% !important;
-  /* background-color: lime !important; */
-}
-.table-cell1 {
-  color: #ff9700 !important;
-}
-.table-cell-set {
-  color: rgba(17, 16, 16, 0.87) !important;
-  font-family: "Poppins", sans-serif !important;
-  font-weight: 500 !important;
-  font-size: 15px !important;
-}
-/* The switch - the box around the slider */
+
+/* Switch styles */
 .switch {
-  font-size: 17px;
+  font-size: 1.7rem;
   position: relative;
   display: inline-block;
   width: 3.5em;
   height: 2em;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -69,10 +212,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
-  border: 1px solid #adb5bd;
+  background-color: var(--white);
+  border: 0.1rem solid var(--grey);
   transition: 0.4s;
-  border-radius: 30px;
+  border-radius: 3rem;
 }
 
 .slider:before {
@@ -80,120 +223,108 @@
   content: "";
   height: 1.4em;
   width: 1.4em;
-  border-radius: 20px;
+  border-radius: 2rem;
   left: 0.27em;
   bottom: 0.25em;
-  background-color: #adb5bd;
+  background-color: var(--grey);
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #ff9700;
-  border: 1px solid #ff9700;
+  background-color: var(--orange);
+  border: 0.1rem solid var(--orange);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #ff9700;
+  box-shadow: 0 0 0.1rem var(--orange);
 }
 
 input:checked + .slider:before {
   transform: translateX(1.4em);
-  background-color: #fff;
-}
-.pagination-sett {
-  background-color: white;
-}
-/* From uiverse.io by @alexruix */
-.input {
-  line-height: 28px;
-  border: 2px solid transparent;
-  border-bottom-color: #777;
-  padding: 0.2rem 0;
-  outline: none;
-  background-color: transparent;
-  color: #0d0c22;
-  transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  width: 40.5%;
+  background-color: var(--white);
 }
 
-.input:focus,
-input:hover {
-  outline: none;
-  padding: 0.7rem 2rem;
-  border-radius: 2rem;
-  border-color: #777;
-}
-
-.input::placeholder {
-  color: #777;
-}
-
-.input:focus::placeholder {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.input-set-contained {
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-}
-
+/* Details button */
 .btn-controller button {
-  width: 80px;
-  height: 40px;
+  width: 8rem;
+  height: 4rem;
   color: white;
-  font-size: 14px;
-  line-height: 25px;
+  font-size: 1.4rem;
+  line-height: 2.5rem;
   font-weight: 500;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
   text-decoration: none !important;
   background-color: #464849;
-  border-radius: 15px;
+  border-radius: 1.5rem;
 }
+
 .btn-controller button:hover {
-  background-color: #ff9700;
-  color: black;
-  transition: background-color 0.3s ease;
+  background-color: var(--orange);
+  color: var(--black);
+  transition: all 0.3s ease;
 }
+
+/* Pagination */
+.pagination-sett {
+  background-color: var(--white);
+}
+
+/* Responsive design */
 @media only screen and (max-width: 899px) {
   .heading-contained {
-    margin-top: 100px;
+    margin-top: 10rem;
   }
 }
 
 @media only screen and (min-width: 900px) and (max-width: 979px) {
   .table-cell {
-    font-size: 14px !important;
+    font-size: 1.4rem !important;
   }
 }
 
 @media only screen and (max-width: 700px) {
   .scroll-continue-para {
-    max-height: 465px !important;
+    max-height: 46.5rem !important;
   }
   .btn-controller {
-    width: 100px !important;
-  }
-  .table-cell {
-    /* font-size: 10px !important; */
+    width: 10rem !important;
   }
   .input-set-contained input {
     width: 65%;
   }
+  .user-card {
+    width: 25rem;
+  }
+  .user-card-title {
+    font-size: 1.8rem;
+  }
+  .user-card-count {
+    font-size: 3rem;
+  }
 }
+
 @media only screen and (max-width: 400px) {
   .input-set-contained input {
     width: 80%;
   }
 }
+
 @media only screen and (max-width: 600px) {
   .heading-contained h2 {
-    font-size: 30px;
+    font-size: 3rem;
   }
   .heading-contained {
-    margin-top: 70px;
+    margin-top: 7rem;
     margin-bottom: 0;
+  }
+  .user-card {
+    width: 20rem;
+  }
+  .user-card-title {
+    font-size: 1.6rem;
+  }
+  .user-card-count {
+    font-size: 2.5rem;
   }
 }

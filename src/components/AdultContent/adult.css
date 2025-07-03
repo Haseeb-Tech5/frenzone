@@ -1,4 +1,4 @@
-.media-item video {
+/* .media-item video {
   width: 100%;
   height: 450px;
   border-radius: 10px;
@@ -15,14 +15,14 @@
   padding: 10px;
   border-radius: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  /* background-color: lime; */
+
 }
 .posts-container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  /* background-color: peru; */
+
   gap: 5px;
 }
 .post-usernam-text {
@@ -115,4 +115,4 @@
   .media-item img {
     height: 100%;
   }
-}
+} */

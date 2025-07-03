@@ -1,149 +1,190 @@
 .broad-container {
-  width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #ffe9c865;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 2rem;
 }
-.broad-heading {
-  width: 100%;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-.broad-heading h2 {
-  font-weight: 600;
-  font-size: 45px;
-  line-height: 50px;
-  font-family: "Poppins", sans-serif;
-  color: #ff9700;
-}
+
+/* Full content container */
 .broad-container-full {
-  width: 95%;
-  /* background-color: lime; */
-  max-width: 1440px;
-}
-.send-heading {
   width: 100%;
-  /* background-color: yellow; */
+  max-width: 120rem;
+  padding: 3rem;
+  border-radius: 1.2rem;
 }
-.btn-head-set {
-  width: 100%;
-  margin-top: 25px;
-}
-.btn-head-set button {
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 50px;
+
+/* Heading */
+.broad-heading h2 {
   font-family: "Poppins", sans-serif;
-  color: white;
-  height: 55px;
-  width: 270px;
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+/* Button header */
+.broad-btn-head-set {
   display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  background-color: #ff9700;
+  margin-bottom: 3rem;
 }
-.send-container textarea {
-  width: 100%;
-  border: 1px solid rgba(128, 128, 128, 0.267);
-  border-radius: 10px;
-  height: 300px;
-  padding-left: 10px;
-  padding-top: 10px;
-  outline: none !important;
-}
-.send-container {
-  width: 100%;
-  margin-top: 30px;
-}
-.image-picker input:hover {
-  padding: 0;
-  border-radius: 0;
-}
-.button-container {
-  width: 100%;
-  /* background-color: yellow; */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 18px;
-}
-.button-container button {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 25px;
+
+.broad-btn-head-set button {
+  padding: 1rem 2.5rem;
+  background: var(--grey);
+  color: var(--white);
   font-family: "Poppins", sans-serif;
-  color: white;
-  height: 40px;
-  width: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
-  background-color: #ff9700;
-}
-.image-picker {
-  width: 100%;
-  margin-top: 10px;
-}
-.image-picker input {
+  font-size: 1.6rem;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 25px;
-  font-family: "Poppins", sans-serif;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-@media only screen and (max-width: 899px) {
-  .broad-container {
-    margin-top: 50px;
-    padding-bottom: 30px;
-    /* height: auto; */
+
+.broad-btn-head-set button:hover {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.05);
+}
+
+/* Send container */
+.broad-send-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.3rem 1rem var(--black), inset 0 -0.1rem 0.3rem var(--grey);
+  animation: broad-fade-in 0.3s ease;
+}
+
+@keyframes broad-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-@media only screen and (max-width: 400px) {
-  .button-container {
-    justify-content: space-evenly;
-  }
+
+/* Textarea */
+.broad-textarea {
+  width: 100%;
+  max-width: 60rem;
+  height: 35rem;
+  padding: 1.5rem;
+  background: var(--black);
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  border: 0.2rem solid var(--grey);
+  border-radius: 1rem;
+  box-shadow: inset 0 0.2rem 0.6rem var(--black);
+  resize: vertical;
+  outline: none;
+  transition: all 0.3s ease;
 }
-@media only screen and (max-width: 600px) {
+
+.broad-textarea:focus,
+.broad-textarea:hover {
+  border-color: var(--orange);
+  border: 0.2rem solid var(--orange);
+  transform: scale(1.02);
+}
+
+.broad-textarea::placeholder {
+  color: var(--grey);
+  opacity: 1;
+}
+
+.broad-textarea:focus::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Button container */
+.broad-button-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Cancel button */
+.broad-btn-cancel {
+  padding: 1rem 2.5rem;
+  background: var(--grey);
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+/* 
+.broad-btn-cancel:hover {
+  background: var(--white);
+  color: var(--black);
+  box-shadow: 0 0.3rem 1rem var(--grey);
+  transform: scale(1.05);
+} */
+
+/* Send button */
+.broad-btn-send {
+  padding: 1rem 2.5rem;
+  background: var(--orange);
+  color: var(--black);
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* .broad-btn-send:hover {
+  background: var(--white);
+  color: var(--orange);
+  box-shadow: 0 0.3rem 1rem var(--orange);
+  transform: scale(1.05);
+} */
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .broad-container-full {
+    padding: 2rem;
+  }
+
   .broad-heading h2 {
-    font-size: 30px;
+    font-size: 3rem;
   }
-}
-.spinner-set {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.spinner {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  border: 4px solid #0000;
-  border-radius: 50%;
-  border-right-color: #ff9700;
-  animation: spinner-a4dj62 1s infinite linear;
-}
 
-.spinner::before,
-.spinner::after {
-  content: "";
-  grid-area: 1/1;
-  margin: 2px;
-  border: inherit;
-  border-radius: 50%;
-  animation: spinner-a4dj62 2s infinite;
-}
+  .broad-textarea {
+    max-width: 100%;
+    height: 12rem;
+  }
 
-.spinner::after {
-  margin: 8px;
-  animation-duration: 3s;
-}
+  .broad-button-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
-@keyframes spinner-a4dj62 {
-  100% {
-    transform: rotate(1turn);
+  .broad-btn-head-set button,
+  .broad-btn-cancel,
+  .broad-btn-send {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.5rem;
   }
 }

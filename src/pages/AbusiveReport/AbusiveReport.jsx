@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import "./abuse.css";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import "./abuse.css";
 
 const AbusiveReport = () => {
   const [reportData, setReportData] = useState(null);
@@ -147,61 +147,63 @@ const AbusiveReport = () => {
   const formattedDuration = reportData ? reportData.reportedDuration : "N/A";
 
   return (
-    <div className="container3-sett">
+    <div className="abuse-report-container">
       {isUserBlocked ? (
-        <div className="container-set-max-flex">
-          <div className="cards">
-            <div className="card red">
-              <div className="data-set-max-flex red-cololr-bloack">
+        <div className="abuse-content-wrapper">
+          <div className="abuse-cards-grid">
+            <div className="abuse-card abuse-card-red">
+              <div className="abuse-card-content abuse-blocked">
                 <h1>Blocked User</h1>
                 <h1>User has been blocked.</h1>
               </div>
             </div>
           </div>
-          <div className="remove-reported0users click-oral">
-            <button onClick={handleToggleBlock}>Unblock</button>
+          <div className="abuse-actions">
+            <button onClick={handleToggleBlock} className="abuse-unblock-btn">
+              Unblock
+            </button>
           </div>
         </div>
       ) : (
-        <div className="container-set-max-flex">
-          <div className="cards">
+        <div className="abuse-content-wrapper">
+          <div className="abuse-cards-grid">
             {reportData === null ? (
-              <div className="card red">
-                <div className="data-set-max-flex green-reportes-data">
+              <div className="abuse-card abuse-card-green">
+                <div className="abuse-card-content abuse-no-reports">
                   <h1>No Reports</h1>
                   <h1>This user has not been reported.</h1>
                 </div>
               </div>
             ) : (
               <>
-                <div className="card red">
-                  <div className="data-set-max-flex">
+                <div className="abuse-card abuse-card-red">
+                  <div className="abuse-card-content">
                     <h1>User</h1>
                     <h1>{reportData.reportedUser}</h1>
                   </div>
                 </div>
-                <div className="card blue">
-                  <div className="data-set-max-flex">
+                <div className="abuse-card abuse-card-blue">
+                  <div className="abuse-card-content">
                     <h1>Reported by</h1>
                     <h1>{reportData.reportedBy}</h1>
                   </div>
                 </div>
-                <div className="card green">
-                  <div className="data-set-max-flex">
+                <div className="abuse-card abuse-card-green">
+                  <div className="abuse-card-content">
                     <h1>Reported Days</h1>
                     <h1>{formattedDuration}</h1>
                   </div>
                 </div>
-                <div className="card blue">
-                  <div className="data-set-max-flex">
+                <div className="abuse-card abuse-card-blue">
+                  <div className="abuse-card-content">
                     <h1>Reported</h1>
                     <h1>
                       {new Date(reportData.reportedAt).toLocaleDateString()}
                     </h1>
                   </div>
                 </div>
-                <div className="card green">
-                  <div className="data-set-max-flex">
+                <div className="abuse-card abuse-card-green">
+                  <div className="abuse-card-content">
                     <h1>Message</h1>
                     <h1>{reportData.reason}</h1>
                   </div>
@@ -210,9 +212,11 @@ const AbusiveReport = () => {
             )}
           </div>
           {reportData && (
-            <div className="remove-reported0users">
-              <button onClick={handleRemove}>Remove</button>
-              <button onClick={handleToggleBlock}>
+            <div className="abuse-actions">
+              <button onClick={handleRemove} className="abuse-remove-btn">
+                Remove
+              </button>
+              <button onClick={handleToggleBlock} className="abuse-block-btn">
                 {isUserBlocked ? "Unblock" : "Block"}
               </button>
             </div>

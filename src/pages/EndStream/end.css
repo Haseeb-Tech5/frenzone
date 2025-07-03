@@ -1,14 +1,107 @@
-.live-steam-onlu {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  color: black;
-  padding: 15px;
+
+.end-stream-container {
+  width: 100%;
+  padding: 3rem;
+
+  border-radius: 1.5rem;
+  box-shadow: 0 0.3rem 1.2rem var(--black);
 }
-.live-stream-oracle {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  color: black;
-  padding: 15px;
+
+/* Header with glassmorphism effect */
+.end-stream-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 1rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  margin-bottom: 2.5rem;
+}
+.end-stream-title h2 {
+  font-size: 2.6rem;
+  color: var(--white);
+  font-weight: 700;
+}
+
+/* Delete button with glow animation */
+.end-stream-actions .end-delete-btn {
+  padding: 1rem 2.5rem;
+  background-color: var(--orange);
+  color: var(--white);
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.end-stream-actions .end-delete-btn:hover:not(:disabled) {
+  box-shadow: 0 0 1.5rem var(--orange);
+  transform: scale(1.05);
+}
+.end-stream-actions .end-delete-btn:disabled {
+  background-color: var(--grey);
+  cursor: not-allowed;
+}
+
+/* Video player styling */
+.end-stream-player {
+  width: 100%;
+  height: 75rem;
+  background: var(--black);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0.3rem 1.2rem var(--black);
+}
+.end-no-stream {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--white);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Spinner container */
+.end-spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.end-spinner {
+  width: 5rem;
+  height: 5rem;
+  border: 0.5rem solid var(--orange);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: end-spin 1.2s linear infinite;
+}
+@keyframes end-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .end-stream-container {
+    padding: 1.5rem;
+  }
+  .end-stream-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .end-stream-player {
+    height: 45rem;
+  }
+  .end-stream-title h2 {
+    font-size: 2.2rem;
+  }
+  .end-delete-btn {
+    width: 100%;
+    text-align: center;
+  }
 }

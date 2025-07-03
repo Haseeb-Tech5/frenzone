@@ -8,7 +8,7 @@ const BalanceOverview = () => {
   const [error, setError] = useState(null);
 
   const selectedUser = useSelector((state) => state.user.selectedUser);
-
+  console.log(selectedUser, "selectedUser");
   useEffect(() => {
     const fetchWalletData = async () => {
       try {
@@ -55,70 +55,60 @@ const BalanceOverview = () => {
   }, [selectedUser]);
 
   return (
-    <div className="container2-sett">
-      <div className="container-set-max-flex">
-        <div className="cards">
-          <div className="card red blackket-super">
-            <div className="data-set-max-flex center-aligned-set">
-              <div className="amount-gained">Amount Gained</div>
+    <div className="bal-overview-container">
+      <div className="bal-content-wrapper">
+        <div className="bal-cards-grid">
+          <div className="bal-card bal-card-red">
+            <div className="bal-card-content bal-card-wallet">
+              <div className="bal-title">Amount Gained</div>
               {wallet ? (
-                <div className="current-amiount-currently-full">
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Current Amount</div>
-                    <div className="current-amount-gained cent">
-                      {wallet.currentAmount}
-                    </div>
+                <div className="bal-data-container">
+                  <div className="bal-data-item">
+                    <div className="bal-label">Current Amount</div>
+                    <div className="bal-value">{wallet.currentAmount}</div>
                   </div>
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Earned Amount</div>
-                    <div className="current-amount-gained cent">
-                      {wallet.earnedAmount}
-                    </div>
+                  <div className="bal-data-item">
+                    <div className="bal-label">Earned Amount</div>
+                    <div className="bal-value">{wallet.earnedAmount}</div>
                   </div>
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Bought Amount</div>
-                    <div className="current-amount-gained cent">
-                      {wallet.boughtAmount}
-                    </div>
+                  <div className="bal-data-item">
+                    <div className="bal-label">Bought Amount</div>
+                    <div className="bal-value">{wallet.boughtAmount}</div>
                   </div>
                 </div>
               ) : (
-                <div className="error-message">No Wallet for this user</div>
+                <div className="bal-error">No Wallet for this user</div>
               )}
             </div>
           </div>
-          <div className="card red blackket-super">
-            <div className="data-set-max-flex center-aligned-set">
-              <div className="amount-gained">Withdraw Status</div>
+          <div className="bal-card bal-card-red">
+            <div className="bal-card-content bal-card-withdrawal">
+              <div className="bal-title">Withdraw Status</div>
               {withdrawal ? (
-                <div className="current-amiount-currently-full">
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Withdraw Amount</div>
-                    <div className="current-amount-gained cent">
-                      {withdrawal.amount}
-                    </div>
+                <div className="bal-data-container">
+                  <div className="bal-data-item">
+                    <div className="bal-label">Withdraw Amount</div>
+                    <div className="bal-value">{withdrawal.amount}</div>
                   </div>
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Status</div>
-                    <div className="current-amount-gained cent">
-                      {withdrawal.status}
-                    </div>
+                  <div className="bal-data-item">
+                    <div className="bal-label">Status</div>
+                    <div className="bal-value">{withdrawal.status}</div>
                   </div>
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Withdrawal Date</div>
-                    <div className="current-amount-gained cent">
+                  <div className="bal-data-item">
+                    <div className="bal-label">Withdrawal Date</div>
+                    <div className="bal-value">
                       {new Date(withdrawal.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <div className="current-amiount-currently">
-                    <div className="current-amount cent">Withdrawal Time</div>
-                    <div className="current-amount-gained cent">
+                  <div className="bal-data-item">
+                    <div className="bal-label">Withdrawal Time</div>
+                    <div className="bal-value">
                       {new Date(withdrawal.createdAt).toLocaleTimeString()}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="error-message">
+                <div className="bal-error">
                   No withdrawal data found for this user
                 </div>
               )}

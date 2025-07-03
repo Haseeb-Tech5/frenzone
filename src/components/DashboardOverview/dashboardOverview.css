@@ -1,4 +1,5 @@
-.profit-container {
+/* Main container */
+.dash-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,7 +9,7 @@
 }
 
 /* Inner container */
-.profit-container-inner {
+.dash-container-inner {
   width: 100%;
   max-width: 120rem;
   background: rgba(255, 255, 255, 0.1);
@@ -17,12 +18,12 @@
   backdrop-filter: blur(0.5rem);
   -webkit-backdrop-filter: blur(0.5rem);
   padding: 2rem;
-  animation: profit-fade-in 0.5s ease-out;
+  animation: dash-fade-in 0.5s ease-out;
 }
 
 /* Heading */
-.profit-heading h2 {
-     font-family: "Poppins", sans-serif;
+.dash-heading h2 {
+ font-family: "Poppins", sans-serif;
     font-size: 4rem;
     font-weight: 600;
     color: var(--orange);
@@ -31,7 +32,7 @@
 }
 
 /* Loader container */
-.profit-loader-container {
+.dash-loader-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -46,15 +47,15 @@
 }
 
 /* Loader cube */
-.profit-loader-cube {
+.dash-loader-cube {
   width: 6rem;
   height: 6rem;
   transform-style: preserve-3d;
-  animation: profit-rotate 3.5s linear infinite;
+  animation: dash-rotate 3.5s linear infinite;
 }
 
 /* Loader face */
-.profit-loader-face {
+.dash-loader-face {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -64,32 +65,32 @@
   border-radius: 25%;
 }
 
-.profit-loader-face:nth-child(1) {
+.dash-loader-face:nth-child(1) {
   transform: rotateX(90deg) translateZ(3rem);
 }
 
-.profit-loader-face:nth-child(2) {
+.dash-loader-face:nth-child(2) {
   transform: rotateX(-90deg) translateZ(3rem);
 }
 
-.profit-loader-face:nth-child(3) {
+.dash-loader-face:nth-child(3) {
   transform: translateZ(3rem);
 }
 
-.profit-loader-face:nth-child(4) {
+.dash-loader-face:nth-child(4) {
   transform: rotateY(90deg) translateZ(3rem);
 }
 
-.profit-loader-face:nth-child(5) {
+.dash-loader-face:nth-child(5) {
   transform: rotateY(-90deg) translateZ(3rem);
 }
 
-.profit-loader-face:nth-child(6) {
+.dash-loader-face:nth-child(6) {
   transform: rotateY(180deg) translateZ(3rem);
 }
 
 /* Loader rotation animation */
-@keyframes profit-rotate {
+@keyframes dash-rotate {
   0% {
     transform: rotateX(0deg) rotateY(0deg);
   }
@@ -99,7 +100,7 @@
 }
 
 /* Error message */
-.profit-error {
+.dash-error {
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
   color: var(--orange);
@@ -107,25 +108,16 @@
   margin: 2rem;
 }
 
-/* No data message */
-.profit-no-data {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.6rem;
-  color: var(--white);
-  text-align: center;
-  margin: 2rem;
-}
-
 /* Cards container */
-.profit-cards {
+.dash-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 2rem;
   padding: 1rem;
 }
 
 /* Individual card */
-.profit-card {
+.dash-card {
   background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
   border-radius: 1rem;
   padding: 1.5rem;
@@ -135,25 +127,35 @@
   align-items: center;
   gap: 1rem;
   border: 0.2rem solid var(--white);
-  /* background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(135deg, var(--orange), var(--grey));
+  /* background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    linear-gradient(135deg, var(--orange), var(--grey));
   background-origin: border-box;
   background-clip: content-box, border-box; */
+  transition: all 0.3s ease;
+}
+
+.dash-card:hover {
+  transform: scale(1.05);
+  border: 0.2rem solid var(--orange);
 }
 
 /* Card animation */
-.profit-animate {
-  animation: profit-slide-up 0.5s ease-out;
+.dash-animate {
+  animation: dash-slide-up 0.5s ease-out;
 }
 
 /* Card icon */
-.profit-card-icon {
+.dash-card-icon {
   font-size: 3rem;
   color: var(--orange);
   margin-bottom: 1rem;
 }
 
 /* Card label */
-.profit-card-label {
+.dash-card-label {
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
   font-weight: 500;
@@ -161,16 +163,54 @@
 }
 
 /* Card value */
-.profit-card-value {
+.dash-card-value {
   font-family: "Montserrat", sans-serif;
   font-size: 2rem;
   font-weight: 600;
   color: var(--orange);
-  animation: profit-value-pulse 2s infinite ease-in-out;
+  animation: dash-value-pulse 2s infinite ease-in-out;
+}
+
+/* Charts container */
+.dash-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Chart container */
+.dash-chart-container {
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+  border: 0.2rem solid var(--white);
+  /* background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    linear-gradient(135deg, var(--orange), var(--grey));
+  background-origin: border-box;
+  background-clip: content-box, border-box; */
+}
+
+/* Chart title */
+.dash-chart-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Chart wrapper */
+.dash-chart-wrapper {
+  height: 25rem;
 }
 
 /* Animations */
-@keyframes profit-fade-in {
+@keyframes dash-fade-in {
   from {
     opacity: 0;
     transform: translateY(1rem);
@@ -181,7 +221,7 @@
   }
 }
 
-@keyframes profit-slide-up {
+@keyframes dash-slide-up {
   from {
     opacity: 0;
     transform: translateY(2rem);
@@ -192,7 +232,7 @@
   }
 }
 
-@keyframes profit-value-pulse {
+@keyframes dash-value-pulse {
   0%,
   100% {
     transform: scale(1);
@@ -204,23 +244,31 @@
 
 /* Responsive design */
 @media (max-width: 600px) {
-  .profit-container-inner {
+  .dash-container-inner {
     padding: 1rem;
   }
 
-  .profit-heading h2 {
+  .dash-heading h2 {
     font-size: 2rem;
   }
 
-  .profit-cards {
+  .dash-cards {
     grid-template-columns: 1fr;
   }
 
-  .profit-card-label {
+  .dash-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-card-label {
     font-size: 1.4rem;
   }
 
-  .profit-card-value {
+  .dash-card-value {
     font-size: 1.8rem;
+  }
+
+  .dash-chart-wrapper {
+    height: 20rem;
   }
 }
