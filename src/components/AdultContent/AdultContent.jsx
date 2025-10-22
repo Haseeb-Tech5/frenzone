@@ -210,7 +210,7 @@ const SensitiveContent = () => {
       {loading && <Loader />}
       <div className="sc-dashboard-container-contained">
         <div className="sc-heading-contained">
-          <h2>Sensitive Content</h2>
+          <h2>Suspicious Posts</h2>
         </div>
         <div className="sc-sen-tab-container">
           <button

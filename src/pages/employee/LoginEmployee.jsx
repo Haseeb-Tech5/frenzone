@@ -46,7 +46,7 @@ const LoginEmployee = () => {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.href = "/employee/dashboard";
+          window.location.href = "/frenzone/dashboard";
         });
       } else {
         Swal.fire({

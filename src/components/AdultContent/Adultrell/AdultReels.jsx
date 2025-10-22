@@ -93,7 +93,7 @@ const AdultReels = () => {
         </div>
         <div className="heading-container-headinffff">
           <div className="heading-sections-ommm">Sensitive Reels</div>
-          <Link to="/employee/adultcontent" style={{ textDecoration: "none" }}>
+          <Link to="/frenzone/adultcontent" style={{ textDecoration: "none" }}>
             <div className="heading-sections-ommm">Go to Post Section</div>
           </Link>
         </div>

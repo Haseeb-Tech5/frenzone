@@ -3,11 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdPerson } from "react-icons/io";
-import { MdOutlineEditCalendar } from "react-icons/md";
+import { MdOutlineEditCalendar, MdOutlineReportProblem } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImBlocked } from "react-icons/im";
-import { FaHandHoldingDollar } from "react-icons/fa6";
+import { FaHandHoldingDollar, FaMoneyBillTransfer } from "react-icons/fa6";
 import Icon1 from "../Icon/Icon1";
 import { clearAdminId } from "../Redux/userSlice";
 import "./employee.css";
@@ -25,50 +25,62 @@ const Employee = ({ children }) => {
     {
       id: "dashboard",
       label: "Dashbaord",
-      route: "/employee/dashboard",
+      route: "/frenzone/dashboard",
       icon: <MdAssessment className="emp-nav-icon" />,
     },
     {
       id: "user-management",
       label: "User Management",
-      route: "/employee/user-management",
+      route: "/frenzone/user-management",
       icon: <IoMdPerson className="emp-nav-icon" />,
     },
     {
       id: "reports",
       label: "BroadCast",
-      route: "/employee/reports",
+      route: "/frenzone/reports",
       icon: <SiGoogleanalytics className="emp-nav-icon" />,
     },
     {
       id: "version",
       label: "Version Control",
-      route: "/employee/version",
+      route: "/frenzone/version",
       icon: <MdOutlineEditCalendar className="emp-nav-icon" />,
     },
     {
       id: "review",
       label: "Reviews",
-      route: "/employee/review",
+      route: "/frenzone/review",
       icon: <MdOutlineReviews className="emp-nav-icon" />,
     },
-    {
-      id: "withdrawals",
-      label: "Withdrawals",
-      route: "/employee/withdrawals",
-      icon: <BiMoneyWithdraw className="emp-nav-icon" />,
-    },
+    // {
+    //   id: "withdrawals",
+    //   label: "Withdrawals",
+    //   route: "/frenzone/withdrawals",
+    //   icon: <BiMoneyWithdraw className="emp-nav-icon" />,
+    // },
     {
       id: "adultcontent",
-      label: "Adult Content",
-      route: "/employee/adultcontent",
+      label: "Suspicious Posts",
+      route: "/frenzone/adultcontent",
       icon: <ImBlocked className="emp-nav-icon" />,
     },
     {
       id: "companyprofit",
       label: "Company Profit",
-      route: "/employee/companyprofit",
+      route: "/frenzone/companyprofit",
       icon: <FaHandHoldingDollar className="emp-nav-icon" />,
+    },
+    {
+      id: "transactions",
+      label: "Transactions",
+      route: "/frenzone/transactions",
+      icon: <FaMoneyBillTransfer className="emp-nav-icon" />,
+    },
+    {
+      id: "totalreports",
+      label: "Reported Posts",
+      route: "/frenzone/totalreports",
+      icon: <MdOutlineReportProblem className="emp-nav-icon" />,
     },
   ];
 

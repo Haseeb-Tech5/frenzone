@@ -20,7 +20,7 @@ const Detailed = () => {
       <div className="dtl-container">
         <div className="dtl-flex-wrapper">
           <div className="dtl-header">
-            <Link to="/employee/dashboard">
+            <Link to="/frenzone/dashboard">
               <div className="dtl-back-btn-container">
                 <button className="dtl-back-btn">Go Back</button>
               </div>
@@ -90,12 +90,55 @@ const Detailed = () => {
                       <h1>Username</h1>
                       <h1>{selectedUser?.username || "N/A"}</h1>
                     </div>
-                  </div>
-
+                  </div>{" "}
                   <div className="dtl-card dtl-card-blue">
                     <div className="dtl-card-content">
-                      <h1>About</h1>
-                      <h1>{selectedUser?.about || "N/A"}</h1>
+                      <h1>Full Name</h1>
+                      <h1>{`${selectedUser?.firstname || "N/A"} ${
+                        selectedUser?.lastname || "N/A"
+                      }`}</h1>
+                    </div>
+                  </div>
+                  <div className="dtl-card dtl-card-blue">
+                    <div className="dtl-card-content">
+                      <h1>Address</h1>
+                      <h1>{selectedUser?.address || "N/A"}</h1>
+                    </div>
+                  </div>
+                  <div className="dtl-card dtl-card-blue">
+                    <div className="dtl-card-content">
+                      <h1>Ip Address</h1>
+                      <h1>{selectedUser?.ipAddress || "N/A"}</h1>
+                    </div>
+                  </div>
+                  <div className="dtl-card dtl-card-blue">
+                    <div className="dtl-card-content">
+                      <h1>Email</h1>
+                      <h1>{selectedUser?.email || "N/A"}</h1>
+                    </div>
+                  </div>
+                  <div className="dtl-card dtl-card-red">
+                    <div className="dtl-card-content">
+                      <h1>Date of Birth</h1>
+                      <h1>{selectedUser?.dob || "N/A"}</h1>
+                    </div>
+                  </div>{" "}
+                  <div className="dtl-card dtl-card-red">
+                    <div className="dtl-card-content">
+                      <h1>Total Posts</h1>
+                      <h1>{selectedUser?.posts?.length || "N/A"}</h1>
+                    </div>
+                  </div>{" "}
+                  <div className="dtl-card dtl-card-red">
+                    <div className="dtl-card-content">
+                      <h1>Total Reels</h1>
+                      <h1>{selectedUser?.reels?.length || "N/A"}</h1>
+                    </div>
+                  </div>{" "}
+                  <div className="dtl-card dtl-card-red">
+                    <div className="dtl-card-content">
+                      <h1>Bio</h1>
+                      <h1>{selectedUser?.bio || "N/A"}</h1>
                     </div>
                   </div>
                   <div className="dtl-card dtl-card-green">
@@ -114,26 +157,6 @@ const Detailed = () => {
                   </div>
                   <div className="dtl-card dtl-card-green">
                     <div className="dtl-card-content">
-                      <h1>isAdminBlocked</h1>
-                      <h1>{selectedUser?.isAdminBlocked ? "true" : "false"}</h1>
-                    </div>
-                  </div>
-
-                  <div className="dtl-card dtl-card-red">
-                    <div className="dtl-card-content">
-                      <h1>Bio</h1>
-                      <h1>{selectedUser?.bio || "N/A"}</h1>
-                    </div>
-                  </div>
-                  <div className="dtl-card dtl-card-blue">
-                    <div className="dtl-card-content">
-                      <h1>Email</h1>
-                      <h1>{selectedUser?.email || "N/A"}</h1>
-                    </div>
-                  </div>
-
-                  <div className="dtl-card dtl-card-green">
-                    <div className="dtl-card-content">
                       <h1>Is Live</h1>
                       <h1>{selectedUser?.isLive ? "true" : "false"}</h1>
                     </div>
@@ -150,27 +173,10 @@ const Detailed = () => {
                       <h1>{selectedUser?.isVerified ? "true" : "false"}</h1>
                     </div>
                   </div>
-
                   <div className="dtl-card dtl-card-blue">
                     <div className="dtl-card-content">
                       <h1>Live Access</h1>
                       <h1>{selectedUser?.liveAccess ? "true" : "false"}</h1>
-                    </div>
-                  </div>
-                  <div className="dtl-card dtl-card-green">
-                    <div className="dtl-card-content">
-                      <h1>Phone</h1>
-                      <h1>{selectedUser?.phone || "N/A"}</h1>
-                    </div>
-                  </div>
-                  <div className="dtl-card dtl-card-red">
-                    <div className="dtl-card-content">
-                      <h1>Tags</h1>
-                      <h1>
-                        {selectedUser?.tags
-                          ? selectedUser.tags.join(", ")
-                          : "N/A"}
-                      </h1>
                     </div>
                   </div>
                 </div>

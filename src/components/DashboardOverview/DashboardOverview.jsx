@@ -138,12 +138,12 @@ const DashboardOverview = () => {
       icon: <FaVideo className="dash-card-icon" />,
     },
     {
-      label: "Adult Posts",
+      label: "Suspicious Posts",
       value: dashboardData.nudityPosts,
       icon: <ImBlocked className="dash-card-icon" />,
     },
     {
-      label: "Adult Reels",
+      label: "Suspicious Reels",
       value: dashboardData.nudityReels,
       icon: <ImBlocked className="dash-card-icon" />,
     },
@@ -188,7 +188,7 @@ const DashboardOverview = () => {
 
   // Bar chart data
   const barChartData = {
-    labels: ["Users", "Posts", "Reels", "Adult Posts", "Adult Reels"],
+    labels: ["Users", "Posts", "Reels", "Suspicious Posts", "Suspicious Reels"],
     datasets: [
       {
         label: "Dashboard Metrics",

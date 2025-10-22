@@ -1,0 +1,275 @@
+.transactions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+.transactions-container-inner {
+  width: 100%;
+  max-width: 120rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  padding: 2rem;
+  animation: transactions-fade-in 0.5s ease-out;
+}
+
+.transactions-heading h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.transactions-error {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--orange);
+  text-align: center;
+  margin: 2rem;
+}
+
+.transactions-no-data {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-align: center;
+  margin: 2rem;
+}
+
+.transactions-table-wrapper {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-align: left;
+}
+
+.transactions-table th {
+  background: var(--orange);
+  font-weight: 600;
+}
+
+.transactions-table td {
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+}
+
+.transactions-row {
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.transactions-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-0.2rem);
+}
+
+.transactions-animate {
+  animation: transactions-slide-up 0.5s ease-out;
+}
+
+.transactions-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.transactions-profile-pic {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 0.1rem solid var(--white);
+}
+
+.transactions-meta {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  color: var(--white);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@keyframes transactions-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes transactions-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .transactions-container-inner {
+    padding: 1rem;
+  }
+
+  .transactions-heading h2 {
+    font-size: 2rem;
+  }
+
+  .transactions-table th,
+  .transactions-table td {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
+
+  .transactions-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .transactions-meta {
+    font-size: 1.2rem;
+  }
+}
+/* Modal Styles */
+.transactions-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: transactions-fade-in 0.5s ease-out;
+}
+
+.transactions-modal {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  padding: 2rem;
+  width: 90%;
+  max-width: 50rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.transactions-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.transactions-modal-header h3 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin: 0;
+}
+
+.transactions-modal-close {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.transactions-modal-close:hover {
+  color: var(--orange);
+}
+
+.transactions-modal-content {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  line-height: 1.6;
+}
+
+.transactions-modal-content p {
+  margin: 0.8rem 0;
+}
+
+.transactions-modal-content strong {
+  color: var(--orange);
+}
+
+.transactions-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.transactions-detail-button,
+.transactions-modal-button {
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.transactions-detail-button:hover,
+.transactions-modal-button:hover {
+  background: var(--white);
+}
+
+@media (max-width: 600px) {
+  .transactions-modal {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .transactions-modal-header h3 {
+    font-size: 1.8rem;
+  }
+
+  .transactions-modal-content {
+    font-size: 1.4rem;
+  }
+
+  .transactions-detail-button,
+  .transactions-modal-button {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+}
