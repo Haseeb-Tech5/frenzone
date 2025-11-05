@@ -97,6 +97,7 @@ const Employee = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("adminId");
+    localStorage.removeItem("token");
     sessionStorage.removeItem("adminId");
     dispatch(clearAdminId());
     window.location.href = "/";

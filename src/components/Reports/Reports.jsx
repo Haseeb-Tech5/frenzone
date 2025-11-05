@@ -8,8 +8,8 @@ const Reports = () => {
   const [reportsData, setReportsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1); // State for dynamic page
-  const [limit, setLimit] = useState(10); // State for dynamic limit
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,11 +30,10 @@ const Reports = () => {
         }
         const data = await response.json();
         if (data.success) {
-          // Sort reports by createdAt in descending order (newest first)
           const sortedReports = {
             ...data,
-            reports: [...data.reports].sort((a, b) => 
-              new Date(b.createdAt) - new Date(a.createdAt)
+            reports: [...data.reports].sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             ),
           };
           setReportsData(sortedReports);
@@ -55,7 +54,7 @@ const Reports = () => {
     };
 
     fetchReports();
-  }, [page, limit]); // Re-fetch when page or limit changes
+  }, [page, limit]);
 
   const handleViewDetails = (reportId) => {
     navigate(`/frenzone/report/${reportId}`);
@@ -69,7 +68,7 @@ const Reports = () => {
 
   const handleLimitChange = (newLimit) => {
     setLimit(newLimit);
-    setPage(1); // Reset to first page when limit changes
+    setPage(1);
   };
 
   return (
@@ -103,7 +102,9 @@ const Reports = () => {
                       />
                       <span>{report.userid.username}</span>
                     </td>
-                    <td>{report.postid.description}</td>
+                    <td>
+                      {report.postid?.description || "No description available"}
+                    </td>
                     <td>{report.message}</td>
                     <td>
                       {new Date(report.createdAt).toLocaleDateString("en-US", {

@@ -18,6 +18,8 @@ import "./table.css";
 import "../pages/employee/dashboard.css";
 
 function Paginated() {
+  const token = localStorage.getItem("token");
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,6 +45,7 @@ function Paginated() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -111,6 +114,7 @@ function Paginated() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         userid: id,
@@ -152,6 +156,7 @@ function Paginated() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         userid: id,
@@ -195,6 +200,7 @@ function Paginated() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         userid: id,

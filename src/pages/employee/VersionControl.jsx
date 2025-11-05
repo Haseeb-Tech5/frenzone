@@ -5,6 +5,7 @@ import "./version.css";
 import Loader from "../../components/Loader/Loader";
 
 const VersionControl = () => {
+  const token = localStorage.getItem("token");
   const [version, setVersion] = useState("");
   const [os, setOs] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
@@ -12,7 +13,11 @@ const VersionControl = () => {
 
   const fetchVersion = (osType) => {
     setLoading(true); // Show loader
-    fetch(`https://api.frenzone.live/version/${osType}`)
+    fetch(`https://api.frenzone.live/version/${osType}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add Bearer token here
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setVersion(data.version);
@@ -44,6 +49,7 @@ const VersionControl = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ version, os }),
     })

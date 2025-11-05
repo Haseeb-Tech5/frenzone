@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./broadcast.css";
 
 const ReportsEmployee = () => {
+  const token = localStorage.getItem("token");
   const [isSending, setIsSending] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [modal, setModal] = useState({
@@ -33,6 +34,7 @@ const ReportsEmployee = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ message: notificationMessage }),
     })

@@ -10,6 +10,7 @@ const CompanyProfit = () => {
   const [error, setError] = useState(null);
 
   const adminId = localStorage.getItem("adminId");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProfitData = async () => {
@@ -21,6 +22,7 @@ const CompanyProfit = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Add Bearer token here
             },
           }
         );

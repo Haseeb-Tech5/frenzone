@@ -5,6 +5,8 @@ import "./transactions.css";
 import Loader from "../components/Loader/Loader";
 
 const Transactions = () => {
+  const token = localStorage.getItem("token");
+
   const [transactionsData, setTransactionsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,6 +24,7 @@ const Transactions = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

@@ -38,6 +38,7 @@ const LoginEmployee = () => {
       if (response.ok) {
         dispatch(setAdminId(data.adminId));
         localStorage.setItem("adminId", data.adminId);
+        localStorage.setItem("token", data.token);
         sessionStorage.setItem("adminId", data.adminId);
         Swal.fire({
           icon: "success",

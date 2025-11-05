@@ -33,6 +33,9 @@ ChartJS.register(
 );
 
 const DashboardOverview = () => {
+  const token = localStorage.getItem("token");
+  console.log("token", token);
+
   const [dashboardData, setDashboardData] = useState({
     totalUsers: 0,
     totalPosts: 0,
@@ -58,7 +61,10 @@ const DashboardOverview = () => {
       try {
         const statsResponse = await fetch(`${publicIp}/admin/getStats`, {
           method: "GET",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (!statsResponse.ok) {
           throw new Error("Failed to fetch stats");
@@ -72,7 +78,10 @@ const DashboardOverview = () => {
               `${publicIp}/wallet/getWalletAmount/${adminId}`,
               {
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
             if (!profitResponse.ok) {
