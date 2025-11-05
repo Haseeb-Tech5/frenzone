@@ -23,6 +23,7 @@ import Employee from "./layout/Employee.jsx";
 import Transcations from "./pages/Transcations.jsx";
 import Reports from "./components/Reports/Reports.jsx";
 import ReportDetails from "./components/Reports/ReportDetails.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -62,15 +63,20 @@ const App = () => {
       ) : (
         <Provider store={store}>
           <Routes>
+            {/* Public Route */}
             <Route path="/" element={<LoginEmployee />} />
+
+            {/* Protected Routes */}
             {employeeRoutes.map(({ path, component: Component }) => (
               <Route
                 key={path}
                 path={path}
                 element={
-                  <Employee>
-                    <Component />
-                  </Employee>
+                  <ProtectedRoute>
+                    <Employee>
+                      <Component />
+                    </Employee>
+                  </ProtectedRoute>
                 }
               />
             ))}
