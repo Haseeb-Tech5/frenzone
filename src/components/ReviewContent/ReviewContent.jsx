@@ -63,50 +63,70 @@ const ReviewContent = () => {
         <div className="rc-reviews-container">
           {error && <div className="rc-error">{error}</div>}
           {reviews.length > 0 ? (
-            reviews.map((review) => (
-              <div
-                key={review._id}
-                className="rc-review-container-oracle-main rc-animate"
-              >
-                <div className="rc-media-container">
-                  {review.userid.profilePicture && (
-                    <div className="rc-media-item">
-                      <img
-                        src={review.userid.profilePicture}
-                        alt={`${review.userid.username}'s profile`}
-                        className="rc-profile-picture"
-                      />
+            reviews.map((review) => {
+              const user = review.userid; // Safe reference
+
+              // Skip rendering if user is completely missing
+              if (!user) {
+                return null;
+              }
+
+              return (
+                <div
+                  key={review._id}
+                  className="rc-review-container-oracle-main rc-animate"
+                >
+                  <div className="rc-media-container">
+                    {user.profilePicture ? (
+                      <div className="rc-media-item">
+                        <img
+                          src={user.profilePicture}
+                          alt={`${user.username || "User"}'s profile`}
+                          className="rc-profile-picture"
+                        />
+                      </div>
+                    ) : (
+                      <div className="rc-media-item">
+                        {/* Optional: placeholder image */}
+                        <div className="rc-profile-picture-placeholder">
+                          {user.username?.[0]?.toUpperCase() || "?"}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="rc-review-user-oracle-setting-com">
+                    <div className="rc-review-user-oracle-setting">
+                      <div className="rc-review-username-text">Username:</div>
+                      <div className="rc-reviewuser-name-username">
+                        {user.username || "Deleted User"}
+                      </div>
                     </div>
-                  )}
+
+                    <div className="rc-review-user-oracle-setting">
+                      <div className="rc-review-username-text">Review:</div>
+                      <div className="rc-reviewuser-name-username">
+                        {review.review || "No Review"}
+                      </div>
+                    </div>
+
+                    <div className="rc-review-user-oracle-setting">
+                      <div className="rc-review-username-text">Rating:</div>
+                      <div className="rc-reviewuser-name-username">
+                        {renderStars(review.rating)}
+                      </div>
+                    </div>
+
+                    <div className="rc-review-user-oracle-setting">
+                      <div className="rc-review-username-text">Created At:</div>
+                      <div className="rc-reviewuser-name-username">
+                        {new Date(review.createdAt).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="rc-review-user-oracle-setting-com">
-                  <div className="rc-review-user-oracle-setting">
-                    <div className="rc-review-username-text">Username:</div>
-                    <div className="rc-reviewuser-name-username">
-                      {review.userid.username}
-                    </div>
-                  </div>
-                  <div className="rc-review-user-oracle-setting">
-                    <div className="rc-review-username-text">Review:</div>
-                    <div className="rc-reviewuser-name-username">
-                      {review.review || "No Review"}
-                    </div>
-                  </div>
-                  <div className="rc-review-user-oracle-setting">
-                    <div className="rc-review-username-text">Rating:</div>
-                    <div className="rc-reviewuser-name-username">
-                      {renderStars(review.rating)}
-                    </div>
-                  </div>
-                  <div className="rc-review-user-oracle-setting">
-                    <div className="rc-review-username-text">Created At:</div>
-                    <div className="rc-reviewuser-name-username">
-                      {new Date(review.createdAt).toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="rc-no-content">No reviews available</div>
           )}

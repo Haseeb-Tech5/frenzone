@@ -25,10 +25,11 @@ const Reports = () => {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch reports");
-        }
+
+        if (!response.ok) throw new Error("Failed to fetch reports");
+
         const data = await response.json();
+
         if (data.success) {
           const sortedReports = {
             ...data,
@@ -41,7 +42,7 @@ const Reports = () => {
         } else {
           throw new Error("API returned unsuccessful response");
         }
-      } catch (error) {
+      } catch (err) {
         setError("Failed to fetch report data");
         Swal.fire({
           icon: "error",
@@ -61,7 +62,11 @@ const Reports = () => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= Math.ceil(reportsData.count / limit)) {
+    if (
+      newPage > 0 &&
+      reportsData &&
+      newPage <= Math.ceil(reportsData.count / limit)
+    ) {
       setPage(newPage);
     }
   };
@@ -74,17 +79,21 @@ const Reports = () => {
   return (
     <div className="reports-container">
       {loading && <Loader />}
+
       <div className="reports-container-inner">
         <div className="reports-heading">
           <h2>Reported Users</h2>
         </div>
+
         {error && <div className="reports-error">{error}</div>}
+
         {reportsData && reportsData.reports?.length > 0 ? (
           <div className="reports-table-wrapper">
             <table className="reports-table">
               <thead>
                 <tr>
                   <th>User</th>
+                  <th>type</th>
                   <th>Post Description</th>
                   <th>Reason</th>
                   <th>Date</th>
@@ -92,47 +101,92 @@ const Reports = () => {
                 </tr>
               </thead>
               <tbody>
-                {reportsData.reports.map((report, index) => (
-                  <tr key={report._id} className="reports-row reports-animate">
-                    <td className="reports-user">
-                      <img
-                        src={report.userid.profilePicUrl}
-                        alt={report.userid.username}
-                        className="reports-profile-pic"
-                      />
-                      <span>{report.userid.username}</span>
-                    </td>
-                    <td>
-                      {report.postid?.description || "No description available"}
-                    </td>
-                    <td>{report.message}</td>
-                    <td>
-                      {new Date(report.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </td>
-                    <td>
-                      <button
-                        className="reports-detail-button"
-                        onClick={() => handleViewDetails(report._id)}
-                      >
-                        Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {reportsData.reports.map((report) => {
+                  const user = report.userid; // may be null (deleted user)
+                  const reportedUser = report.reported; // for harmful type reports
+                  const post = report.postid; // may be null
+
+                  return (
+                    <tr
+                      key={report._id}
+                      className="reports-row reports-animate"
+                    >
+                      {/* ---------- User column (with fallbacks) ---------- */}
+                      <td className="reports-user">
+                        {user ? (
+                          <>
+                            <img
+                              src={
+                                user.profilePicUrl || "/default-avatar.png" // you can add a default image
+                              }
+                              alt={user.username || "User"}
+                              className="reports-profile-pic"
+                              onError={(e) => {
+                                e.target.src = "/default-avatar.png"; // fallback if image 404
+                              }}
+                            />
+                            <span>{user.username || "Unknown User"}</span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="reports-profile-pic-placeholder">
+                              ?
+                            </div>
+                            {/* <span className="deleted-user">Deleted User</span> */}
+                          </>
+                        )}
+                      </td>
+                      {/* ---------- Post description ---------- */}
+                      <td>
+                        <span
+                          className={`report-type-badge ${
+                            report.type || "post"
+                          }`}
+                        >
+                          {report.type === "harmful"
+                            ? "Harmful User"
+                            : "Post Report"}
+                        </span>
+                      </td>{" "}
+                      <td>{post?.description || "Post no longer available"}</td>
+                      {/* ---------- Reason ---------- */}
+                      <td>{report.message || "-"}</td>
+                      {/* ---------- Date ---------- */}
+                      <td>
+                        {new Date(report.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </td>
+                      {/* ---------- Actions ---------- */}
+                      <td>
+                        <button
+                          className="reports-detail-button"
+                          onClick={() => handleViewDetails(report._id)}
+                        >
+                          Details
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
+
+            {/* ---------- Pagination & limit controls ---------- */}
             <div className="reports-meta">
               <p>
                 Showing page {reportsData.page} of{" "}
                 {Math.ceil(reportsData.count / limit)} ({reportsData.count}{" "}
                 reports)
               </p>
+
               <div className="pagination-controls1">
                 <button
                   onClick={() => handlePageChange(page - 1)}
@@ -148,6 +202,7 @@ const Reports = () => {
                   Next
                 </button>
               </div>
+
               <div className="limit-controls">
                 <label>Reports per page: </label>
                 <select

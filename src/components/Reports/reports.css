@@ -387,3 +387,21 @@
     padding: 0.5rem;
   }
 }
+.report-type-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.report-type-badge.post {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.report-type-badge.harmful {
+  background-color: #ffebee;
+  color: #c62828;
+}
