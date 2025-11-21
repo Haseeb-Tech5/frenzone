@@ -93,8 +93,9 @@ const Reports = () => {
               <thead>
                 <tr>
                   <th>User</th>
-                  <th>type</th>
+                  <th>Type</th>
                   <th>Post Description</th>
+                  <th>Report User</th> {/* ← NEW COLUMN (fixed) */}
                   <th>Reason</th>
                   <th>Date</th>
                   <th>Actions</th>
@@ -102,69 +103,70 @@ const Reports = () => {
               </thead>
               <tbody>
                 {reportsData.reports.map((report) => {
-                  const user = report.userid; // may be null (deleted user)
-                  const reportedUser = report.reported; // for harmful type reports
-                  const post = report.postid; // may be null
+                  const user = report.userid;           // who made the report
+                  const reportedUser = report.reported; // who is being reported (harmful reports)
+                  const post = report.postid;
 
                   return (
-                    <tr
-                      key={report._id}
-                      className="reports-row reports-animate"
-                    >
-                      {/* ---------- User column (with fallbacks) ---------- */}
+                    <tr key={report._id} className="reports-row reports-animate">
+                      {/* Reporter */}
                       <td className="reports-user">
                         {user ? (
                           <>
                             <img
-                              src={
-                                user.profilePicUrl || "/default-avatar.png" // you can add a default image
-                              }
+                              src={user.profilePicUrl || "/default-avatar.png"}
                               alt={user.username || "User"}
                               className="reports-profile-pic"
                               onError={(e) => {
-                                e.target.src = "/default-avatar.png"; // fallback if image 404
+                                e.target.src = "/default-avatar.png";
                               }}
                             />
                             <span>{user.username || "Unknown User"}</span>
                           </>
                         ) : (
                           <>
-                            <div className="reports-profile-pic-placeholder">
-                              ?
-                            </div>
+                            <div className="reports-profile-pic-placeholder">?</div>
                             {/* <span className="deleted-user">Deleted User</span> */}
                           </>
                         )}
                       </td>
-                      {/* ---------- Post description ---------- */}
+
+                      {/* Type Badge */}
                       <td>
-                        <span
-                          className={`report-type-badge ${
-                            report.type || "post"
-                          }`}
-                        >
-                          {report.type === "harmful"
-                            ? "Harmful User"
-                            : "Post Report"}
+                        <span className={`report-type-badge ${report.type || "post"}`}>
+                          {report.type === "harmful" ? "Harmful User" : "Post Report"}
                         </span>
-                      </td>{" "}
+                      </td>
+
+                      {/* Post Description */}
                       <td>{post?.description || "Post no longer available"}</td>
-                      {/* ---------- Reason ---------- */}
-                      <td>{report.message || "-"}</td>
-                      {/* ---------- Date ---------- */}
+
+                      {/* ← NEW COLUMN: Reported User (username only) */}
                       <td>
-                        {new Date(report.createdAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }
+                        {reportedUser ? (
+                          <span className="reported-username">
+                            {reportedUser.username || "Unknown"}
+                          </span>
+                        ) : (
+                          <span className="text-muted">—</span>
                         )}
                       </td>
-                      {/* ---------- Actions ---------- */}
+
+                      {/* Reason */}
+                      <td>{report.message || "-"}</td>
+
+                      {/* Date */}
+                      <td>
+                        {new Date(report.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </td>
+
+                      {/* Actions */}
                       <td>
                         <button
                           className="reports-detail-button"
@@ -179,19 +181,15 @@ const Reports = () => {
               </tbody>
             </table>
 
-            {/* ---------- Pagination & limit controls ---------- */}
+            {/* Pagination & Limit */}
             <div className="reports-meta">
               <p>
                 Showing page {reportsData.page} of{" "}
-                {Math.ceil(reportsData.count / limit)} ({reportsData.count}{" "}
-                reports)
+                {Math.ceil(reportsData.count / limit)} ({reportsData.count} reports)
               </p>
 
               <div className="pagination-controls1">
-                <button
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                >
+                <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
                   Previous
                 </button>
                 <span>Page {page}</span>
@@ -217,9 +215,7 @@ const Reports = () => {
             </div>
           </div>
         ) : (
-          !loading && (
-            <div className="reports-no-data">No reports available</div>
-          )
+          !loading && <div className="reports-no-data">No reports available</div>
         )}
       </div>
     </div>

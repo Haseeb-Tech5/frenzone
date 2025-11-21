@@ -3,44 +3,77 @@
   display: flex;
   min-height: 100vh;
   background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Sidebar */
+/* Sidebar - Mobile: Absolute overlay | Desktop: Fixed left */
 .emp-sidebar {
   width: 30rem;
   height: 100vh;
-  position: fixed;
+  position: fixed;           /* Changed from static to fixed */
   top: 0;
-  left: -30rem; /* Hidden by default on mobile */
+  left: -30rem;              /* Hidden by default */
   background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
   padding: 2rem;
   box-shadow: 0 0.4rem 1.2rem var(--black);
-  transition: transform 0.3s ease;
-  z-index: 20;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;             /* Above everything */
+  overflow: hidden;
 }
 
 .emp-sidebar-open {
-  transform: translateX(30rem); /* Slide in */
+  left: 0 !important;       /* Slide in from left */
 }
 
+/* Desktop: Always visible, no animation needed */
 @media (min-width: 768px) {
   .emp-sidebar {
-    left: 0; /* Always visible on desktop */
+    left: 0;
+    position: fixed;
+    transition: none;
+  }
+  .emp-sidebar-open {
+    left: 0;
   }
 }
 
-/* Sidebar inner container */
+/* Backdrop when sidebar is open (mobile only) */
+.emp-sidebar::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.emp-sidebar-open::before {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+/* Sidebar inner - Scrollable nav */
 .emp-sidebar-inner {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-/* Logo container with neumorphic effect */
+/* Logo */
 .emp-logo-container {
+  flex-shrink: 0;
   height: 12rem;
-  width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,22 +81,47 @@
   border-radius: 1.2rem;
   box-shadow: inset 0 -0.2rem 0.6rem var(--grey),
     inset 0 0.2rem 0.6rem var(--grey);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding: 2rem;
 }
 
-/* Navigation list */
+/* Scrollable Navigation */
 .emp-nav-list {
   flex: 1;
   padding: 0 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 1rem 0;
+
+  /* Premium custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange) rgba(255, 255, 255, 0.1);
+  scroll-behavior: smooth;
 }
 
-/* Navigation link */
+.emp-nav-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.emp-nav-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.emp-nav-list::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 10px;
+}
+
+.emp-nav-list::-webkit-scrollbar-thumb:hover {
+  background: #ff8c00;
+}
+
+/* Nav items */
 .emp-nav-link {
   text-decoration: none;
 }
 
-/* Navigation item with neumorphic hover and active states */
 .emp-nav-item {
   display: flex;
   align-items: center;
@@ -78,6 +136,7 @@
   box-shadow: 0 0.2rem 0.6rem var(--black), inset 0 -0.1rem 0.3rem var(--grey);
   transition: all 0.3s ease;
   position: relative;
+  cursor: pointer;
 }
 
 .emp-nav-item:hover {
@@ -98,19 +157,14 @@
   height: 100%;
   width: 0.4rem;
   background-color: var(--orange);
-  animation: emp-slide 0.3s ease;
+  animation: emp-slide 0.4s ease;
 }
 
 @keyframes emp-slide {
-  from {
-    height: 0;
-  }
-  to {
-    height: 100%;
-  }
+  from { height: 0; }
+  to { height: 100%; }
 }
 
-/* Navigation icon */
 .emp-nav-icon {
   font-size: 2.2rem;
   margin-right: 1.2rem;
@@ -122,19 +176,19 @@
   color: var(--orange);
 }
 
-/* Navigation text */
 .emp-nav-text {
   font-size: 1.7rem;
 }
 
-/* Logout container */
+/* Logout - Fixed at bottom */
 .emp-logout-container {
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   margin-bottom: 2rem;
+  padding-top: 1rem;
 }
 
-/* Logout button with neumorphic effect */
 .emp-logout-btn {
   display: flex;
   align-items: center;
@@ -157,10 +211,6 @@
   transform: scale(1.05);
 }
 
-.emp-logout-icon {
-  margin-right: 1rem;
-}
-
 .emp-logout-icon svg {
   width: 2.2rem;
   height: 2.2rem;
@@ -172,31 +222,27 @@
   fill: var(--orange);
 }
 
-.emp-logout-text {
-  font-size: 1.6rem;
-}
-
-/* Header for hamburger menu (mobile only) */
+/* Mobile Header */
 .emp-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 1.5rem 2rem;
-   background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
+  background: linear-gradient(135deg, var(--white) 0%, var(--grey) 50%);
   box-shadow: 0 0.2rem 0.8rem var(--black);
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  z-index: 15;
+  z-index: 999;
 }
 
 @media (min-width: 768px) {
   .emp-header {
-    display: none; /* Hide header on desktop */
+    display: none;
   }
 }
 
-/* Hamburger icon */
 .emp-hamburger-icon {
   font-size: 2.5rem;
   color: var(--black);
@@ -208,17 +254,31 @@
   transform: scale(1.1);
 }
 
-/* Content area */
+/* Main Content - No margin push on mobile */
 .emp-content {
-  margin-left: 0;
-  margin-top: 7rem;
   width: 100%;
-  overflow: hidden;
+  margin-top: 7rem;
+  padding: 2rem;
+  transition: filter 0.35s ease;
 }
 
 @media (min-width: 768px) {
   .emp-content {
     margin-left: 30rem;
     margin-top: 0;
+    padding: 3rem;
+  }
+}
+
+/* Blur content when sidebar open on mobile */
+.emp-sidebar-open ~ .emp-content {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .emp-sidebar-open ~ .emp-content {
+    filter: none;
+    pointer-events: all;
   }
 }

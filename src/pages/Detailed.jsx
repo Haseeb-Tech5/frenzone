@@ -20,7 +20,7 @@ const Detailed = () => {
       <div className="dtl-container">
         <div className="dtl-flex-wrapper">
           <div className="dtl-header">
-            <Link to="/frenzone/dashboard">
+            <Link to="/frenzone/user-management">
               <div className="dtl-back-btn-container">
                 <button className="dtl-back-btn">Go Back</button>
               </div>

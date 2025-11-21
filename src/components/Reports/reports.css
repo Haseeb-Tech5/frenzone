@@ -44,13 +44,37 @@
   margin: 2rem;
 }
 
+/* FIXED: Mobile horizontal scroll + smooth touch */
 .reports-table-wrapper {
   overflow-x: auto;
   padding: 1rem;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange) transparent;
 }
 
+.reports-table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.reports-table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.reports-table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 10px;
+}
+
+.reports-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #ff8c00;
+}
+
+/* KEY FIX: Prevent table squeeze on mobile */
 .reports-table {
   width: 100%;
+  min-width: 1100px; /* This forces horizontal scroll instead of crushing */
   border-collapse: collapse;
   background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
   border-radius: 1rem;
@@ -65,11 +89,15 @@
   font-size: 1.6rem;
   color: var(--white);
   text-align: left;
+  white-space: nowrap; /* Prevent text wrap */
 }
 
 .reports-table th {
   background: var(--orange);
   font-weight: 600;
+  position: sticky;
+  left: 0;
+  z-index: 10;
 }
 
 .reports-table td {
@@ -93,6 +121,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 160px;
 }
 
 .reports-profile-pic {
@@ -101,6 +130,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 0.1rem solid var(--white);
+  flex-shrink: 0;
 }
 
 .reports-meta {
@@ -111,6 +141,7 @@
   margin-top: 1rem;
 }
 
+/* Your original detail page styles - 100% untouched */
 .reporter-section,
 .post-owner-section,
 .post-section {
@@ -208,6 +239,7 @@
   }
 }
 
+/* Your original mobile adjustments + improved */
 @media (max-width: 600px) {
   .reports-container-inner {
     padding: 1rem;
@@ -248,6 +280,12 @@
 
   .video-thumbnail {
     max-height: 150px;
+  }
+
+  /* Better touch target on mobile */
+  .reports-table-wrapper {
+    padding: 1.5rem 0;
+    margin: 0 -1rem;
   }
 }
 
@@ -387,6 +425,7 @@
     padding: 0.5rem;
   }
 }
+
 .report-type-badge {
   padding: 4px 10px;
   border-radius: 12px;

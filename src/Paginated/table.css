@@ -97,3 +97,6 @@
 .complete-table-nice {
   width: 100%;
 }
+.complete-table-nice th{
+  line-height: 25px !important;
+}

@@ -186,6 +186,9 @@
   padding: 1.5rem;
   box-shadow: 0 0.2rem 0.6rem var(--black);
   border: 0.2rem solid var(--white);
+  width:100%;
+  min-width: 100%;
+  max-width: 100%;
   /* background-image: linear-gradient(
       rgba(255, 255, 255, 0.1),
       rgba(255, 255, 255, 0.1)

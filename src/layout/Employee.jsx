@@ -37,7 +37,7 @@ const Employee = ({ children }) => {
     {
       id: "reports",
       label: "BroadCast",
-      route: "/frenzone/reports",
+      route: "/frenzone/broadcast",
       icon: <SiGoogleanalytics className="emp-nav-icon" />,
     },
     {
@@ -82,16 +82,47 @@ const Employee = ({ children }) => {
       route: "/frenzone/totalreports",
       icon: <MdOutlineReportProblem className="emp-nav-icon" />,
     },
+    {
+      id: "allwithdrawals",
+      label: "Total Withdrawals",
+      route: "/frenzone/allwithdrawals",
+      icon: <MdOutlineReportProblem className="emp-nav-icon" />,
+    },
+    {
+      id: "user-reports",
+      label: "User Reports",
+      route: "/frenzone/user-reports",
+      icon: <MdOutlineReportProblem className="emp-nav-icon" />,
+    },
   ];
 
   useEffect(() => {
-    const pathname = location.pathname.split("/").pop();
-    if (pathname === "detailed") {
-      setActiveItem("dashboard");
-    } else if (pathname === "sensitivereels") {
+    const pathname = location.pathname;
+
+    // 1️⃣ Special cases first
+    if (pathname.includes("/detailed")) {
+      setActiveItem("user-management");
+      return;
+    }
+    if (pathname.includes("/frenzone/report")) {
+      setActiveItem("totalreports");
+      return;
+    }
+
+    if (pathname.includes("/sensitivereels")) {
       setActiveItem("adultcontent");
+      return;
+    }
+
+    // 2️⃣ Match route prefixes properly
+    const matchedMenu = menuItems.find((item) =>
+      pathname.startsWith(item.route)
+    );
+
+    if (matchedMenu) {
+      setActiveItem(matchedMenu.id);
     } else {
-      setActiveItem(pathname);
+      setActiveItem(null);
     }
   }, [location]);
 

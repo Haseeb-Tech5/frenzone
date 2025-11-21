@@ -24,6 +24,8 @@ import Transcations from "./pages/Transcations.jsx";
 import Reports from "./components/Reports/Reports.jsx";
 import ReportDetails from "./components/Reports/ReportDetails.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import GetallUserWidthraws from "./components/Reports/GetallUserWidthraws.jsx";
+import UserReports from "./components/Reports/UserReports.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ const App = () => {
   const employeeRoutes = [
     { path: "/frenzone/dashboard", component: DashboardOverview },
     { path: "/frenzone/user-management", component: DashboardEmployee },
-    { path: "/frenzone/reports", component: ReportsEmployee },
+    { path: "/frenzone/broadcast", component: ReportsEmployee },
     { path: "/frenzone/manage-orders", component: ManageOrdersEmployee },
     {
       path: "/frenzone/appointment-calendar",
@@ -53,7 +55,9 @@ const App = () => {
     { path: "/sensitivereels", component: AdultReels },
     { path: "/frenzone/transactions", component: Transcations },
     { path: "/frenzone/totalreports", component: Reports },
+    { path: "/frenzone/allwithdrawals", component: GetallUserWidthraws },
     { path: "/frenzone/report/:id", component: ReportDetails },
+    { path: "/frenzone/user-reports", component: UserReports },
   ];
 
   return (

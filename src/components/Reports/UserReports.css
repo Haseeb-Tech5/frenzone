@@ -1,0 +1,404 @@
+/* Reuse same variables as Transactions */
+.userreports-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+.userreports-container-inner {
+  width: 100%;
+  max-width: 120rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  padding: 2rem;
+  animation: userreports-fade-in 0.5s ease-out;
+}
+
+.userreports-heading h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.userreports-error,
+.userreports-no-data {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  color: var(--orange);
+  text-align: center;
+  margin: 3rem;
+}
+
+/* MOBILE HORIZONTAL SCROLL FIX - EXACT SAME AS BEFORE */
+.userreports-table-wrapper {
+  overflow-x: auto;
+  padding: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange) transparent;
+  margin: 1rem 0;
+}
+
+.userreports-table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.userreports-table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.userreports-table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 10px;
+}
+
+.userreports-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #ff8c00;
+}
+
+/* THIS LINE PREVENTS TABLE SQUEEZE ON MOBILE */
+.userreports-table {
+  width: 100%;
+  min-width: 900px; /* Forces horizontal scroll instead of crushing */
+  border-collapse: collapse;
+  background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 0.6rem var(--black);
+}
+
+.userreports-table th,
+.userreports-table td {
+  padding: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.userreports-table th {
+  background: var(--orange);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.userreports-table td {
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+}
+
+.userreports-row {
+  transition: all 0.3s ease;
+}
+
+.userreports-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-0.2rem);
+}
+
+.userreports-animate {
+  animation: userreports-slide-up 0.6s ease-out;
+}
+
+.userreports-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 220px;
+}
+
+.userreports-profile-pic {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 0.2rem solid var(--orange);
+  flex-shrink: 0;
+}
+
+.userreports-username {
+  display: block;
+  font-weight: 600;
+}
+
+.userreports-name {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.3rem;
+}
+
+.userreports-report-count {
+  background: var(--orange);
+  color: var(--black);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.userreports-meta {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  color: var(--white);
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+}
+
+/* Modal Styles - 100% your original */
+.userreports-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: userreports-fade-in 0.4s ease-out;
+}
+
+.userreports-modal {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem var(--black);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  padding: 2rem;
+  width: 90%;
+  max-width: 60rem;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.userreports-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.userreports-modal-header h3 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.4rem;
+  color: var(--orange);
+  margin: 0;
+}
+
+.userreports-modal-close {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 3rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.userreports-modal-close:hover {
+  color: var(--orange);
+}
+
+.userreports-modal-content {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  line-height: 1.7;
+}
+
+.userreports-reported-user {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.userreports-modal-profile {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: 0.3rem solid var(--orange);
+  object-fit: cover;
+}
+
+.userreports-divider {
+  border: none;
+  height: 0.1rem;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 2rem 0;
+}
+
+.userreports-single-report {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.report-number {
+  color: var(--orange);
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  font-size: 1.5rem;
+}
+
+.reporter-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.8rem;
+}
+
+.reporter-pic {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.highlight {
+  color: var(--orange);
+  font-weight: bold;
+}
+
+.report-separator {
+  border: none;
+  height: 0.1rem;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1.5rem 0;
+}
+
+.userreports-detail-button,
+.userreports-modal-button {
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.6rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.userreports-detail-button:hover,
+.userreports-modal-button:hover {
+  background: var(--white);
+  transform: scale(1.05);
+}
+
+.userreports-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+/* ANIMATIONS */
+@keyframes userreports-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes userreports-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE RESPONSIVE - IMPROVED */
+@media (max-width: 768px) {
+  .userreports-heading h2 {
+    font-size: 2.8rem;
+  }
+
+  .userreports-container-inner {
+    padding: 1.5rem;
+  }
+
+  .userreports-table th,
+  .userreports-table td {
+    padding: 1rem 0.8rem;
+    font-size: 1.45rem;
+  }
+
+  .userreports-profile-pic {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .userreports-report-count {
+    font-size: 1.3rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .userreports-table-wrapper {
+    margin: 0 -1.5rem;
+    padding: 1.5rem;
+    border-radius: 0;
+  }
+
+  .userreports-modal {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+
+  .userreports-modal-header h3 {
+    font-size: 2rem;
+  }
+
+  .userreports-modal-content {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .userreports-heading h2 {
+    font-size: 2.4rem;
+  }
+
+  .userreports-table th,
+  .userreports-table td {
+    font-size: 1.35rem;
+    padding: 0.9rem 0.6rem;
+  }
+
+  .userreports-detail-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.3rem;
+  }
+}
