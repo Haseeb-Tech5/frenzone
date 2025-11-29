@@ -26,6 +26,9 @@ import ReportDetails from "./components/Reports/ReportDetails.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GetallUserWidthraws from "./components/Reports/GetallUserWidthraws.jsx";
 import UserReports from "./components/Reports/UserReports.jsx";
+import GetAllUserReportsId from "./components/Reports/GetAllUserReportsId.jsx";
+import AllVerifiedUser from "./components/AllVerifiedUser/AllVerifiedUser.jsx";
+import AllVerifiedUserId from "./components/AllVerifiedUser/AllVerifiedUserId.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -58,6 +61,9 @@ const App = () => {
     { path: "/frenzone/allwithdrawals", component: GetallUserWidthraws },
     { path: "/frenzone/report/:id", component: ReportDetails },
     { path: "/frenzone/user-reports", component: UserReports },
+    { path: "/frenzone/user/reports/:id", component: GetAllUserReportsId },
+    { path: "/frenzone/verified", component: AllVerifiedUser },
+    { path: "/frenzone/verifieduser/:id", component: AllVerifiedUserId },
   ];
 
   return (

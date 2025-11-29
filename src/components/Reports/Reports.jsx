@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import "./reports.css";
 import Loader from "../Loader/Loader";
+import "./total.css";
 
 const Reports = () => {
   const [reportsData, setReportsData] = useState(null);
@@ -76,6 +76,9 @@ const Reports = () => {
     setPage(1);
   };
 
+  const getProfilePic = (url) =>
+    !url || url.trim() === "" ? "/default-avatar.png" : url;
+
   return (
     <div className="reports-container">
       {loading && <Loader />}
@@ -88,108 +91,125 @@ const Reports = () => {
         {error && <div className="reports-error">{error}</div>}
 
         {reportsData && reportsData.reports?.length > 0 ? (
-          <div className="reports-table-wrapper">
-            <table className="reports-table">
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Type</th>
-                  <th>Post Description</th>
-                  <th>Report User</th> {/* ← NEW COLUMN (fixed) */}
-                  <th>Reason</th>
-                  <th>Date</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportsData.reports.map((report) => {
-                  const user = report.userid;           // who made the report
-                  const reportedUser = report.reported; // who is being reported (harmful reports)
-                  const post = report.postid;
+          <>
+            <div className="reports-table-wrapper">
+              <table className="reports-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Post Description</th>
+                    <th>Reported User</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reportsData.reports.map((report) => {
+                    const user = report.userid; // who made the report
+                    const reportedUser = report.reported; // who is being reported (harmful reports)
+                    const post = report.postid;
 
-                  return (
-                    <tr key={report._id} className="reports-row reports-animate">
-                      {/* Reporter */}
-                      <td className="reports-user">
-                        {user ? (
-                          <>
+                    return (
+                      <tr
+                        key={report._id}
+                        className="reports-row reports-animate"
+                      >
+                        {/* Reporter */}
+                        <td className="reports-user">
+                          <div className="reports-user-info">
                             <img
-                              src={user.profilePicUrl || "/default-avatar.png"}
-                              alt={user.username || "User"}
+                              src={getProfilePic(user?.profilePicUrl)}
+                              alt={user?.username || "User"}
                               className="reports-profile-pic"
-                              onError={(e) => {
-                                e.target.src = "/default-avatar.png";
-                              }}
                             />
-                            <span>{user.username || "Unknown User"}</span>
-                          </>
-                        ) : (
-                          <>
-                            <div className="reports-profile-pic-placeholder">?</div>
-                            {/* <span className="deleted-user">Deleted User</span> */}
-                          </>
-                        )}
-                      </td>
+                            <div>
+                              <div className="username">
+                                {user?.username || "Unknown User"}
+                              </div>
+                              <small>
+                                {user?.firstname || ""} {user?.lastname || ""}
+                              </small>
+                            </div>
+                          </div>
+                        </td>
 
-                      {/* Type Badge */}
-                      <td>
-                        <span className={`report-type-badge ${report.type || "post"}`}>
-                          {report.type === "harmful" ? "Harmful User" : "Post Report"}
-                        </span>
-                      </td>
-
-                      {/* Post Description */}
-                      <td>{post?.description || "Post no longer available"}</td>
-
-                      {/* ← NEW COLUMN: Reported User (username only) */}
-                      <td>
-                        {reportedUser ? (
-                          <span className="reported-username">
-                            {reportedUser.username || "Unknown"}
+                        {/* Type Badge */}
+                        <td>
+                          <span
+                            className={`status-badge ${report.type || "post"}`}
+                          >
+                            {report.type === "harmful"
+                              ? "Harmful User"
+                              : "Post Report"}
                           </span>
-                        ) : (
-                          <span className="text-muted">—</span>
-                        )}
-                      </td>
+                        </td>
 
-                      {/* Reason */}
-                      <td>{report.message || "-"}</td>
+                        {/* Post Description */}
+                        <td className="post-description">
+                          {post?.description || "Post no longer available"}
+                        </td>
 
-                      {/* Date */}
-                      <td>
-                        {new Date(report.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </td>
+                        {/* Reported User */}
+                        <td>
+                          {reportedUser ? (
+                            <div className="reported-user-info">
+                              <span className="reported-username">
+                                {reportedUser.username || "Unknown"}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="no-action">—</span>
+                          )}
+                        </td>
 
-                      {/* Actions */}
-                      <td>
-                        <button
-                          className="reports-detail-button"
-                          onClick={() => handleViewDetails(report._id)}
-                        >
-                          Details
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        {/* Reason */}
+                        <td className="reason">{report.message || "-"}</td>
 
-            {/* Pagination & Limit */}
+                        {/* Date */}
+                        <td>
+                          {new Date(report.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </td>
+
+                        {/* Actions */}
+                        <td className="actions">
+                          <button
+                            className="btn-details"
+                            onClick={() => handleViewDetails(report._id)}
+                          >
+                            Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination & Meta Information */}
             <div className="reports-meta">
               <p>
                 Showing page {reportsData.page} of{" "}
-                {Math.ceil(reportsData.count / limit)} ({reportsData.count} reports)
+                {Math.ceil(reportsData.count / limit)} ({reportsData.count}{" "}
+                reports)
               </p>
 
-              <div className="pagination-controls1">
-                <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
+              <div className="pagination-controls">
+                <button
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                >
                   Previous
                 </button>
                 <span>Page {page}</span>
@@ -202,7 +222,7 @@ const Reports = () => {
               </div>
 
               <div className="limit-controls">
-                <label>Reports per page: </label>
+                <label>Per page: </label>
                 <select
                   value={limit}
                   onChange={(e) => handleLimitChange(Number(e.target.value))}
@@ -213,9 +233,11 @@ const Reports = () => {
                 </select>
               </div>
             </div>
-          </div>
+          </>
         ) : (
-          !loading && <div className="reports-no-data">No reports available</div>
+          !loading && (
+            <div className="reports-no-data">No reports available</div>
+          )
         )}
       </div>
     </div>

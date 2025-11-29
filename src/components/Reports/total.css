@@ -1,4 +1,4 @@
-.withdrawals-container {
+.reports-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.withdrawals-container-inner {
+.reports-container-inner {
   width: 100%;
   max-width: 120rem;
   background: rgba(255, 255, 255, 0.1);
@@ -19,7 +19,7 @@
   animation: reports-fade-in 0.5s ease-out;
 }
 
-.withdrawals-heading h2 {
+.reports-heading h2 {
   font-family: "Poppins", sans-serif;
   font-size: 4rem;
   font-weight: 600;
@@ -28,7 +28,7 @@
   text-align: center;
 }
 
-.withdrawals-error {
+.reports-error {
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
   color: var(--orange);
@@ -36,7 +36,7 @@
   margin: 2rem;
 }
 
-.withdrawals-no-data {
+.reports-no-data {
   font-family: "Montserrat", sans-serif;
   font-size: 1.8rem;
   color: var(--white);
@@ -45,42 +45,8 @@
   opacity: 0.8;
 }
 
-/* FILTER BUTTONS */
-.withdrawals-filters {
-  display: flex;
-  gap: 1rem;
-  margin: 1.5rem 0;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  border: 1px solid var(--orange);
-  padding: 0.8rem 1.8rem;
-  border-radius: 0.8rem;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.filter-btn:hover {
-  background: var(--orange);
-  color: var(--black);
-  transform: translateY(-2px);
-}
-
-.filter-btn.active {
-  background: var(--orange);
-  color: var(--black);
-  font-weight: bold;
-}
-
 /* TABLE SCROLL FIX - MOBILE FRIENDLY */
-.withdrawals-table-wrapper {
+.reports-table-wrapper {
   overflow-x: auto;
   padding: 1rem;
   -webkit-overflow-scrolling: touch;
@@ -89,28 +55,28 @@
   margin: 1rem 0;
 }
 
-.withdrawals-table-wrapper::-webkit-scrollbar {
+.reports-table-wrapper::-webkit-scrollbar {
   height: 8px;
 }
 
-.withdrawals-table-wrapper::-webkit-scrollbar-track {
+.reports-table-wrapper::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
 
-.withdrawals-table-wrapper::-webkit-scrollbar-thumb {
+.reports-table-wrapper::-webkit-scrollbar-thumb {
   background: var(--orange);
   border-radius: 10px;
 }
 
-.withdrawals-table-wrapper::-webkit-scrollbar-thumb:hover {
+.reports-table-wrapper::-webkit-scrollbar-thumb:hover {
   background: #ff8c00;
 }
 
 /* THIS LINE FIXES MOBILE SQUEEZE */
-.withdrawals-table {
+.reports-table {
   width: 100%;
-  min-width: 900px; /* Forces horizontal scroll on small screens */
+  min-width: 1200px; /* Forces horizontal scroll on small screens */
   border-collapse: collapse;
   background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
   border-radius: 1rem;
@@ -118,8 +84,8 @@
   box-shadow: 0 0.2rem 0.6rem var(--black);
 }
 
-.withdrawals-table th,
-.withdrawals-table td {
+.reports-table th,
+.reports-table td {
   padding: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-size: 1.6rem;
@@ -128,7 +94,7 @@
   white-space: nowrap;
 }
 
-.withdrawals-table th {
+.reports-table th {
   background: var(--orange);
   font-weight: 600;
   position: sticky;
@@ -136,31 +102,37 @@
   z-index: 10;
 }
 
-.withdrawals-table td {
+.reports-table td {
   border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
 }
 
-.withdrawals-row {
+.reports-row {
   transition: all 0.3s ease;
 }
 
-.withdrawals-row:hover {
+.reports-row:hover {
   background: rgba(255, 255, 255, 0.05);
   transform: translateY(-0.2rem);
 }
 
-.withdrawals-animate {
+.reports-animate {
   animation: reports-slide-up 0.6s ease-out;
 }
 
-.withdrawals-user {
+.reports-user {
   display: flex;
   align-items: center;
   gap: 1.2rem;
   min-width: 200px;
 }
 
-.withdrawals-profile-pic {
+.reports-user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.reports-profile-pic {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
@@ -169,25 +141,28 @@
   flex-shrink: 0;
 }
 
-.withdrawals-user div {
-  display: flex;
-  flex-direction: column;
-}
-
-.withdrawals-user .username {
+.reports-user .username {
   font-weight: 600;
   color: var(--white);
 }
 
-.withdrawals-user small {
+.reports-user small {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.4rem;
 }
 
-.amount {
-  font-weight: bold;
-  color: var(--orange);
-  font-size: 1.8rem;
+.post-description {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reason {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .status-badge {
@@ -198,60 +173,39 @@
   text-transform: uppercase;
 }
 
-.status-badge.pending {
-  background: #fff3e0;
-  color: #e65100;
+.status-badge.post {
+  background: #e3f2fd;
+  color: #1976d2;
 }
 
-.status-badge.processed,
-.status-badge.completed {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.status-badge.cancelled {
+.status-badge.harmful {
   background: #ffebee;
   color: #c62828;
 }
 
-.status-badge.unknown {
-  background: #f5f5f5;
-  color: #666;
+.reported-username {
+  font-weight: 600;
+  color: var(--orange);
 }
 
 .actions {
   white-space: nowrap;
 }
 
-.btn-accept,
-.btn-cancel {
-  padding: 0.6rem 1.4rem;
+.btn-details {
+  background: var(--orange);
+  color: var(--black);
   border: none;
+  padding: 0.6rem 1.4rem;
   border-radius: 0.6rem;
   font-family: "Montserrat", sans-serif;
   font-size: 1.4rem;
   cursor: pointer;
-  margin: 0 0.4rem;
   transition: all 0.3s ease;
 }
 
-.btn-accept {
-  background: #4caf50;
-  color: white;
-}
-
-.btn-accept:hover {
-  background: #66bb6a;
-  transform: translateY(-2px);
-}
-
-.btn-cancel {
-  background: #f44336;
-  color: white;
-}
-
-.btn-cancel:hover {
-  background: #e57373;
+.btn-details:hover {
+  background: var(--white);
   transform: translateY(-2px);
 }
 
@@ -261,7 +215,7 @@
 }
 
 /* PAGINATION & META */
-.withdrawals-meta {
+.reports-meta {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -313,41 +267,36 @@
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-  .withdrawals-heading h2 {
+  .reports-heading h2 {
     font-size: 2.8rem;
   }
 
-  .withdrawals-container-inner {
+  .reports-container-inner {
     padding: 1.5rem;
   }
 
-  .withdrawals-table th,
-  .withdrawals-table td {
+  .reports-table th,
+  .reports-table td {
     padding: 1rem 0.8rem;
     font-size: 1.45rem;
   }
 
-  .withdrawals-profile-pic {
+  .reports-profile-pic {
     width: 3.5rem;
     height: 3.5rem;
   }
 
-  .amount {
-    font-size: 1.6rem;
-  }
-
-  .btn-accept,
-  .btn-cancel {
+  .btn-details {
     padding: 0.6rem 1rem;
     font-size: 1.3rem;
   }
 
-  .withdrawals-meta {
+  .reports-meta {
     flex-direction: column;
     gap: 1.5rem;
   }
 
-  .withdrawals-table-wrapper {
+  .reports-table-wrapper {
     margin: 0 -1.5rem;
     padding: 1.5rem;
     border-radius: 0;
@@ -355,23 +304,18 @@
 }
 
 @media (max-width: 480px) {
-  .withdrawals-heading h2 {
+  .reports-heading h2 {
     font-size: 2.4rem;
   }
 
-  .filter-btn {
-    padding: 0.7rem 1.4rem;
-    font-size: 1.3rem;
-  }
-
-  .withdrawals-table th,
-  .withdrawals-table td {
+  .reports-table th,
+  .reports-table td {
     font-size: 1.35rem;
     padding: 0.9rem 0.6rem;
   }
 }
 
-/* ANIMATIONS (reused from reports) */
+/* ANIMATIONS */
 @keyframes reports-fade-in {
   from {
     opacity: 0;
@@ -392,32 +336,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-.download-csv-btn {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.8rem;
-  border-radius: 0.8rem;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.download-csv-btn:hover:not(:disabled) {
-  background: #66bb6a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-}
-
-.download-csv-btn:disabled {
-  background: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.5);
-  cursor: not-allowed;
-  transform: none;
 }

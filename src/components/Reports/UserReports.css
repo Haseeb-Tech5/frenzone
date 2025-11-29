@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  min-width: 220px;
+  min-width: 100px;
 }
 
 .userreports-profile-pic {
@@ -400,5 +400,279 @@
   .userreports-detail-button {
     padding: 0.6rem 1.2rem;
     font-size: 1.3rem;
+  }
+}
+/* Action Buttons in Table */
+.action-buttons {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.userreports-action-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.6rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.strike-btn {
+  background: #ff8c00;
+  color: white;
+}
+
+.strike-btn:hover {
+  background: #e67e00;
+  transform: scale(1.05);
+}
+
+.block-btn {
+  background: #d32f2f;
+  color: white;
+}
+
+.block-btn:hover {
+  background: #b71c1c;
+  transform: scale(1.05);
+}
+
+/* Modal Textarea Focus */
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--orange);
+}
+.status-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 1rem;
+  border-radius: 1.4rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.badge.strike {
+  background: #ff8c00;
+  color: black;
+}
+
+.badge.blocked {
+  background: #d32f2f;
+  color: white;
+}
+
+.badge.normal {
+  background: #4caf50;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  /* background-color: red; */
+  width: fit-content;
+  min-width: fit-content;
+  margin-left: 5rem;
+}
+
+.btn-view,
+.btn-strike,
+.btn-lift,
+.btn-block,
+.btn-unblock {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-view {
+  background: var(--orange);
+  color: black;
+}
+.btn-strike {
+  background: #ff6b00;
+  color: white;
+}
+.btn-lift {
+  background: #4caf50;
+  color: white;
+}
+.btn-block {
+  background: #d32f2f;
+  color: white;
+}
+.btn-unblock {
+  background: #3085d6;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #ffa726;
+}
+.btn-strike:hover {
+  background: #e65100;
+}
+.btn-lift:hover {
+  background: #388e3c;
+}
+.btn-block:hover {
+  background: #b71c1c;
+}
+.btn-unblock:hover {
+  background: #1b5e20;
+}
+/* BEAUTIFUL STRIKE MODAL */
+.strike-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.strike-modal {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 1.6rem;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(255, 100, 0, 0.3);
+  border: 2px solid var(--orange);
+  overflow: hidden;
+  animation: modalPop 0.4s ease-out;
+}
+
+.strike-modal-header {
+  background: var(--orange);
+  color: black;
+  padding: 1.4rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.strike-modal-header h3 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.strike-modal-close {
+  background: none;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+
+.strike-modal-body {
+  padding: 2rem;
+}
+
+.strike-modal-body p {
+  color: white;
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+}
+
+.strike-textarea {
+  width: 100%;
+  padding: 1.4rem;
+  border-radius: 1rem;
+  border: 2px solid var(--orange);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 1.6rem;
+  font-family: "Montserrat", sans-serif;
+  resize: none;
+  transition: all 0.3s;
+}
+
+.strike-textarea:focus {
+  outline: none;
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.3);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.strike-modal-footer {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.strike-btn-cancel,
+.strike-btn-submit {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.strike-btn-cancel {
+  background: #666;
+  color: white;
+}
+
+.strike-btn-cancel:hover {
+  background: #888;
+}
+
+.strike-btn-submit {
+  background: #d32f2f;
+  color: white;
+}
+
+.strike-btn-submit:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+
+.strike-btn-submit:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }

@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdPerson } from "react-icons/io";
-import { MdOutlineEditCalendar, MdOutlineReportProblem } from "react-icons/md";
+import { MdOutlineEditCalendar, MdOutlineReportProblem, MdOutlineVerifiedUser } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImBlocked } from "react-icons/im";
@@ -94,6 +94,12 @@ const Employee = ({ children }) => {
       route: "/frenzone/user-reports",
       icon: <MdOutlineReportProblem className="emp-nav-icon" />,
     },
+    {
+      id: "verified",
+      label: "Verified Users",
+      route: "/frenzone/verified",
+      icon: <MdOutlineVerifiedUser className="emp-nav-icon" />,
+    },
   ];
 
   useEffect(() => {
@@ -111,6 +117,10 @@ const Employee = ({ children }) => {
 
     if (pathname.includes("/sensitivereels")) {
       setActiveItem("adultcontent");
+      return;
+    }
+    if (pathname.includes("/frenzone/user/reports")) {
+      setActiveItem("user-reports");
       return;
     }
 

@@ -1,249 +1,356 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../Loader/Loader";
-import "./UserReports.css"; // We'll create this CSS below
+import "./UserReports.css";
 
 const UserReports = () => {
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   const [reportsData, setReportsData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedReport, setSelectedReport] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [actionLoading, setActionLoading] = useState({});
+  const [strikeModalOpen, setStrikeModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [strikeReason, setStrikeReason] = useState("");
+
+  const API_BASE = "https://api.frenzone.live";
 
   useEffect(() => {
-    const fetchReports = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://api.frenzone.live/user/getAllUsersReports`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user reports");
-        }
-
-        const data = await response.json();
-        if (data.success) {
-          setReportsData(data);
-          setError(null);
-        } else {
-          throw new Error("API returned unsuccessful response");
-        }
-      } catch (err) {
-        setError("Failed to load user reports");
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Could not fetch reported users data.",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchReports();
-  }, [token]);
+  }, []);
 
-  const openModal = (report) => {
-    setSelectedReport(report);
-    setIsModalOpen(true);
+  const fetchReports = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/user/getAllUsersReports`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success) {
+        // Sort reports: Newest activity (updatedAt) first
+        const sortedReports = {
+          ...data,
+          reports: [...data.reports].sort((a, b) => {
+            const dateA = new Date(a.updatedAt);
+            const dateB = new Date(b.updatedAt);
+            return dateB - dateA; // Descending: newest on top
+          }),
+        };
+        setReportsData(sortedReports);
+      }
+    } catch (err) {
+      Swal.fire("Error", "Failed to load reports", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedReport(null);
+  const handleViewDetails = (userId) => {
+    navigate(`/frenzone/user/reports/${userId}`);
   };
+
+  // BLOCK / UNBLOCK
+  const toggleBlock = async (userId, currentStatus) => {
+    if (actionLoading[userId]) return;
+    setActionLoading((prev) => ({ ...prev, [userId]: true }));
+
+    const action = currentStatus ? "Unblock" : "Block";
+    const result = await Swal.fire({
+      title: `${action} User?`,
+      text: currentStatus ? "User will be unblocked." : "User will be blocked.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: currentStatus ? "#3085d6" : "#d33",
+      confirmButtonText: `Yes, ${action}!`,
+    });
+
+    if (!result.isConfirmed) {
+      setActionLoading((prev) => ({ ...prev, [userId]: false }));
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/user/blockUserInSystem/${userId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+
+      const isSuccess =
+        data.success ||
+        data.message?.includes("block") ||
+        data.message?.includes("unblock");
+
+      if (isSuccess) {
+        Swal.fire(
+          "Success!",
+          data.message || `User ${action.toLowerCase()}ed!`,
+          "success"
+        );
+        fetchReports();
+      } else {
+        Swal.fire("Failed", data.message || "Action failed", "error");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Network error", "error");
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [userId]: false }));
+    }
+  };
+
+  // LIFT STRIKE
+  const liftStrike = async (userId) => {
+    if (actionLoading[userId]) return;
+    setActionLoading((prev) => ({ ...prev, [userId]: true }));
+
+    const result = await Swal.fire({
+      title: "Lift Strike?",
+      text: "This will remove the strike from the user.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Lift Strike",
+    });
+
+    if (!result.isConfirmed) {
+      setActionLoading((prev) => ({ ...prev, [userId]: false }));
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/user/liftStrike`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userid: userId }),
+      });
+      const data = await res.json();
+
+      if (data.success || data.message?.includes("lift")) {
+        Swal.fire("Success!", data.message || "Strike lifted!", "success");
+        fetchReports();
+      } else {
+        Swal.fire("Failed", data.message || "Could not lift strike", "error");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Network error", "error");
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [userId]: false }));
+    }
+  };
+
+  // STRIKE USER – MODAL
+  const openStrikeModal = (userId) => {
+    if (actionLoading[userId]) return;
+    setSelectedUserId(userId);
+    setStrikeReason("");
+    setStrikeModalOpen(true);
+  };
+
+  const submitStrike = async () => {
+    if (!strikeReason.trim()) {
+      Swal.fire("Warning", "Please enter a reason", "warning");
+      return;
+    }
+
+    setActionLoading((prev) => ({ ...prev, [selectedUserId]: true }));
+
+    try {
+      const res = await fetch(`${API_BASE}/user/strikeUser`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userid: selectedUserId,
+          reason: strikeReason.trim(),
+        }),
+      });
+      const data = await res.json();
+
+      if (data.success || data.message?.includes("strike")) {
+        Swal.fire("Success!", data.message || "Strike issued!", "success");
+        setStrikeModalOpen(false);
+        fetchReports();
+      } else {
+        Swal.fire("Failed", data.message || "Could not issue strike", "error");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Network error", "error");
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [selectedUserId]: false }));
+    }
+  };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="userreports-container">
-      {loading && <Loader />}
-      <div className="userreports-container-inner">
-        <div className="userreports-heading">
-          <h2>Reported Users</h2>
-        </div>
-
-        {error && <div className="userreports-error">{error}</div>}
-
-        {reportsData && reportsData.reports?.length > 0 ? (
-          <div className="userreports-table-wrapper">
-            <table className="userreports-table">
-              <thead>
-                <tr>
-                  <th>Reported User</th>
-                  <th>Total Reports</th>
-                  <th>First Reported</th>
-                  <th>Last Reported</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportsData.reports.map((report) => (
-                  <tr
-                    key={report._id}
-                    className="userreports-row userreports-animate"
-                  >
-                    <td className="userreports-user">
-                      <img
-                        src={
-                          report.userid.profilePicUrl || "/default-avatar.png"
-                        }
-                        alt={report.userid.username}
-                        className="userreports-profile-pic"
-                        onError={(e) => {
-                          e.target.src = "/default-avatar.png";
-                        }}
-                      />
-                      <div>
-                        <span className="userreports-username">
-                          {report.userid.username}
-                        </span>
-                        <small className="userreports-name">
-                          {report.userid.firstname} {report.userid.lastname}
-                        </small>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="userreports-report-count">
-                        {report.totalReports}
-                      </span>
-                    </td>
-                    <td>
-                      {new Date(report.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </td>
-                    <td>
-                      {new Date(report.updatedAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </td>
-                    <td>
-                      <button
-                        className="userreports-detail-button"
-                        onClick={() => openModal(report)}
-                      >
-                        View Reports
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className="userreports-meta">
-              <p>
-                Showing page {reportsData.page} • Total {reportsData.count}{" "}
-                reported user(s)
-              </p>
-            </div>
-          </div>
-        ) : (
-          !loading && (
-            <div className="userreports-no-data">
-              No users have been reported yet.
-            </div>
-          )
-        )}
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && selectedReport && (
-        <div className="userreports-modal-overlay" onClick={closeModal}>
-          <div
-            className="userreports-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="userreports-modal-header">
-              <h3>User Report Details</h3>
-              <button className="userreports-modal-close" onClick={closeModal}>
+      {/* Strike Modal */}
+      {strikeModalOpen && (
+        <div
+          className="strike-modal-overlay"
+          onClick={() => setStrikeModalOpen(false)}
+        >
+          <div className="strike-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="strike-modal-header">
+              <h3>Issue Strike</h3>
+              <button
+                className="strike-modal-close"
+                onClick={() => setStrikeModalOpen(false)}
+              >
                 ×
               </button>
             </div>
-
-            <div className="userreports-modal-content">
-              <div className="userreports-reported-user">
-                <img
-                  src={
-                    selectedReport.userid.profilePicUrl || "/default-avatar.png"
-                  }
-                  alt={selectedReport.userid.username}
-                  className="userreports-modal-profile"
-                />
-                <div>
-                  <strong>{selectedReport.userid.username}</strong>
-                  <p>
-                    {selectedReport.userid.firstname}{" "}
-                    {selectedReport.userid.lastname}
-                  </p>
-                </div>
-              </div>
-
-              <p>
-                <strong>Total Reports:</strong>{" "}
-                <span className="highlight">{selectedReport.totalReports}</span>
-              </p>
-
-              <hr className="userreports-divider" />
-
-              <h4>All Reports:</h4>
-              {selectedReport.reports.map((rep, idx) => (
-                <div key={rep._id} className="userreports-single-report">
-                  <p className="report-number">Report #{idx + 1}</p>
-                  <p>
-                    <strong>Reason:</strong>{" "}
-                    {rep.reason || "No reason provided"}
-                  </p>
-                  <p>
-                    <strong>Reported By:</strong>
-                  </p>
-                  <div className="reporter-info">
-                    <img
-                      src={
-                        rep.reportedBy.profilePicUrl || "/default-avatar.png"
-                      }
-                      alt={rep.reportedBy.username}
-                      className="reporter-pic"
-                    />
-                    <div>
-                      <span>{rep.reportedBy.username}</span>
-                      <small>
-                        {rep.reportedBy.firstname} {rep.reportedBy.lastname}
-                      </small>
-                    </div>
-                  </div>
-                  <p>
-                    <strong>Reported On:</strong>{" "}
-                    {new Date(rep.reportedOn).toLocaleString()}
-                  </p>
-                  {idx < selectedReport.reports.length - 1 && (
-                    <hr className="report-separator" />
-                  )}
-                </div>
-              ))}
+            <div className="strike-modal-body">
+              <p>Enter reason for giving strike:</p>
+              <textarea
+                value={strikeReason}
+                onChange={(e) => setStrikeReason(e.target.value)}
+                placeholder="e.g. Repeated harassment, spam, inappropriate content..."
+                className="strike-textarea"
+                rows="6"
+              />
             </div>
-
-            <div className="userreports-modal-footer">
-              <button className="userreports-modal-button" onClick={closeModal}>
-                Close
+            <div className="strike-modal-footer">
+              <button
+                className="strike-btn-cancel"
+                onClick={() => setStrikeModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="strike-btn-submit"
+                onClick={submitStrike}
+                disabled={actionLoading[selectedUserId]}
+              >
+                {actionLoading[selectedUserId] ? "Issuing..." : "Issue Strike"}
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <div className="userreports-container-inner">
+        <div className="userreports-heading">
+          <h2>Reported Users</h2>
+        </div>
+
+        {reportsData?.reports?.length > 0 ? (
+          <div className="userreports-table-wrapper">
+            <table className="userreports-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Reports</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reportsData.reports.map((report) => {
+                  const u = report.userid;
+                  const isBlocked = u.systemBlocked;
+                  const isUnderStrike = u.underStrike;
+                  const isLoading = actionLoading[u._id];
+
+                  return (
+                    <tr key={report._id} className="userreports-row">
+                      <td className="userreports-user">
+                        <img
+                          src={u.profilePicUrl || "/default-avatar.png"}
+                          alt={u.username}
+                          className="userreports-profile-pic"
+                          onError={(e) =>
+                            (e.target.src = "/default-avatar.png")
+                          }
+                        />
+                        <div>
+                          <span className="userreports-username">
+                            {u.username}
+                          </span>
+                          <small className="userreports-name">
+                            {u.firstname} {u.lastname}
+                          </small>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="userreports-report-count">
+                          {report.totalReports}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="status-badges">
+                          {isUnderStrike && (
+                            <span className="badge strike">Under Strike</span>
+                          )}
+                          {isBlocked && (
+                            <span className="badge blocked">Blocked</span>
+                          )}
+                          {!isUnderStrike && !isBlocked && (
+                            <span className="badge normal">Normal</span>
+                          )}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="action-buttons">
+                          <button
+                            className="btn-view"
+                            onClick={() => handleViewDetails(u._id)}
+                          >
+                            View
+                          </button>
+
+                          {!isUnderStrike && (
+                            <button
+                              className="btn-strike"
+                              onClick={() => openStrikeModal(u._id)}
+                              disabled={isLoading}
+                            >
+                              Strike
+                            </button>
+                          )}
+
+                          {isUnderStrike && (
+                            <button
+                              className="btn-lift"
+                              onClick={() => liftStrike(u._id)}
+                              disabled={isLoading}
+                            >
+                              Lift Strike
+                            </button>
+                          )}
+
+                          <button
+                            className={isBlocked ? "btn-unblock" : "btn-block"}
+                            onClick={() => toggleBlock(u._id, isBlocked)}
+                            disabled={isLoading}
+                          >
+                            {isLoading
+                              ? "..."
+                              : isBlocked
+                              ? "Unblock"
+                              : "Block"}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="userreports-no-data">No reported users found.</div>
+        )}
+      </div>
     </div>
   );
 };

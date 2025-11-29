@@ -11,6 +11,7 @@ const GetallUserWidthraws = () => {
   const [filter, setFilter] = useState("all"); // "all" | "pending"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [downloading, setDownloading] = useState(false);
 
   const token = localStorage.getItem("token");
   const publicip = "https://api.frenzone.live";
@@ -66,6 +67,101 @@ const GetallUserWidthraws = () => {
       Swal.fire("Error", "Could not load data", "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadCSV = async () => {
+    setDownloading(true);
+    try {
+      const res = await fetch(`${publicip}/wallet/getAllWithdrawalsDownload`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Failed to download CSV");
+
+      const data = await res.json();
+
+      if (data.success && Array.isArray(data.withdraws)) {
+        // Convert data to CSV format
+        const csvData = convertToCSV(data.withdraws);
+
+        // Create and download CSV file
+        downloadCSV(csvData, "withdrawals.csv");
+
+        Swal.fire("Success!", "CSV file downloaded successfully", "success");
+      } else {
+        throw new Error("Invalid data format");
+      }
+    } catch (err) {
+      console.error("Download error:", err);
+      Swal.fire("Error", "Failed to download CSV file", "error");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const convertToCSV = (withdrawals) => {
+    // Add BOM for UTF-8 encoding to handle special characters
+    const BOM = "\uFEFF";
+
+    const headers = [
+      "Username",
+      "First Name",
+      "Last Name",
+      "Amount ($)",
+      "Status",
+      "Created Date",
+    ];
+
+    const csvRows = [headers.join(",")];
+
+    withdrawals.forEach((withdrawal) => {
+      // Function to escape CSV values properly while preserving special characters
+      const escapeCSV = (text) => {
+        if (!text) return "N/A";
+        // Convert to string and handle special characters
+        const str = String(text).trim();
+        // If the value contains comma, newline, or double quote, wrap it in quotes
+        // and escape any internal quotes by doubling them
+        if (str.includes(",") || str.includes("\n") || str.includes('"')) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        // For values with special Unicode characters, wrap in quotes
+        return `"${str}"`;
+      };
+
+      const row = [
+        escapeCSV(withdrawal.userId?.username || "N/A"),
+        escapeCSV(withdrawal.userId?.firstname || "N/A"),
+        escapeCSV(withdrawal.userId?.lastname || "N/A"),
+        withdrawal.amount.toFixed(2),
+        escapeCSV(withdrawal.status),
+        escapeCSV(new Date(withdrawal.createdAt).toLocaleString()),
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    return BOM + csvRows.join("\n");
+  };
+
+  const downloadCSV = (csvData, filename) => {
+    // Use proper UTF-8 encoding with BOM
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
   };
 
@@ -150,19 +246,31 @@ const GetallUserWidthraws = () => {
           <h2>Withdrawal Requests</h2>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="withdrawals-filters">
+        {/* Header with Download Button */}
+        <div className="withdrawals-header-actions">
+          {/* Filter Buttons */}
+          <div className="withdrawals-filters">
+            <button
+              className={`filter-btn ${filter === "all" ? "active" : ""}`}
+              onClick={() => setFilter("all")}
+            >
+              All Requests ({allWithdrawals.length})
+            </button>
+            <button
+              className={`filter-btn ${filter === "pending" ? "active" : ""}`}
+              onClick={() => setFilter("pending")}
+            >
+              Pending Only ({pendingCount})
+            </button>
+          </div>
+
+          {/* Download CSV Button */}
           <button
-            className={`filter-btn ${filter === "all" ? "active" : ""}`}
-            onClick={() => setFilter("all")}
+            className="download-csv-btn"
+            onClick={handleDownloadCSV}
+            disabled={downloading || allWithdrawals.length === 0}
           >
-            All Requests ({allWithdrawals.length})
-          </button>
-          <button
-            className={`filter-btn ${filter === "pending" ? "active" : ""}`}
-            onClick={() => setFilter("pending")}
-          >
-            Pending Only ({pendingCount})
+            {downloading ? "Downloading..." : "Download CSV"}
           </button>
         </div>
 
@@ -197,9 +305,6 @@ const GetallUserWidthraws = () => {
                             src={getProfilePic(user.profilePicture)}
                             alt={user.username}
                             className="withdrawals-profile-pic"
-                            // onError={(e) =>
-                            //   (e.target.src = "/default-avatar.png")
-                            // }
                           />
                           <div>
                             <div className="username">{user.username}</div>
