@@ -4,39 +4,36 @@ import Loader from "../Loader/Loader";
 import "./Withdrawals.css";
 
 const GetallUserWidthraws = () => {
-  const [allWithdrawals, setAllWithdrawals] = useState([]); // Full list from API
-  const [displayList, setDisplayList] = useState([]); // After filter + sort
+  const [allWithdrawals, setAllWithdrawals] = useState([]);
+  const [displayList, setDisplayList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [filter, setFilter] = useState("all"); // "all" | "pending"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [individualDownloading, setIndividualDownloading] = useState({});
 
   const token = localStorage.getItem("token");
   const publicip = "https://api.frenzone.live";
 
-  // Load ALL withdrawals once
   useEffect(() => {
     fetchAllWithdrawals();
   }, []);
 
-  // Apply filter + sort + pagination whenever data or filter changes
   useEffect(() => {
     if (!allWithdrawals.length) return;
 
     let filtered = [...allWithdrawals];
 
-    // Apply filter
     if (filter === "pending") {
       filtered = filtered.filter((w) => w.status.toLowerCase() === "pending");
     }
 
-    // Sort: NEWEST ON TOP (by createdAt)
     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     setDisplayList(filtered);
-    setCurrentPage(1); // Reset to first page when filtering
+    setCurrentPage(1);
   }, [allWithdrawals, filter]);
 
   const fetchAllWithdrawals = async () => {
@@ -50,7 +47,7 @@ const GetallUserWidthraws = () => {
         },
       });
 
-      if (!res.ok) throw new Error("Failed to fetch");
+      if (!res.ok) throw new Error("Failed to fetch withdrawals");
 
       const data = await res.json();
 
@@ -60,54 +57,103 @@ const GetallUserWidthraws = () => {
         );
         setAllWithdrawals(sorted);
       } else {
-        throw new Error("Invalid data");
+        throw new Error("Invalid response format");
       }
     } catch (err) {
       setError("Failed to load withdrawals");
-      Swal.fire("Error", "Could not load data", "error");
+      Swal.fire("Error", err.message || "Could not load data", "error");
     } finally {
       setLoading(false);
     }
   };
 
+  // Download ALL withdrawals CSV (only required fields)
   const handleDownloadCSV = async () => {
     setDownloading(true);
     try {
-      const res = await fetch(`${publicip}/wallet/getAllWithdrawalsDownload`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("Failed to download CSV");
-
-      const data = await res.json();
-
-      if (data.success && Array.isArray(data.withdraws)) {
-        // Convert data to CSV format
-        const csvData = convertToCSV(data.withdraws);
-
-        // Create and download CSV file
-        downloadCSV(csvData, "withdrawals.csv");
-
-        Swal.fire("Success!", "CSV file downloaded successfully", "success");
-      } else {
-        throw new Error("Invalid data format");
-      }
+      const csvData = convertToCSV(allWithdrawals);
+      downloadCSV(
+        csvData,
+        `all_withdrawals_${new Date().toISOString().slice(0, 10)}.csv`
+      );
+      Swal.fire("Success!", "All withdrawals CSV downloaded", "success");
     } catch (err) {
-      console.error("Download error:", err);
-      Swal.fire("Error", "Failed to download CSV file", "error");
+      console.error(err);
+      Swal.fire("Error", "Failed to generate CSV", "error");
     } finally {
       setDownloading(false);
     }
   };
 
-  const convertToCSV = (withdrawals) => {
-    // Add BOM for UTF-8 encoding to handle special characters
-    const BOM = "\uFEFF";
+  // Download INDIVIDUAL withdrawal CSV (only required fields)
+  const downloadIndividualWithdrawalCSV = async (withdrawalId, username) => {
+    if (individualDownloading[withdrawalId]) return;
 
+    setIndividualDownloading((prev) => ({ ...prev, [withdrawalId]: true }));
+
+    try {
+      const withdrawal = allWithdrawals.find((w) => w._id === withdrawalId);
+      if (!withdrawal) throw new Error("Withdrawal not found");
+
+      const user = withdrawal.userId || {};
+
+      const escapeCSV = (val) => {
+        if (val === null || val === undefined) return "N/A";
+        const str = String(val).trim();
+        if (str.includes(",") || str.includes("\n") || str.includes('"')) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        return `"${str}"`;
+      };
+
+      const BOM = "\uFEFF";
+      const headers = [
+        "Username",
+        "First Name",
+        "Last Name",
+        "Amount ($)",
+        "Status",
+        "Created Date",
+      ];
+
+      const row = [
+        escapeCSV(user.username || "N/A"),
+        escapeCSV(user.firstname || "N/A"),
+        escapeCSV(user.lastname || "N/A"),
+        withdrawal.amount?.toFixed(2) || "0.00",
+        escapeCSV(withdrawal.status || "N/A"),
+        new Date(withdrawal.createdAt).toLocaleString(),
+      ];
+
+      const csvContent = BOM + [headers.join(","), row.join(",")].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `withdrawal_${username || "user"}_${withdrawalId.slice(
+        0,
+        8
+      )}_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      Swal.fire(
+        "Success",
+        `CSV downloaded for ${username || "user"}`,
+        "success"
+      );
+    } catch (err) {
+      Swal.fire("Error", err.message || "Failed to generate CSV", "error");
+    } finally {
+      setIndividualDownloading((prev) => ({ ...prev, [withdrawalId]: false }));
+    }
+  };
+
+  const convertToCSV = (withdrawals) => {
+    const BOM = "\uFEFF";
     const headers = [
       "Username",
       "First Name",
@@ -117,64 +163,55 @@ const GetallUserWidthraws = () => {
       "Created Date",
     ];
 
-    const csvRows = [headers.join(",")];
+    const rows = withdrawals.map((wd) => {
+      const user = wd.userId || {};
 
-    withdrawals.forEach((withdrawal) => {
-      // Function to escape CSV values properly while preserving special characters
-      const escapeCSV = (text) => {
-        if (!text) return "N/A";
-        // Convert to string and handle special characters
-        const str = String(text).trim();
-        // If the value contains comma, newline, or double quote, wrap it in quotes
-        // and escape any internal quotes by doubling them
+      const escape = (val) => {
+        if (val === null || val === undefined) return "N/A";
+        const str = String(val).trim();
         if (str.includes(",") || str.includes("\n") || str.includes('"')) {
           return `"${str.replace(/"/g, '""')}"`;
         }
-        // For values with special Unicode characters, wrap in quotes
         return `"${str}"`;
       };
 
-      const row = [
-        escapeCSV(withdrawal.userId?.username || "N/A"),
-        escapeCSV(withdrawal.userId?.firstname || "N/A"),
-        escapeCSV(withdrawal.userId?.lastname || "N/A"),
-        withdrawal.amount.toFixed(2),
-        escapeCSV(withdrawal.status),
-        escapeCSV(new Date(withdrawal.createdAt).toLocaleString()),
-      ];
-      csvRows.push(row.join(","));
+      return [
+        escape(user.username || "N/A"),
+        escape(user.firstname || "N/A"),
+        escape(user.lastname || "N/A"),
+        wd.amount?.toFixed(2) || "0.00",
+        escape(wd.status || "N/A"),
+        new Date(wd.createdAt).toLocaleString(),
+      ].join(",");
     });
 
-    return BOM + csvRows.join("\n");
+    return BOM + [headers.join(","), ...rows].join("\n");
   };
 
   const downloadCSV = (csvData, filename) => {
-    // Use proper UTF-8 encoding with BOM
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
+    link.href = url;
+    link.download = filename;
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleAction = async (id, action) => {
-    const text = action === "accept" ? "Accept" : "Cancel";
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: `Do you want to ${text.toLowerCase()} this withdrawal?`,
+      text: `Do you want to ${
+        action === "accept" ? "accept" : "cancel"
+      } this withdrawal?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ff9800",
       cancelButtonColor: "#d33",
-      confirmButtonText: `Yes, ${text} it!`,
+      confirmButtonText: `Yes, ${action === "accept" ? "Accept" : "Cancel"}!`,
     });
 
     if (!result.isConfirmed) return;
@@ -202,12 +239,12 @@ const GetallUserWidthraws = () => {
       ) {
         Swal.fire(
           "Success!",
-          `Withdrawal ${action === "accept" ? "approved" : "cancelled"}`,
+          `Withdrawal ${action === "accept" ? "processed" : "cancelled"}`,
           "success"
         );
-        fetchAllWithdrawals(); // Refresh full list
+        fetchAllWithdrawals();
       } else {
-        throw new Error(data.message || "Failed");
+        throw new Error(data.message || "Operation failed");
       }
     } catch (err) {
       Swal.fire("Error", err.message || "Action failed", "error");
@@ -218,23 +255,22 @@ const GetallUserWidthraws = () => {
     !url || url.trim() === "" ? "/default-avatar.png" : url;
 
   const getStatusInfo = (status) => {
-    const s = status.toLowerCase();
+    const s = status?.toLowerCase();
     if (s === "pending") return { text: "Pending", class: "pending" };
     if (s === "processed" || s === "completed")
       return { text: "Processed", class: "processed" };
     if (s === "cancelled") return { text: "Cancelled", class: "cancelled" };
-    return { text: status, class: "unknown" };
+    return { text: status || "Unknown", class: "unknown" };
   };
 
-  // Pagination logic
+  // Pagination
   const totalItems = displayList.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = displayList.slice(startIndex, endIndex);
+  const currentItems = displayList.slice(startIndex, startIndex + itemsPerPage);
 
   const pendingCount = allWithdrawals.filter(
-    (w) => w.status.toLowerCase() === "pending"
+    (w) => w.status?.toLowerCase() === "pending"
   ).length;
 
   return (
@@ -246,9 +282,7 @@ const GetallUserWidthraws = () => {
           <h2>Withdrawal Requests</h2>
         </div>
 
-        {/* Header with Download Button */}
         <div className="withdrawals-header-actions">
-          {/* Filter Buttons */}
           <div className="withdrawals-filters">
             <button
               className={`filter-btn ${filter === "all" ? "active" : ""}`}
@@ -264,13 +298,12 @@ const GetallUserWidthraws = () => {
             </button>
           </div>
 
-          {/* Download CSV Button */}
           <button
             className="download-csv-btn"
             onClick={handleDownloadCSV}
             disabled={downloading || allWithdrawals.length === 0}
           >
-            {downloading ? "Downloading..." : "Download CSV"}
+            {downloading ? "Downloading..." : "Download All CSV"}
           </button>
         </div>
 
@@ -287,13 +320,15 @@ const GetallUserWidthraws = () => {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Actions</th>
+                    <th>Download</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentItems.map((wd) => {
-                    const user = wd.userId;
+                    const user = wd.userId || {};
                     const statusInfo = getStatusInfo(wd.status);
-                    const isPending = wd.status.toLowerCase() === "pending";
+                    const isPending = wd.status?.toLowerCase() === "pending";
+                    const isLoading = individualDownloading[wd._id];
 
                     return (
                       <tr
@@ -303,17 +338,21 @@ const GetallUserWidthraws = () => {
                         <td className="withdrawals-user">
                           <img
                             src={getProfilePic(user.profilePicture)}
-                            alt={user.username}
+                            alt={user.username || "User"}
                             className="withdrawals-profile-pic"
                           />
                           <div>
-                            <div className="username">{user.username}</div>
+                            <div className="username">
+                              {user.username || "Unknown"}
+                            </div>
                             <small>
                               {user.firstname} {user.lastname}
                             </small>
                           </div>
                         </td>
-                        <td className="amount">${wd.amount.toFixed(2)}</td>
+                        <td className="amount">
+                          ${wd.amount?.toFixed(2) || "0.00"}
+                        </td>
                         <td>
                           <span className={`status-badge ${statusInfo.class}`}>
                             {statusInfo.text}
@@ -348,6 +387,30 @@ const GetallUserWidthraws = () => {
                             <span className="no-action">—</span>
                           )}
                         </td>
+                        <td>
+                          <button
+                            className="btn-download-individual-csv"
+                            onClick={() =>
+                              downloadIndividualWithdrawalCSV(
+                                wd._id,
+                                user.username
+                              )
+                            }
+                            disabled={isLoading}
+                            style={{
+                              padding: "6px 12px",
+                              background: "#17a2b8",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "12px",
+                              minWidth: "80px",
+                            }}
+                          >
+                            {isLoading ? "Generating..." : "Download CSV"}
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
@@ -355,12 +418,11 @@ const GetallUserWidthraws = () => {
               </table>
             </div>
 
-            {/* Frontend Pagination */}
             <div className="withdrawals-meta">
               <p>
-                Showing {startIndex + 1}–{Math.min(endIndex, totalItems)} of{" "}
+                Showing {startIndex + 1}–
+                {Math.min(startIndex + itemsPerPage, totalItems)} of{" "}
                 {totalItems} request(s)
-                {filter === "pending" && " — Pending Only"}
               </p>
 
               <div className="pagination-controls">
@@ -381,20 +443,6 @@ const GetallUserWidthraws = () => {
                 >
                   Next
                 </button>
-              </div>
-
-              <div className="limit-controls">
-                <label>Per page: </label>
-                <select
-                  value={itemsPerPage}
-                  onChange={(e) => {
-                    /* You can make this dynamic later */
-                  }}
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                </select>
               </div>
             </div>
           </>

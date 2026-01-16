@@ -9,6 +9,8 @@ const UserReports = () => {
   const navigate = useNavigate();
   const [reportsData, setReportsData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [csvLoading, setCsvLoading] = useState(false);
+  const [individualCsvLoading, setIndividualCsvLoading] = useState({});
   const [actionLoading, setActionLoading] = useState({});
   const [strikeModalOpen, setStrikeModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -28,14 +30,11 @@ const UserReports = () => {
       });
       const data = await res.json();
       if (data.success) {
-        // Sort reports: Newest activity (updatedAt) first
         const sortedReports = {
           ...data,
-          reports: [...data.reports].sort((a, b) => {
-            const dateA = new Date(a.updatedAt);
-            const dateB = new Date(b.updatedAt);
-            return dateB - dateA; // Descending: newest on top
-          }),
+          reports: [...data.reports].sort(
+            (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+          ),
         };
         setReportsData(sortedReports);
       }
@@ -50,7 +49,6 @@ const UserReports = () => {
     navigate(`/frenzone/user/reports/${userId}`);
   };
 
-  // BLOCK / UNBLOCK
   const toggleBlock = async (userId, currentStatus) => {
     if (actionLoading[userId]) return;
     setActionLoading((prev) => ({ ...prev, [userId]: true }));
@@ -102,7 +100,6 @@ const UserReports = () => {
     }
   };
 
-  // LIFT STRIKE
   const liftStrike = async (userId) => {
     if (actionLoading[userId]) return;
     setActionLoading((prev) => ({ ...prev, [userId]: true }));
@@ -145,7 +142,6 @@ const UserReports = () => {
     }
   };
 
-  // STRIKE USER – MODAL
   const openStrikeModal = (userId) => {
     if (actionLoading[userId]) return;
     setSelectedUserId(userId);
@@ -189,11 +185,333 @@ const UserReports = () => {
     }
   };
 
+  // ==================== FULL CSV WITH UNICODE SUPPORT ====================
+  const downloadUserReportsCSV = async () => {
+    setCsvLoading(true);
+    try {
+      let allReports = [];
+      let page = 1;
+      let hasMore = true;
+
+      while (hasMore) {
+        const res = await fetch(
+          `${API_BASE}/user/getAllUsersReports?page=${page}&limit=100`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!res.ok) throw new Error("Failed to fetch reports");
+        const data = await res.json();
+
+        if (!data.success || data.reports.length === 0) {
+          hasMore = false;
+        } else {
+          allReports = [...allReports, ...data.reports];
+          if (data.reports.length < 100) hasMore = false;
+          page++;
+        }
+      }
+
+      const enrichedReports = await Promise.all(
+        allReports.map(async (entry) => {
+          let reportedUserFull = {};
+          try {
+            const res = await fetch(
+              `${API_BASE}/user/getUserById/${entry.userid._id}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            if (res.ok) {
+              const data = await res.json();
+              reportedUserFull = data.user || {};
+            }
+          } catch (e) {}
+
+          const enrichedIndividualReports = await Promise.all(
+            entry.reports.map(async (indReport) => {
+              let reporterFull = {};
+              if (indReport.reportedBy?._id) {
+                try {
+                  const res = await fetch(
+                    `${API_BASE}/user/getUserById/${indReport.reportedBy._id}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                  );
+                  if (res.ok) {
+                    const data = await res.json();
+                    reporterFull = data.user || {};
+                  }
+                } catch (e) {}
+              }
+              return { ...indReport, reporterFull };
+            })
+          );
+
+          return {
+            ...entry,
+            reportedUserFull,
+            reports: enrichedIndividualReports,
+          };
+        })
+      );
+
+      const escapeCSV = (text) => {
+        if (!text) return "N/A";
+        const str = String(text).trim();
+        if (str.includes(",") || str.includes("\n") || str.includes('"')) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        return `"${str}"`;
+      };
+
+      const BOM = "\uFEFF";
+      const headers = [
+        "Reported Username",
+        "Reported Full Name",
+        "Reported Email",
+        "Reported Phone",
+        "Reported Address",
+        "Reported IP Address",
+        "Reported DOB",
+        "Reported Bio",
+        "Reported Profile Picture URL",
+        "Reported Is Verified",
+        "Reported Signup Type",
+        "Total Reports on User",
+        "Report Reason",
+        "Reported On",
+        "Reporter Username",
+        "Reporter Full Name",
+        "Reporter Email",
+        "Reporter Phone",
+        "Reporter Address",
+        "Reporter IP Address",
+      ];
+
+      const csvRows = [headers.map(escapeCSV).join(",")];
+
+      enrichedReports.forEach((entry) => {
+        const reportedUser = entry.userid;
+        const reportedUserFull = entry.reportedUserFull;
+
+        entry.reports.forEach((indReport) => {
+          const reportedBy = indReport.reportedBy || {};
+          const reporterFull = indReport.reporterFull || {};
+
+          const row = [
+            reportedUser.username || "",
+            `${reportedUser.firstname || ""} ${
+              reportedUser.lastname || ""
+            }`.trim(),
+            reportedUser.email || "",
+            reportedUserFull.phone || "",
+            reportedUserFull.address || reportedUser.address || "",
+            reportedUserFull.ipAddress || reportedUser.ipAddress || "",
+            reportedUserFull.dob || "",
+            reportedUserFull.bio || "",
+            reportedUserFull.profilePictureUrl ||
+              reportedUser.profilePicUrl ||
+              "",
+            reportedUserFull.isVerified ? "Yes" : "No",
+            reportedUserFull.signupType || "",
+            entry.totalReports,
+            indReport.reason || "",
+            new Date(indReport.reportedOn).toLocaleString(),
+            reportedBy.username || "",
+            `${reportedBy.firstname || ""} ${reportedBy.lastname || ""}`.trim(),
+            reportedBy.email || "",
+            reporterFull.phone || "",
+            reporterFull.address || reportedBy.address || "",
+            reporterFull.ipAddress || reportedBy.ipAddress || "",
+          ];
+
+          csvRows.push(row.map(escapeCSV).join(","));
+        });
+      });
+
+      const csvContent = BOM + csvRows.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute(
+        "download",
+        `reported_users_full_${new Date().toISOString().slice(0, 10)}.csv`
+      );
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Full detailed CSV downloaded!",
+        timer: 2000,
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to generate CSV.",
+      });
+    } finally {
+      setCsvLoading(false);
+    }
+  };
+
+  // ==================== INDIVIDUAL USER CSV DOWNLOAD ====================
+  const downloadIndividualUserCSV = async (userId, username, userData) => {
+    if (individualCsvLoading[userId]) return;
+
+    setIndividualCsvLoading((prev) => ({ ...prev, [userId]: true }));
+
+    try {
+      // Use the existing data from the table instead of making new API calls
+      const userEntry = reportsData.reports.find(
+        (report) => report.userid._id === userId
+      );
+
+      if (!userEntry) {
+        throw new Error("User data not found");
+      }
+
+      const u = userEntry.userid;
+
+      // Fetch full user details from existing API
+      let reportedUserFull = {};
+      try {
+        const userRes = await fetch(`${API_BASE}/user/getUserById/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          reportedUserFull = userData.user || {};
+        }
+      } catch (e) {}
+
+      // Fetch reporter details for each report
+      const enrichedReports = await Promise.all(
+        userEntry.reports.map(async (report) => {
+          let reporterFull = {};
+          if (report.reportedBy?._id) {
+            try {
+              const reporterRes = await fetch(
+                `${API_BASE}/user/getUserById/${report.reportedBy._id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+              if (reporterRes.ok) {
+                const reporterData = await reporterRes.json();
+                reporterFull = reporterData.user || {};
+              }
+            } catch (e) {}
+          }
+          return { ...report, reporterFull };
+        })
+      );
+
+      const escapeCSV = (text) => {
+        if (!text) return "N/A";
+        const str = String(text).trim();
+        if (str.includes(",") || str.includes("\n") || str.includes('"')) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        return `"${str}"`;
+      };
+
+      const BOM = "\uFEFF";
+      const headers = [
+        "Reported Username",
+        "Reported Full Name",
+        "Reported Email",
+        "Reported Phone",
+        "Reported Address",
+        "Reported IP Address",
+        "Reported DOB",
+        "Reported Bio",
+        "Reported Profile Picture URL",
+        "Reported Is Verified",
+        "Reported Signup Type",
+        "Total Reports on User",
+        "Report Reason",
+        "Reported On",
+        "Reporter Username",
+        "Reporter Full Name",
+        "Reporter Email",
+        "Reporter Phone",
+        "Reporter Address",
+        "Reporter IP Address",
+      ];
+
+      const csvRows = [headers.map(escapeCSV).join(",")];
+
+      enrichedReports.forEach((report) => {
+        const reportedBy = report.reportedBy || {};
+        const reporterFull = report.reporterFull || {};
+
+        const row = [
+          u.username || "",
+          `${u.firstname || ""} ${u.lastname || ""}`.trim(),
+          u.email || "",
+          reportedUserFull.phone || "",
+          reportedUserFull.address || u.address || "",
+          reportedUserFull.ipAddress || u.ipAddress || "",
+          reportedUserFull.dob || "",
+          reportedUserFull.bio || "",
+          reportedUserFull.profilePictureUrl || u.profilePicUrl || "",
+          reportedUserFull.isVerified ? "Yes" : "No",
+          reportedUserFull.signupType || "",
+          userEntry.totalReports,
+          report.reason || "",
+          new Date(report.reportedOn).toLocaleString(),
+          reportedBy.username || "",
+          `${reportedBy.firstname || ""} ${reportedBy.lastname || ""}`.trim(),
+          reportedBy.email || "",
+          reporterFull.phone || "",
+          reporterFull.address || reportedBy.address || "",
+          reporterFull.ipAddress || reportedBy.ipAddress || "",
+        ];
+
+        csvRows.push(row.map(escapeCSV).join(","));
+      });
+
+      const csvContent = BOM + csvRows.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute(
+        "download",
+        `user_reports_${username || userId}_${new Date()
+          .toISOString()
+          .slice(0, 10)}.csv`
+      );
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `CSV for ${username} downloaded!`,
+        timer: 1500,
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.message || "Failed to generate individual CSV.",
+      });
+    } finally {
+      setIndividualCsvLoading((prev) => ({ ...prev, [userId]: false }));
+    }
+  };
+
   if (loading) return <Loader />;
 
   return (
     <div className="userreports-container">
-      {/* Strike Modal */}
       {strikeModalOpen && (
         <div
           className="strike-modal-overlay"
@@ -241,6 +559,22 @@ const UserReports = () => {
       <div className="userreports-container-inner">
         <div className="userreports-heading">
           <h2>Reported Users</h2>
+          <button
+            className="btn-download-csv"
+            onClick={downloadUserReportsCSV}
+            disabled={csvLoading}
+            style={{
+              padding: "8px 16px",
+              background: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            {csvLoading ? "Generating..." : "Download All CSV"}
+          </button>
         </div>
 
         {reportsData?.reports?.length > 0 ? (
@@ -252,6 +586,7 @@ const UserReports = () => {
                   <th>Reports</th>
                   <th>Status</th>
                   <th>Actions</th>
+                  <th>Download</th>
                 </tr>
               </thead>
               <tbody>
@@ -260,6 +595,7 @@ const UserReports = () => {
                   const isBlocked = u.systemBlocked;
                   const isUnderStrike = u.underStrike;
                   const isLoading = actionLoading[u._id];
+                  const isCsvLoading = individualCsvLoading[u._id];
 
                   return (
                     <tr key={report._id} className="userreports-row">
@@ -340,6 +676,27 @@ const UserReports = () => {
                               : "Block"}
                           </button>
                         </div>
+                      </td>
+                      <td>
+                        <button
+                          className="btn-download-individual-csv"
+                          onClick={() =>
+                            downloadIndividualUserCSV(u._id, u.username, u)
+                          }
+                          disabled={isCsvLoading}
+                          style={{
+                            padding: "6px 12px",
+                            background: "#17a2b8",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "12px",
+                            minWidth: "80px",
+                          }}
+                        >
+                          {isCsvLoading ? "Generating..." : "Download CSV"}
+                        </button>
                       </td>
                     </tr>
                   );

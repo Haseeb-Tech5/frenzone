@@ -29,6 +29,7 @@ import UserReports from "./components/Reports/UserReports.jsx";
 import GetAllUserReportsId from "./components/Reports/GetAllUserReportsId.jsx";
 import AllVerifiedUser from "./components/AllVerifiedUser/AllVerifiedUser.jsx";
 import AllVerifiedUserId from "./components/AllVerifiedUser/AllVerifiedUserId.jsx";
+import UpdateVerifiedUsers from "./components/AllVerifiedUser/UpdateVerifiedUsers.jsx";
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
@@ -64,6 +65,7 @@ const App = () => {
     { path: "/frenzone/user/reports/:id", component: GetAllUserReportsId },
     { path: "/frenzone/verified", component: AllVerifiedUser },
     { path: "/frenzone/verifieduser/:id", component: AllVerifiedUserId },
+    { path: "/frenzone/update-verified-users", component: UpdateVerifiedUsers },
   ];
 
   return (

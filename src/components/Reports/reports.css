@@ -177,6 +177,7 @@
   margin: 2rem 0;
   border: 2px solid rgba(255, 140, 0, 0.2);
   transition: all 0.3s ease;
+  width:100%
 }
 
 .reportdetails-user-card:hover {

@@ -199,9 +199,9 @@ const ReportDetails = () => {
                 ? new Date(reportData.createdAt).toLocaleDateString()
                 : "N/A"}
             </div>
-            <div className={`reportdetails-type-badge ${reportData.type}`}>
+            {/* <div className={`reportdetails-type-badge ${reportData.type}`}>
               {reportData.type?.toUpperCase() || "POST"}
-            </div>
+            </div> */}
           </div>
         </div>
 

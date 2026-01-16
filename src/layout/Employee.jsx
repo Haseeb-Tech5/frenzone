@@ -3,7 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdPerson } from "react-icons/io";
-import { MdOutlineEditCalendar, MdOutlineReportProblem, MdOutlineVerifiedUser } from "react-icons/md";
+import {
+  MdOutlineEditCalendar,
+  MdOutlineReportProblem,
+  MdOutlineVerifiedUser,
+} from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImBlocked } from "react-icons/im";
@@ -98,6 +102,12 @@ const Employee = ({ children }) => {
       id: "verified",
       label: "Verified Users",
       route: "/frenzone/verified",
+      icon: <MdOutlineVerifiedUser className="emp-nav-icon" />,
+    },
+    {
+      id: "update-verified-users",
+      label: "Update Users",
+      route: "/frenzone/update-verified-users",
       icon: <MdOutlineVerifiedUser className="emp-nav-icon" />,
     },
   ];
