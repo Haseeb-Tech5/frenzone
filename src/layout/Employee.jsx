@@ -86,11 +86,18 @@ const Employee = ({ children }) => {
       route: "/frenzone/totalreports",
       icon: <MdOutlineReportProblem className="emp-nav-icon" />,
     },
+    // Old withdrawals page (kept for reference – use Payouts instead)
+    // {
+    //   id: "allwithdrawals",
+    //   label: "Total Withdrawals",
+    //   route: "/frenzone/allwithdrawals",
+    //   icon: <MdOutlineReportProblem className="emp-nav-icon" />,
+    // },
     {
-      id: "allwithdrawals",
-      label: "Total Withdrawals",
-      route: "/frenzone/allwithdrawals",
-      icon: <MdOutlineReportProblem className="emp-nav-icon" />,
+      id: "payouts",
+      label: "Payouts",
+      route: "/frenzone/payouts",
+      icon: <BiMoneyWithdraw className="emp-nav-icon" />,
     },
     {
       id: "user-reports",

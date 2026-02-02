@@ -24,7 +24,8 @@ import Transcations from "./pages/Transcations.jsx";
 import Reports from "./components/Reports/Reports.jsx";
 import ReportDetails from "./components/Reports/ReportDetails.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import GetallUserWidthraws from "./components/Reports/GetallUserWidthraws.jsx";
+// import GetallUserWidthraws from "./components/Reports/GetallUserWidthraws.jsx"; // old withdrawals
+import AllPayouts from "./components/Reports/AllPayouts.jsx";
 import UserReports from "./components/Reports/UserReports.jsx";
 import GetAllUserReportsId from "./components/Reports/GetAllUserReportsId.jsx";
 import AllVerifiedUser from "./components/AllVerifiedUser/AllVerifiedUser.jsx";
@@ -59,7 +60,8 @@ const App = () => {
     { path: "/sensitivereels", component: AdultReels },
     { path: "/frenzone/transactions", component: Transcations },
     { path: "/frenzone/totalreports", component: Reports },
-    { path: "/frenzone/allwithdrawals", component: GetallUserWidthraws },
+    // { path: "/frenzone/allwithdrawals", component: GetallUserWidthraws }, // old withdrawals
+    { path: "/frenzone/payouts", component: AllPayouts },
     { path: "/frenzone/report/:id", component: ReportDetails },
     { path: "/frenzone/user-reports", component: UserReports },
     { path: "/frenzone/user/reports/:id", component: GetAllUserReportsId },
