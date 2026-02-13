@@ -38,10 +38,10 @@ const UpdateVerifiedUsers = () => {
     fetchVerifiedUsers();
   }, []);
 
-  // Calculate how many users can be added
+  // Show "add" when 0–4 users; when 5 users, only update/replace is allowed
   const maxUsersAllowed = 5;
   const currentUserCount = verifiedUsers.length;
-  const canAddUsers = currentUserCount < 4;
+  const canAddUsers = currentUserCount < maxUsersAllowed;
   const maxUsersToAdd = maxUsersAllowed - currentUserCount;
 
   // Fetch verified users

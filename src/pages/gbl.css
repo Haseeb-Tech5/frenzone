@@ -192,15 +192,45 @@
   background: #ff8c00;
 }
 
-/* Table Styles */
+/* Table Styles - fixed layout so headers and columns never mismatch */
 .gbl_transactions_table {
   width: 100%;
   min-width: 1000px;
+  table-layout: fixed;
   border-collapse: collapse;
   background: linear-gradient(135deg, var(--black) 0%, var(--grey) 100%);
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0.2rem 0.6rem var(--black);
+}
+
+/* Explicit column widths so User and Creator columns stay under their headers */
+.gbl_transactions_table .gbl_col_user {
+  width: 220px;
+}
+.gbl_transactions_table .gbl_col_creator {
+  width: 220px;
+}
+.gbl_transactions_table .gbl_col_type {
+  width: 120px;
+}
+.gbl_transactions_table .gbl_col_amount {
+  width: 100px;
+}
+.gbl_transactions_table .gbl_col_fee {
+  width: 100px;
+}
+.gbl_transactions_table .gbl_col_net {
+  width: 100px;
+}
+.gbl_transactions_table .gbl_col_status {
+  width: 100px;
+}
+.gbl_transactions_table .gbl_col_date {
+  width: 160px;
+}
+.gbl_transactions_table .gbl_col_actions {
+  width: 140px;
 }
 
 .gbl_transactions_table th,
@@ -210,7 +240,7 @@
   font-size: 1.4rem;
   color: var(--white);
   text-align: left;
-  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .gbl_transactions_table th {
@@ -235,12 +265,57 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* User Cell */
-.gbl_user_cell {
+/* Table cells: no flex on td so column boundaries are preserved */
+.gbl_td {
+  overflow: hidden;
+}
+
+/* Inner wrapper for User/Creator cells - flex only inside the cell */
+.gbl_cell_content {
   display: flex;
   align-items: center;
   gap: 1rem;
-  min-width: 220px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.gbl_cell_user {
+  /* User column: only user content */
+}
+
+.gbl_cell_creator {
+  /* Creator column: only creator content */
+}
+
+.gbl_na_text {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.3rem;
+}
+
+/* User / Creator combined cell */
+.gbl_user_creator_cell {
+  min-width: 280px;
+  vertical-align: top;
+}
+
+.gbl_user_creator_block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.gbl_user_creator_item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gbl_user_label {
+  font-size: 1.1rem;
+  color: var(--orange);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
 }
 
 /* ============================================
@@ -269,7 +344,8 @@
 }
 
 @keyframes gbl_pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
   }
   50% {
@@ -612,6 +688,25 @@
   word-break: break-all;
 }
 
+.gbl_modal_field_full {
+  grid-column: 1 / -1;
+}
+
+.gbl_field_links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.gbl_field_links .gbl_link {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.gbl_field_links .gbl_link:hover {
+  text-decoration: underline;
+}
+
 .gbl_modal_footer {
   padding: 1.5rem 2rem;
   background: rgba(0, 0, 0, 0.3);
@@ -636,6 +731,70 @@
 .gbl_modal_close_action_btn:hover {
   background: var(--white);
   transform: scale(1.02);
+}
+
+/* Transaction Detail Page */
+.gbl_detail_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.gbl_detail_back_btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border: 0.1rem solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 1.5rem;
+  border-radius: 0.6rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gbl_detail_back_btn:hover {
+  background: var(--orange);
+  color: var(--black);
+  border-color: var(--orange);
+}
+
+.gbl_detail_back_section {
+  margin-bottom: 2rem;
+}
+
+.gbl_detail_content {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.gbl_detail_user_card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.8rem;
+}
+
+.gbl_detail_user_info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.gbl_field_mono {
+  font-family: monospace;
+  font-size: 1.2rem;
+  word-break: break-all;
 }
 
 /* Animations */
@@ -788,8 +947,9 @@
     font-size: 1.2rem;
   }
 
-  .gbl_user_cell {
-    min-width: 160px;
+  .gbl_transactions_table .gbl_col_user,
+  .gbl_transactions_table .gbl_col_creator {
+    width: 160px;
   }
 
   .gbl_avatar_wrapper {
