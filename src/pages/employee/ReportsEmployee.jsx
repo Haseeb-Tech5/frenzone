@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./broadcast.css";
+import Loader from "../../components/Loader/Loader";
 
 const ReportsEmployee = () => {
   const token = localStorage.getItem("token");
@@ -30,6 +31,8 @@ const ReportsEmployee = () => {
       return;
     }
 
+    setIsSending(true);
+
     fetch("https://api.frenzone.live/admin/broadcast", {
       method: "POST",
       headers: {
@@ -56,6 +59,9 @@ const ReportsEmployee = () => {
           isSuccess: false,
         });
         console.error("Error sending notification:", error);
+      })
+      .finally(() => {
+        setIsSending(false);
       });
   };
 
@@ -65,6 +71,7 @@ const ReportsEmployee = () => {
 
   return (
     <div className="broad-container">
+      {isSending && <Loader />}
       <div className="broad-container-full">
         <div className="broad-heading">
           <h2>BroadCast</h2>

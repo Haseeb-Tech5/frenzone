@@ -160,21 +160,21 @@ const DashboardOverview = () => {
       label: "Current Amount",
       value: dashboardData.companyProfit?.currentAmount
         ? `$${dashboardData.companyProfit.currentAmount.toFixed(2)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="dash-card-icon" />,
     },
     {
       label: "Earned Amount",
       value: dashboardData.companyProfit?.earnedAmount
         ? `$${dashboardData.companyProfit.earnedAmount.toFixed(2)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="dash-card-icon" />,
     },
     {
       label: "Bought Amount",
       value: dashboardData.companyProfit?.boughtAmount
         ? `$${dashboardData.companyProfit.boughtAmount.toFixed(2)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="dash-card-icon" />,
     },
     {
@@ -182,7 +182,7 @@ const DashboardOverview = () => {
       value:
         dashboardData.companyProfit?.diamonds !== undefined
           ? dashboardData.companyProfit.diamonds
-          : "zero",
+          : "0",
       icon: <FaGem className="dash-card-icon" />,
     },
     {
@@ -190,7 +190,7 @@ const DashboardOverview = () => {
       value:
         dashboardData.companyProfit?.coins !== undefined
           ? dashboardData.companyProfit.coins.toFixed(2)
-          : "zero",
+          : "0",
       icon: <FaCoins className="dash-card-icon" />,
     },
   ];

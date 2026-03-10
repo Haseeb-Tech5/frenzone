@@ -52,31 +52,31 @@ const CompanyProfit = () => {
       label: "Current Amount",
       value: profitData?.currentAmount
         ? `$${profitData.currentAmount.toFixed(8)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="profit-card-icon" />,
     },
     {
       label: "Earned Amount",
       value: profitData?.earnedAmount
         ? `$${profitData.earnedAmount.toFixed(8)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="profit-card-icon" />,
     },
     {
       label: "Bought Amount",
       value: profitData?.boughtAmount
         ? `$${profitData.boughtAmount.toFixed(8)}`
-        : "zero",
+        : "0",
       icon: <FaDollarSign className="profit-card-icon" />,
     },
     {
       label: "Diamonds",
-      value: profitData?.diamonds !== undefined ? profitData.diamonds : "zero",
+      value: profitData?.diamonds !== undefined ? profitData.diamonds : "0",
       icon: <FaGem className="profit-card-icon" />,
     },
     {
       label: "Coins",
-      value: profitData?.coins !== undefined ? profitData.coins : "zero",
+      value: profitData?.coins !== undefined ? profitData.coins : "0",
       icon: <FaCoins className="profit-card-icon" />,
     },
   ];
