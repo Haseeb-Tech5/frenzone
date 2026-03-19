@@ -11,7 +11,7 @@
 /* Inner container */
 .dash-container-inner {
   width: 100%;
-  max-width: 120rem;
+  max-width: 140rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 1.2rem;
   box-shadow: 0 0.4rem 1.2rem var(--black);

@@ -4,8 +4,6 @@ import {
   FaPhotoVideo,
   FaVideo,
   FaDollarSign,
-  FaGem,
-  FaCoins,
 } from "react-icons/fa";
 import { ImBlocked } from "react-icons/im";
 import Swal from "sweetalert2";
@@ -157,41 +155,11 @@ const DashboardOverview = () => {
       icon: <ImBlocked className="dash-card-icon" />,
     },
     {
-      label: "Current Amount",
+      label: "Revenue",
       value: dashboardData.companyProfit?.currentAmount
         ? `$${dashboardData.companyProfit.currentAmount.toFixed(2)}`
         : "0",
       icon: <FaDollarSign className="dash-card-icon" />,
-    },
-    {
-      label: "Earned Amount",
-      value: dashboardData.companyProfit?.earnedAmount
-        ? `$${dashboardData.companyProfit.earnedAmount.toFixed(2)}`
-        : "0",
-      icon: <FaDollarSign className="dash-card-icon" />,
-    },
-    {
-      label: "Bought Amount",
-      value: dashboardData.companyProfit?.boughtAmount
-        ? `$${dashboardData.companyProfit.boughtAmount.toFixed(2)}`
-        : "0",
-      icon: <FaDollarSign className="dash-card-icon" />,
-    },
-    {
-      label: "Diamonds",
-      value:
-        dashboardData.companyProfit?.diamonds !== undefined
-          ? dashboardData.companyProfit.diamonds
-          : "0",
-      icon: <FaGem className="dash-card-icon" />,
-    },
-    {
-      label: "Coins",
-      value:
-        dashboardData.companyProfit?.coins !== undefined
-          ? dashboardData.companyProfit.coins.toFixed(2)
-          : "0",
-      icon: <FaCoins className="dash-card-icon" />,
     },
   ];
 
@@ -217,36 +185,12 @@ const DashboardOverview = () => {
 
   // Doughnut chart data for Profit Breakdown
   const doughnutChartData = {
-    labels: [
-      "Current Amount",
-      "Earned Amount",
-      "Bought Amount",
-      "Diamonds",
-      "Coins",
-    ],
+    labels: ["Revenue"],
     datasets: [
       {
-        data: [
-          dashboardData.companyProfit?.currentAmount || 0,
-          dashboardData.companyProfit?.earnedAmount || 0,
-          dashboardData.companyProfit?.boughtAmount || 0,
-          dashboardData.companyProfit?.diamonds || 0,
-          dashboardData.companyProfit?.coins || 0,
-        ],
-        backgroundColor: [
-          "rgba(255, 165, 0, 0.7)",
-          "rgba(128, 128, 128, 0.7)",
-          "rgba(255, 255, 255, 0.7)",
-          "rgba(0, 0, 0, 0.7)",
-          "rgba(255, 165, 0, 0.5)",
-        ],
-        borderColor: [
-          "var(--orange)",
-          "var(--grey)",
-          "var(--white)",
-          "var(--black)",
-          "var(--orange)",
-        ],
+        data: [dashboardData.companyProfit?.currentAmount || 0],
+        backgroundColor: ["rgba(255, 165, 0, 0.7)"],
+        borderColor: ["var(--orange)"],
         borderWidth: 1,
       },
     ],

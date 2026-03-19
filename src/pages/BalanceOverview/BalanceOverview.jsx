@@ -60,20 +60,12 @@ const BalanceOverview = () => {
         <div className="bal-cards-grid">
           <div className="bal-card bal-card-red">
             <div className="bal-card-content bal-card-wallet">
-              <div className="bal-title">Amount Gained</div>
+              <div className="bal-title">Revenue</div>
               {wallet ? (
                 <div className="bal-data-container">
                   <div className="bal-data-item">
-                    <div className="bal-label">Current Amount</div>
+                    <div className="bal-label">Revenue</div>
                     <div className="bal-value">{wallet.currentAmount}</div>
-                  </div>
-                  <div className="bal-data-item">
-                    <div className="bal-label">Earned Amount</div>
-                    <div className="bal-value">{wallet.earnedAmount}</div>
-                  </div>
-                  <div className="bal-data-item">
-                    <div className="bal-label">Bought Amount</div>
-                    <div className="bal-value">{wallet.boughtAmount}</div>
                   </div>
                 </div>
               ) : (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaDollarSign, FaGem, FaCoins } from "react-icons/fa";
+import { FaDollarSign } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "./profit.css";
 import Loader from "../Loader/Loader";
@@ -49,35 +49,11 @@ const CompanyProfit = () => {
 
   const profitItems = [
     {
-      label: "Current Amount",
+      label: "Revenue",
       value: profitData?.currentAmount
         ? `$${profitData.currentAmount.toFixed(8)}`
         : "0",
       icon: <FaDollarSign className="profit-card-icon" />,
-    },
-    {
-      label: "Earned Amount",
-      value: profitData?.earnedAmount
-        ? `$${profitData.earnedAmount.toFixed(8)}`
-        : "0",
-      icon: <FaDollarSign className="profit-card-icon" />,
-    },
-    {
-      label: "Bought Amount",
-      value: profitData?.boughtAmount
-        ? `$${profitData.boughtAmount.toFixed(8)}`
-        : "0",
-      icon: <FaDollarSign className="profit-card-icon" />,
-    },
-    {
-      label: "Diamonds",
-      value: profitData?.diamonds !== undefined ? profitData.diamonds : "0",
-      icon: <FaGem className="profit-card-icon" />,
-    },
-    {
-      label: "Coins",
-      value: profitData?.coins !== undefined ? profitData.coins : "0",
-      icon: <FaCoins className="profit-card-icon" />,
     },
   ];
 

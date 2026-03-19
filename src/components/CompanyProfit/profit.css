@@ -118,10 +118,11 @@
 
 /* Cards container */
 .profit-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* display: grid;
+  grid-template-columns: repeat(2, 1fr); */
   gap: 2rem;
   padding: 1rem;
+  width: 100%;
 }
 
 /* Individual card */
